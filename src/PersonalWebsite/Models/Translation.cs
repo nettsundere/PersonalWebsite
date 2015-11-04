@@ -9,7 +9,7 @@ namespace PersonalWebsite.Models
     public class Translation
     {
         public virtual int Id { get; set; }
-        public virtual Language Version { get; set; }
+        public virtual LanguageDefinition Version { get; set; }
         public virtual DataAvailabilityState State { get; set; }
 
         public virtual string ContentMarkup { get; set; }

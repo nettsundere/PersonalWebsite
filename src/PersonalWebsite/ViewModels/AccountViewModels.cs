@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Mvc.Rendering;
 
-namespace PersonalWebsite.Models
+namespace PersonalWebsite.ViewModels
 {
     public class ExternalLoginConfirmationViewModel
     {

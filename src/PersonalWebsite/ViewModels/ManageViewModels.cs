@@ -4,7 +4,7 @@ using Microsoft.AspNet.Http.Authentication;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc.Rendering;
 
-namespace PersonalWebsite.Models
+namespace PersonalWebsite.ViewModels
 {
     public class IndexViewModel
     {

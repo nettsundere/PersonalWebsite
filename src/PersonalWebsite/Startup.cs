@@ -11,6 +11,7 @@ using Microsoft.Framework.Configuration;
 using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
 using Microsoft.Framework.Runtime;
+using PersonalWebsite.Lib;
 using PersonalWebsite.Models;
 using PersonalWebsite.Services;
 
@@ -74,6 +75,7 @@ namespace PersonalWebsite
             // Register application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+            services.AddTransient<ILanguageProcessor, LanguageProcessor>();
         }
 
         // Configure is called after ConfigureServices is called.
@@ -117,6 +119,10 @@ namespace PersonalWebsite
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+                routes.MapRoute(
+                    name: "contents",
+                    template: "{controller=Contents}/{action=Show}/{language}/{urlName}"
+                );
             });
         }
     }

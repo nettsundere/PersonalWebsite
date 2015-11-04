@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 
 namespace PersonalWebsite.Lib
 {
-    public enum Language
+    public enum LanguageDefinition
     {
-        ru,
         en,
+        ru,
         de
     }
+
 }
