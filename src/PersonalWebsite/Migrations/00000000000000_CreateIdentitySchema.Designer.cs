@@ -9,7 +9,7 @@ using PersonalWebsite.Models;
 
 namespace PersonalWebsite.Migrations
 {
-    [ContextType(typeof(ApplicationDbContext))]
+    [ContextType(typeof(AuthDbContext))]
     partial class CreateIdentitySchema
     {
         public override string Id

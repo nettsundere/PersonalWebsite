@@ -9,8 +9,8 @@ using PersonalWebsite.Models;
 
 namespace PersonalWebsite.Migrations
 {
-    [ContextType(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [ContextType(typeof(AuthDbContext))]
+    partial class AuthDbContextModelSnapshot : ModelSnapshot
     {
         public override void BuildModel(ModelBuilder builder)
         {

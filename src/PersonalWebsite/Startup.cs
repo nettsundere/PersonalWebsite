@@ -41,15 +41,16 @@ namespace PersonalWebsite
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add Entity Framework services to the services container.
+            var sqlContextConfigurator = new DbContextConfigurator(Configuration);
+
             services.AddEntityFramework()
                 .AddSqlServer()
-                .AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
+                .AddDbContext<AuthDbContext>(sqlContextConfigurator.Configure)
+                .AddDbContext<DataDbContext>(sqlContextConfigurator.Configure);
 
             // Add Identity services to the services container.
             services.AddIdentity<ApplicationUser, IdentityRole>(IdentityConfigurator.Configure)
-                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddEntityFrameworkStores<AuthDbContext>()
                 .AddDefaultTokenProviders();
 
             // Configure the options for the authentication middleware.
