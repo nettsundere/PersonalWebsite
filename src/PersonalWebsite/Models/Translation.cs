@@ -12,6 +12,11 @@ namespace PersonalWebsite.Models
         public virtual LanguageDefinition Version { get; set; }
         public virtual DataAvailabilityState State { get; set; }
 
+        /// <summary>
+        /// Name for the url string.
+        /// </summary>
+        public virtual string UrlName { get; set; }
+
         public virtual string ContentMarkup { get; set; }
         public virtual string Title { get; set; }
         public virtual string Description { get; set; }

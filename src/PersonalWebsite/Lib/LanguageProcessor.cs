@@ -30,10 +30,7 @@ namespace PersonalWebsite.Lib
             }
 
             var parsedDefinition = Enum.Parse(typeof(LanguageDefinition), language.ToLowerInvariant());
-            if(parsedDefinition == null)
-                throw new ArgumentException("Wrong language definition", nameof(language));
-            else
-                return (LanguageDefinition)parsedDefinition;
+            return (LanguageDefinition)parsedDefinition;
         }
     }
 }

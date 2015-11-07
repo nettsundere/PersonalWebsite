@@ -16,9 +16,9 @@ namespace PersonalWebsite.Services
             Configuration = configuration;
         }
 
-        public void Configure(EntityOptionsBuilder options)
+        public void Configure(DbContextOptionsBuilder builder)
         {
-            options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]);
+            builder.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]);
         }
     }
 }

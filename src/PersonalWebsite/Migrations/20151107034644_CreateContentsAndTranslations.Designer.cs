@@ -8,9 +8,10 @@ using PersonalWebsite.Models;
 namespace PersonalWebsite.Migrations
 {
     [DbContext(typeof(DataDbContext))]
-    partial class DataDbContextModelSnapshot : ModelSnapshot
+    [Migration("20151107034644_CreateContentsAndTranslations")]
+    partial class CreateContentsAndTranslations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .Annotation("ProductVersion", "7.0.0-beta8-15964")
