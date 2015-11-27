@@ -55,6 +55,7 @@ namespace PersonalWebsite
                 .AddEntityFrameworkStores<AuthDbContext>()
                 .AddDefaultTokenProviders();
 
+
             // Add MVC services to the services container.
             services.AddMvc();
 
