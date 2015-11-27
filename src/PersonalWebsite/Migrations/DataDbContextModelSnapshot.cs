@@ -13,18 +13,18 @@ namespace PersonalWebsite.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .Annotation("ProductVersion", "7.0.0-beta8-15964")
-                .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "7.0.0-beta8-15964")
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("PersonalWebsite.Models.Content", b =>
                 {
                     b.Property<Guid>("ContentGuid")
                         .ValueGeneratedOnAdd()
-                        .Annotation("Relational:GeneratedValueSql", "newsequentialid()");
+                        .HasAnnotation("Relational:GeneratedValueSql", "newsequentialid()");
 
                     b.Property<string>("InternalCaption")
                         .IsRequired()
-                        .Annotation("MaxLength", 255);
+                        .HasAnnotation("MaxLength", 255);
 
                     b.HasKey("ContentGuid");
                 });
@@ -53,25 +53,25 @@ namespace PersonalWebsite.Migrations
 
                     b.Property<string>("UrlName")
                         .IsRequired()
-                        .Annotation("MaxLength", 200);
+                        .HasAnnotation("MaxLength", 200);
 
                     b.Property<int>("Version")
-                        .Annotation("MaxLength", 10);
+                        .HasAnnotation("MaxLength", 10);
 
                     b.HasKey("Id");
 
-                    b.Index("Version", "ContentId")
-                        .Unique();
+                    b.HasIndex("Version", "ContentId")
+                        .IsUnique();
 
-                    b.Index("Version", "UrlName")
-                        .Unique();
+                    b.HasIndex("Version", "UrlName")
+                        .IsUnique();
                 });
 
             modelBuilder.Entity("PersonalWebsite.Models.Translation", b =>
                 {
                     b.HasOne("PersonalWebsite.Models.Content")
                         .WithMany()
-                        .ForeignKey("ContentContentGuid");
+                        .HasForeignKey("ContentContentGuid");
                 });
         }
     }

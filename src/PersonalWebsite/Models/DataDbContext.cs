@@ -24,7 +24,7 @@ namespace PersonalWebsite.Models
 
             var translationEntity = builder.Entity<Translation>();
             translationEntity.HasKey(x => x.Id);
-            translationEntity.Index(x => new { x.Version, x.ContentId }).Unique();
+            translationEntity.HasIndex(x => new { x.Version, x.ContentId }).IsUnique();
             translationEntity.Property(x => x.ContentId).IsRequired();
             translationEntity.Property(x => x.State).IsRequired();
             translationEntity.Property(x => x.Version).IsRequired();
@@ -36,7 +36,7 @@ namespace PersonalWebsite.Models
             translationEntity.Property(x => x.Description).IsRequired();
             translationEntity.Property(x => x.UrlName).IsRequired();
             translationEntity.Property(x => x.UrlName).HasMaxLength(200);
-            translationEntity.Index(x => new { x.Version, x.UrlName }).Unique();
+            translationEntity.HasIndex(x => new { x.Version, x.UrlName }).IsUnique();
         }
     }
 }

@@ -2,23 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Authentication.Facebook;
-using Microsoft.AspNet.Authentication.Google;
-using Microsoft.AspNet.Authentication.MicrosoftAccount;
-using Microsoft.AspNet.Authentication.Twitter;
 using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Diagnostics.Entity;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Data.Entity;
-using Microsoft.Dnx.Runtime;
-using Microsoft.Framework.Configuration;
-using Microsoft.Framework.DependencyInjection;
-using Microsoft.Framework.Logging;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using PersonalWebsite.Models;
 using PersonalWebsite.Services;
-using PersonalWebsite.Lib;
 using PersonalWebsite.Repositories;
+using PersonalWebsite.Lib;
+using Microsoft.Extensions.PlatformAbstractions;
+using Microsoft.AspNet.Diagnostics.Entity;
 
 namespace PersonalWebsite
 {
@@ -88,8 +84,7 @@ namespace PersonalWebsite
             {
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage(DatabaseErrorPageOptions.ShowAll);
-
+                app.UseDatabaseErrorPage(x => x.EnableAll());
                 loggerFactory.AddDebug(LogLevel.Verbose);
             }
             else
@@ -123,5 +118,8 @@ namespace PersonalWebsite
                 );
             });
         }
+
+        // Entry point for the application.
+        public static void Main(string[] args) => WebApplication.Run<Startup>(args);
     }
 }
