@@ -114,7 +114,7 @@ namespace PersonalWebsite
                     "controllerActionRoute",
                     "{language}/{urlName}",
                     new { controller = "Contents", action = "Show" },
-                    new { language = $"^A{nameof(PersonalWebsite.Areas.Private)}" }
+                    new { language = $"^{nameof(PersonalWebsite.Areas.Private)}" }
                 );
             });
         }
