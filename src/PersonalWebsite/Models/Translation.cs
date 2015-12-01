@@ -23,5 +23,6 @@ namespace PersonalWebsite.Models
         public virtual DateTime UpdatedAt { get; set; }
 
         public virtual int ContentId { get; set; }
+        public virtual Content Content { get; set; }
     }
 }

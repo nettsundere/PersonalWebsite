@@ -13,28 +13,25 @@ namespace PersonalWebsite.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0-beta8-15964")
+                .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("PersonalWebsite.Models.Content", b =>
                 {
-                    b.Property<Guid>("ContentGuid")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("Relational:GeneratedValueSql", "newsequentialid()");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("InternalCaption")
                         .IsRequired()
                         .HasAnnotation("MaxLength", 255);
 
-                    b.HasKey("ContentGuid");
+                    b.HasKey("Id");
                 });
 
             modelBuilder.Entity("PersonalWebsite.Models.Translation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<Guid?>("ContentContentGuid");
 
                     b.Property<int>("ContentId");
 
@@ -71,7 +68,7 @@ namespace PersonalWebsite.Migrations
                 {
                     b.HasOne("PersonalWebsite.Models.Content")
                         .WithMany()
-                        .HasForeignKey("ContentContentGuid");
+                        .HasForeignKey("ContentId");
                 });
         }
     }

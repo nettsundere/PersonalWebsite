@@ -76,7 +76,6 @@ namespace PersonalWebsite
         {
             loggerFactory.MinimumLevel = LogLevel.Information;
             loggerFactory.AddConsole();
-            loggerFactory.AddDebug();
 
             // Configure the HTTP request pipeline.
 
@@ -86,13 +85,16 @@ namespace PersonalWebsite
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage(x => x.EnableAll());
-                loggerFactory.AddDebug(LogLevel.Verbose);
+
+                loggerFactory.AddDebug(LogLevel.Debug);
             }
             else
             {
                 // Add Error handling middleware which catches all application specific errors and
                 // sends the request to the following path or controller action.
                 app.UseExceptionHandler("/Home/Error");
+
+                loggerFactory.AddDebug(LogLevel.Information);
             }
 
             // Add the platform handler to the request pipeline.
@@ -114,8 +116,7 @@ namespace PersonalWebsite
                 routes.MapRoute(
                     "controllerActionRoute",
                     "{language}/{urlName}",
-                    new { controller = "Contents", action = "Show" },
-                    new { language = $"^{nameof(PersonalWebsite.Areas.Private)}" }
+                    new { controller = "Contents", action = "Show" }
                 );
             });
         }

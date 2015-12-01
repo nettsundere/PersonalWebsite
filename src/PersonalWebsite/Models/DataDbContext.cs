@@ -9,18 +9,18 @@ namespace PersonalWebsite.Models
 {
     public class DataDbContext : DbContext
     {
-        public IList<Content> Contents { get; set; }
+        public DbSet<Content> Contents { get; set; }
 
-        public IList<Translation> Translations { get; set; }
+        public DbSet<Translation> Translations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
             var contentEntity = builder.Entity<Content>();
-            contentEntity.HasKey(x => x.ContentGuid);
-            contentEntity.Property(x => x.ContentGuid).HasDefaultValueSql("newsequentialid()");
             contentEntity.Property(x => x.InternalCaption).IsRequired().HasMaxLength(255);
+            contentEntity.HasKey(x => x.Id);
+            contentEntity.HasMany(x => x.Translations).WithOne(x => x.Content);
 
             var translationEntity = builder.Entity<Translation>();
             translationEntity.HasKey(x => x.Id);

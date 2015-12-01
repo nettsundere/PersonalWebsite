@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using PersonalWebsite.Models;
 using PersonalWebsite.Lib;
+using PersonalWebsite.ViewModels.Content;
+using Microsoft.Data.Entity;
 
 namespace PersonalWebsite.Repositories
 {
@@ -18,17 +20,29 @@ namespace PersonalWebsite.Repositories
             _dataDbContext = context;
         }
 
-        public Content FindByUrlName(LanguageDefinition langDefinition, string urlName)
+        public ContentViewModel FindTranslatedContent(LanguageDefinition langDefinition, string urlName)
         {
             GuardNotDisposed();
 
             var lowerCaseUrlName = urlName.ToLowerInvariant();
-            _dataDbContext.Translations
-                .Where(x => x.UrlName.ToLowerInvariant() == lowerCaseUrlName)
-                .Where(x => x.Version == langDefinition)
-                .First();
+            var contentAndTranslation = _dataDbContext.Translations
+                .FromSql("SELECT * FROM dbo.Translation AS T WHERE T.Version=(@p0) AND T.UrlName=(@p1) AND T.State=(@p2)", 
+                langDefinition, 
+                lowerCaseUrlName, 
+                DataAvailabilityState.published)
+                .Select(x => new ContentViewModel()
+                {
+                    Title = x.Title,
+                    Description = x.Description,
+                    Markup = x.ContentMarkup,
+                    UrlNames = (from y in x.Content.Translations
+                                where y.State == DataAvailabilityState.published
+                                select new { y.Version, y.UrlName })
+                               .ToDictionary(z => z.Version, z => z.UrlName)
+                })
+                .FirstOrDefault();
 
-            return null;
+            return contentAndTranslation;
         }
 
         ~ContentRepository()

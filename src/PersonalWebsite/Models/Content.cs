@@ -8,9 +8,9 @@ namespace PersonalWebsite.Models
     public class Content
     {
         /// <summary>
-        /// Content unique identifier.
+        /// Content unique id.
         /// </summary>
-        public virtual Guid ContentGuid { get; set; }
+        public virtual int Id { get; set; }
 
         /// <summary>
         /// Available content translations.

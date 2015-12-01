@@ -6,6 +6,7 @@ using Microsoft.AspNet.Mvc;
 using PersonalWebsite.Lib;
 using PersonalWebsite.Models;
 using PersonalWebsite.Repositories;
+using PersonalWebsite.ViewModels.Content;
 
 namespace PersonalWebsite.Controllers
 {
@@ -21,12 +22,28 @@ namespace PersonalWebsite.Controllers
             _contentRepository = contentRespository;
         }
 
+        /// <summary>
+        /// Show Human-readable url content.
+        /// </summary>
+        /// <param name="language">Language version of a content.</param>
+        /// <param name="urlName">Human-readable content url path representation.</param>
+        /// <returns>Content representation.</returns>
         public IActionResult Show(string language, string urlName)
         {
             var languageDefinition = _languageProcessor.ConvertToDefinition(language);
 
-            var content = _contentRepository.FindByUrlName(languageDefinition, urlName);
-            return View();
+            ContentViewModel cvm;
+            using(_contentRepository)
+            {
+                cvm = _contentRepository.FindTranslatedContent(languageDefinition, urlName);
+            }
+
+            if(cvm == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            return View(cvm);
         }
     }
 }
