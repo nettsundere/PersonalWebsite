@@ -47,25 +47,17 @@ namespace PersonalWebsite.Repositories
 
         ~ContentRepository()
         {
-            Dispose(true);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_isDisposed)
-            {
-                if (disposing)
-                {
-                    _dataDbContext.Dispose();
-                }
-
-                _isDisposed = true;
-            }
+            Dispose();
         }
 
         public void Dispose()
         {
-            Dispose(true);
+            if (!_isDisposed)
+            {
+                _dataDbContext.Dispose();
+                _isDisposed = true;
+            }
+
             GC.SuppressFinalize(this);
         }
 
