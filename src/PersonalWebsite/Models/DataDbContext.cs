@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Data.Entity;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.Data.Entity.Metadata;
 
 namespace PersonalWebsite.Models
 {
@@ -20,7 +21,7 @@ namespace PersonalWebsite.Models
             var contentEntity = builder.Entity<Content>();
             contentEntity.Property(x => x.InternalCaption).IsRequired().HasMaxLength(255);
             contentEntity.HasKey(x => x.Id);
-            contentEntity.HasMany(x => x.Translations).WithOne(x => x.Content);
+            contentEntity.HasMany(x => x.Translations).WithOne(x => x.Content).OnDelete(DeleteBehavior.Cascade);
 
             var translationEntity = builder.Entity<Translation>();
             translationEntity.HasKey(x => x.Id);

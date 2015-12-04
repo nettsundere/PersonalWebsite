@@ -69,6 +69,9 @@ namespace PersonalWebsite
 
             services.AddTransient<IContentRepository, ContentRepository>();
             services.AddTransient<ILanguageProcessor, LanguageProcessor>();
+
+            services.AddTransient<IRequiredDataRepository, RequiredDataRepository>();
+            services.AddTransient<IInternalContentRepository, InternalContentRepository>();
         }
 
         // Configure is called after ConfigureServices is called.
@@ -119,6 +122,15 @@ namespace PersonalWebsite
                     new { controller = "Contents", action = "Show" }
                 );
             });
+
+            using (var dataInitializer = new DataInitializer(app.ApplicationServices))
+            {
+                if (env.IsDevelopment())
+                {
+                    dataInitializer.ClearRequiredContents();
+                }
+                dataInitializer.EnsureRequiredContentsAvailable();
+            }
         }
 
         // Entry point for the application.
