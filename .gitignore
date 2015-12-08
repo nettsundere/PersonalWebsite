@@ -3,3 +3,6 @@ PersonalWebsite/bin/*
 .vs
 src/PersonalWebsite/wwwroot/bin
 src/PersonalWebsite/node_modules
+
+src/PersonalWebsite/wwwroot/css/Build/*
+src/PersonalWebsite/wwwroot/js/Build/*
