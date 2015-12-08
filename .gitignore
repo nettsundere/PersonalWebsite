@@ -2,3 +2,4 @@ PersonalWebsite/obj/*
 PersonalWebsite/bin/*
 .vs
 src/PersonalWebsite/wwwroot/bin
+src/PersonalWebsite/node_modules
