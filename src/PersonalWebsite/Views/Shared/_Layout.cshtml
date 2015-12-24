@@ -23,17 +23,26 @@
                     </div>
                     <div class="row presentation--links">
                         <div class="col-xs-12 col-md-3">
-                            <a href=@Model.ContentLinksViewModel.UrlFor(PredefinedPages.Welcome.ToString())>
+                            <a 
+                               prefix-with-language=@Model.Language
+                               href=@Model.ContentLinksViewModel.UrlNameFor(PredefinedPages.Welcome.ToString())
+                            >
                                 @Model.ContentLinksViewModel.CaptionFor(PredefinedPages.Welcome.ToString())
                             </a>
                         </div>
                         <div class="col-xs-12 col-md-3">
-                            <a href=@Model.ContentLinksViewModel.UrlFor(PredefinedPages.Contact.ToString())>
+                            <a 
+                               prefix-with-language=@Model.Language
+                               href=@Model.ContentLinksViewModel.UrlNameFor(PredefinedPages.Contact.ToString())
+                            >
                                 @Model.ContentLinksViewModel.CaptionFor(PredefinedPages.Contact.ToString())
-                             </a>
+                            </a>
                         </div>
                         <div class="col-xs-12 col-md-3">
-                            <a href=@Model.ContentLinksViewModel.UrlFor(PredefinedPages.Resume.ToString())>
+                            <a
+                               prefix-with-language=@Model.Language
+                               href=@Model.ContentLinksViewModel.UrlNameFor(PredefinedPages.Resume.ToString())
+                            >
                                 @Model.ContentLinksViewModel.CaptionFor(PredefinedPages.Resume.ToString())
                             </a>
                         </div>
@@ -54,13 +63,7 @@
                         <hr>
                         <div class="row">
                             <div class="col-xs-12">
-                                <p>
-                                    @*
-                                        @RenderSection("Languages")
-                                    *@
-                                        
-                                    
-                                </p>
+                                @await Html.PartialAsync("_Languages", Model.ContentViewModel) 
                             </div>
                         </div>
                         <div class="row">

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PersonalWebsite.Lib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,10 +11,11 @@ namespace PersonalWebsite.ViewModels.Content
     /// </summary>
     public class PageViewModel
     {
+        public LanguageDefinition Language { get; private set; }
         public ContentViewModel ContentViewModel { get; private set; }
         public ContentLinksViewModel ContentLinksViewModel { get; private set; }
 
-        public PageViewModel(ContentViewModel contentViewModel, ContentLinksViewModel contentLinksViewModel)
+        public PageViewModel(LanguageDefinition language, ContentViewModel contentViewModel, ContentLinksViewModel contentLinksViewModel)
         {
             if (contentViewModel == null)
             {
@@ -25,6 +27,7 @@ namespace PersonalWebsite.ViewModels.Content
                 throw new ArgumentNullException(nameof(contentLinksViewModel));
             }
 
+            Language = language;
             ContentViewModel = contentViewModel;
             ContentLinksViewModel = contentLinksViewModel;
         }

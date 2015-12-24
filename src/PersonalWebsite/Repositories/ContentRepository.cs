@@ -14,24 +14,16 @@ namespace PersonalWebsite.Repositories
     {
         private DataDbContext _dataDbContext;
 
-        private ILanguageManipulationService _languageManipulationService;
-
         private bool _isDisposed = false;
 
-        public ContentRepository(ILanguageManipulationService languageManipulationService, DataDbContext context)
+        public ContentRepository(DataDbContext context)
         {
             if(context == null)
             {
                 throw new ArgumentNullException(nameof(context));
             }
 
-            if(languageManipulationService == null)
-            {
-                throw new ArgumentNullException(nameof(languageManipulationService));
-            }
-
             _dataDbContext = context;
-            _languageManipulationService = languageManipulationService;
         }
 
         public ContentViewModel FindTranslatedContentByInternalCaption(LanguageDefinition langDefinition, string internalCaption)
@@ -90,7 +82,6 @@ namespace PersonalWebsite.Repositories
                                               }).ToDictionary(x => x.InternalCaption, x => x.LinkUI);
 
             return new ContentLinksViewModel(
-                _languageManipulationService, 
                 languageDefinition, 
                 internalNamesToLinkViewModels);
         }

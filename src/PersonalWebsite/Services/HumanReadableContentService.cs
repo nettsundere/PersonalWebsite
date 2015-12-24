@@ -83,7 +83,7 @@ namespace PersonalWebsite.Services
                 );
             }
 
-            return new PageViewModel(contentVM, linksVM);
+            return new PageViewModel(languageDefinition, contentVM, linksVM);
         }
     }
 }
