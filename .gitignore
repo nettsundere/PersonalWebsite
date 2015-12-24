@@ -6,3 +6,4 @@ src/PersonalWebsite/node_modules
 
 src/PersonalWebsite/wwwroot/css/Build/*
 src/PersonalWebsite/wwwroot/js/Build/*
+src/PersonalWebsite/wwwroot/lib/*
