@@ -77,7 +77,7 @@ namespace PersonalWebsite.Services
 
         public string LanguageValidationRegexp()
         {
-            return $"^{LanguagesRegexpVariablePart()}/i$";
+            return $"^{LanguagesRegexpVariablePart()}$";
         }
 
         private string LanguagesRegexpVariablePart()
