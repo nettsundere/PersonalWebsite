@@ -4033,13 +4033,13 @@
           "lib/DNXCore50/System.Dynamic.Runtime.dll": {}
         }
       },
-      "System.Globalization/4.0.11-beta-23516": {
+      "System.Globalization/4.0.10": {
         "type": "package",
         "dependencies": {
           "System.Runtime": "4.0.0"
         },
         "compile": {
-          "ref/dotnet5.4/System.Globalization.dll": {}
+          "ref/dotnet/System.Globalization.dll": {}
         },
         "runtime": {
           "lib/DNXCore50/System.Globalization.dll": {}
@@ -11243,13 +11243,13 @@
           "lib/DNXCore50/System.Dynamic.Runtime.dll": {}
         }
       },
-      "System.Globalization/4.0.11-beta-23516": {
+      "System.Globalization/4.0.10": {
         "type": "package",
         "dependencies": {
           "System.Runtime": "4.0.0"
         },
         "compile": {
-          "ref/dotnet5.4/System.Globalization.dll": {}
+          "ref/dotnet/System.Globalization.dll": {}
         },
         "runtime": {
           "lib/DNXCore50/System.Globalization.dll": {}
@@ -14468,13 +14468,13 @@
           "lib/DNXCore50/System.Dynamic.Runtime.dll": {}
         }
       },
-      "System.Globalization/4.0.11-beta-23516": {
+      "System.Globalization/4.0.10": {
         "type": "package",
         "dependencies": {
           "System.Runtime": "4.0.0"
         },
         "compile": {
-          "ref/dotnet5.4/System.Globalization.dll": {}
+          "ref/dotnet/System.Globalization.dll": {}
         },
         "runtime": {
           "lib/DNXCore50/System.Globalization.dll": {}
@@ -18299,65 +18299,36 @@
         "System.Globalization.nuspec"
       ]
     },
-    "System.Globalization/4.0.11-beta-23516": {
+    "System.Globalization/4.0.10": {
       "type": "package",
-      "serviceable": true,
-      "sha512": "htoF4cS3WhCkU3HloMj3mz+h2FHnF8Hz0po/26otT5e46LlJ8p7LpFpxckxVviyYg9Fab9gr8aIB0ZDN9Cjpig==",
+      "sha512": "kzRtbbCNAxdafFBDogcM36ehA3th8c1PGiz8QRkZn8O5yMBorDHSK8/TGJPYOaCS5zdsGk0u9qXHnW91nqy7fw==",
       "files": [
         "lib/DNXCore50/System.Globalization.dll",
         "lib/MonoAndroid10/_._",
         "lib/MonoTouch10/_._",
-        "lib/net45/_._",
+        "lib/net46/_._",
         "lib/netcore50/System.Globalization.dll",
-        "lib/win8/_._",
-        "lib/wp80/_._",
-        "lib/wpa81/_._",
         "lib/xamarinios10/_._",
         "lib/xamarinmac20/_._",
-        "ref/dotnet5.1/de/System.Globalization.xml",
-        "ref/dotnet5.1/es/System.Globalization.xml",
-        "ref/dotnet5.1/fr/System.Globalization.xml",
-        "ref/dotnet5.1/it/System.Globalization.xml",
-        "ref/dotnet5.1/ja/System.Globalization.xml",
-        "ref/dotnet5.1/ko/System.Globalization.xml",
-        "ref/dotnet5.1/ru/System.Globalization.xml",
-        "ref/dotnet5.1/System.Globalization.dll",
-        "ref/dotnet5.1/System.Globalization.xml",
-        "ref/dotnet5.1/zh-hans/System.Globalization.xml",
-        "ref/dotnet5.1/zh-hant/System.Globalization.xml",
-        "ref/dotnet5.4/de/System.Globalization.xml",
-        "ref/dotnet5.4/es/System.Globalization.xml",
-        "ref/dotnet5.4/fr/System.Globalization.xml",
-        "ref/dotnet5.4/it/System.Globalization.xml",
-        "ref/dotnet5.4/ja/System.Globalization.xml",
-        "ref/dotnet5.4/ko/System.Globalization.xml",
-        "ref/dotnet5.4/ru/System.Globalization.xml",
-        "ref/dotnet5.4/System.Globalization.dll",
-        "ref/dotnet5.4/System.Globalization.xml",
-        "ref/dotnet5.4/zh-hans/System.Globalization.xml",
-        "ref/dotnet5.4/zh-hant/System.Globalization.xml",
+        "ref/dotnet/de/System.Globalization.xml",
+        "ref/dotnet/es/System.Globalization.xml",
+        "ref/dotnet/fr/System.Globalization.xml",
+        "ref/dotnet/it/System.Globalization.xml",
+        "ref/dotnet/ja/System.Globalization.xml",
+        "ref/dotnet/ko/System.Globalization.xml",
+        "ref/dotnet/ru/System.Globalization.xml",
+        "ref/dotnet/System.Globalization.dll",
+        "ref/dotnet/System.Globalization.xml",
+        "ref/dotnet/zh-hans/System.Globalization.xml",
+        "ref/dotnet/zh-hant/System.Globalization.xml",
         "ref/MonoAndroid10/_._",
         "ref/MonoTouch10/_._",
-        "ref/net45/_._",
-        "ref/netcore50/de/System.Globalization.xml",
-        "ref/netcore50/es/System.Globalization.xml",
-        "ref/netcore50/fr/System.Globalization.xml",
-        "ref/netcore50/it/System.Globalization.xml",
-        "ref/netcore50/ja/System.Globalization.xml",
-        "ref/netcore50/ko/System.Globalization.xml",
-        "ref/netcore50/ru/System.Globalization.xml",
-        "ref/netcore50/System.Globalization.dll",
-        "ref/netcore50/System.Globalization.xml",
-        "ref/netcore50/zh-hans/System.Globalization.xml",
-        "ref/netcore50/zh-hant/System.Globalization.xml",
-        "ref/win8/_._",
-        "ref/wp80/_._",
-        "ref/wpa81/_._",
+        "ref/net46/_._",
         "ref/xamarinios10/_._",
         "ref/xamarinmac20/_._",
         "runtimes/win8-aot/lib/netcore50/System.Globalization.dll",
-        "System.Globalization.4.0.11-beta-23516.nupkg",
-        "System.Globalization.4.0.11-beta-23516.nupkg.sha512",
+        "System.Globalization.4.0.10.nupkg",
+        "System.Globalization.4.0.10.nupkg.sha512",
         "System.Globalization.nuspec"
       ]
     },
@@ -21168,6 +21139,8 @@
       "Microsoft.VisualStudio.Web.BrowserLink.Loader >= 14.0.0-rc1-final"
     ],
     "DNX,Version=v4.5.1": [],
-    "DNXCore,Version=v5.0": []
+    "DNXCore,Version=v5.0": [
+      "System.Globalization >= 4.0.10"
+    ]
   }
 }

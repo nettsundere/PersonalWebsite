@@ -1,7 +1,6 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@section Title {
+    @Model.ContentViewModel.Title
 }
 
-<h2>
-    Welcome content
-</h2>
+<h1>@Model.ContentViewModel.Title</h1>
+@Html.Raw(@Model.ContentViewModel.Markup)

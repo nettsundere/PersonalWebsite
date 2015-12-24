@@ -36,7 +36,11 @@
 
   "frameworks": {
     "dnx451": { },
-    "dnxcore50": { }
+    "dnxcore50": {
+      "dependencies": {
+        "System.Globalization": "4.0.10"
+      }
+    }
   },
 
   "exclude": [

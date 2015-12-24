@@ -11,6 +11,9 @@ namespace PersonalWebsite.Repositories
 {
     public interface IContentRepository : IDisposable
     {
-        ContentViewModel FindTranslatedContent(LanguageDefinition langDefinition, string urlName); 
+        ContentViewModel FindTranslatedContentByUrlName(LanguageDefinition langDefinition, string urlName);
+        ContentViewModel FindTranslatedContentByInternalCaption(LanguageDefinition langDefinition, string internalCaption);
+
+        ContentLinksViewModel GetContentLinksPresentationData(LanguageDefinition languageDefinition, IList<string> internalContentNames);
     }
 }

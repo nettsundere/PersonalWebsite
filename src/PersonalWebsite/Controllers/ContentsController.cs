@@ -7,19 +7,30 @@ using PersonalWebsite.Lib;
 using PersonalWebsite.Models;
 using PersonalWebsite.Repositories;
 using PersonalWebsite.ViewModels.Content;
+using PersonalWebsite.Services;
 
 namespace PersonalWebsite.Controllers
 {
     public class ContentsController : Controller
     {
-        private ILanguageProcessor _languageProcessor;
+        private IHumanReadableContentService _humanReadableContentService;
+        private ILanguageManipulationService _languageManipulationService;
 
-        private IContentRepository _contentRepository;
+        public ContentsController(
+            IHumanReadableContentService humanReadableContentService,
+            ILanguageManipulationService languageManipulationService) {
+            if(humanReadableContentService == null)
+            {
+                throw new ArgumentNullException(nameof(humanReadableContentService));
+            }
 
-        public ContentsController(ILanguageProcessor languageProcessor, IContentRepository contentRespository)
-        {
-            _languageProcessor = languageProcessor;
-            _contentRepository = contentRespository;
+            if(languageManipulationService == null)
+            {
+                throw new ArgumentNullException(nameof(languageManipulationService));
+            }
+
+            _humanReadableContentService = humanReadableContentService;
+            _languageManipulationService = languageManipulationService;
         }
 
         /// <summary>
@@ -30,20 +41,36 @@ namespace PersonalWebsite.Controllers
         /// <returns>Content representation.</returns>
         public IActionResult Show(string language, string urlName)
         {
-            var languageDefinition = _languageProcessor.ConvertToDefinition(language);
-
-            ContentViewModel cvm;
-            using(_contentRepository)
+            PageViewModel pageVM;
+            using (_humanReadableContentService)
             {
-                cvm = _contentRepository.FindTranslatedContent(languageDefinition, urlName);
+                LanguageDefinition languageDefinition;
+                if (String.IsNullOrWhiteSpace(language))
+                {
+                    languageDefinition = _languageManipulationService.DefaultLanguageDefinition;
+                }
+                else
+                {
+                    try
+                    {
+                        languageDefinition = _languageManipulationService.LanguageRepresentationToLanguageDefinition(language);
+                    }
+                    catch
+                    {
+                        return HttpNotFound();
+                    }
+                }
+
+                _languageManipulationService.SetLanguage(languageDefinition);
+
+                pageVM = _humanReadableContentService.GetPageByHumanReadableName(languageDefinition, urlName);
+                if (pageVM == null)
+                {
+                    return HttpNotFound();
+                }
             }
 
-            if(cvm == null)
-            {
-                return new HttpNotFoundResult();
-            }
-
-            return View(cvm);
+            return View(pageVM);
         }
     }
 }

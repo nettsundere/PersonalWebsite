@@ -1,3 +1,6 @@
-﻿<h1>@ViewBag.Title</h1>
+﻿@section Title {
+    @Model.ContentViewModel.Title
+}
 
-Content page
+<h1>@Model.ContentViewModel.Title</h1>
+@Html.Raw(@Model.ContentViewModel.Markup)

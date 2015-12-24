@@ -22,22 +22,32 @@ namespace PersonalWebsite.Repositories
             var contents = new [] {
                 new Content()
                 {
-                    InternalCaption = "Contact",
+                    InternalCaption = PredefinedPages.Welcome.ToString(),
                     Translations = new []
                     {
-                        new Translation() { UrlName = "Contact", Title = "Contact", ContentMarkup = String.Empty, Description = String.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.en },
-                        new Translation() { UrlName = "Kontakt", Title = "Kontakt", ContentMarkup = String.Empty, Description = String.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.de },
-                        new Translation() { UrlName = "Kontakty", Title = "Контакты", ContentMarkup = String.Empty, Description = String.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.ru }
+                        new Translation() { UrlName = "Welcome", Title = "Welcome", ContentMarkup = String.Empty, Description = String.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.en_us },
+                        new Translation() { UrlName = "Willkommen", Title = "Willkommen", ContentMarkup = String.Empty, Description = String.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.de_de },
+                        new Translation() { UrlName = "Privet",  Title = "Приветствую", ContentMarkup = String.Empty, Description = String.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.ru_ru }
                     }
                 },
                 new Content()
                 {
-                    InternalCaption = "Resume",
+                    InternalCaption = PredefinedPages.Contact.ToString(),
                     Translations = new []
                     {
-                        new Translation() { UrlName = "Resume", Title = "Resume", ContentMarkup = String.Empty, Description = String.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.en },
-                        new Translation() { UrlName = "Lebenslauf", Title = "Lebenslauf", ContentMarkup = String.Empty, Description = String.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.de },
-                        new Translation() { UrlName = "Rezyume",  Title = "Резюме", ContentMarkup = String.Empty, Description = String.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.ru }
+                        new Translation() { UrlName = "Contact", Title = "Contact", ContentMarkup = String.Empty, Description = String.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.en_us },
+                        new Translation() { UrlName = "Kontakt", Title = "Kontakt", ContentMarkup = String.Empty, Description = String.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.de_de },
+                        new Translation() { UrlName = "Kontakty", Title = "Контакты", ContentMarkup = String.Empty, Description = String.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.ru_ru }
+                    }
+                },
+                new Content()
+                {
+                    InternalCaption = PredefinedPages.Resume.ToString(),
+                    Translations = new []
+                    {
+                        new Translation() { UrlName = "Resume", Title = "Resume", ContentMarkup = String.Empty, Description = String.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.en_us },
+                        new Translation() { UrlName = "Lebenslauf", Title = "Lebenslauf", ContentMarkup = String.Empty, Description = String.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.de_de },
+                        new Translation() { UrlName = "Rezyume",  Title = "Резюме", ContentMarkup = String.Empty, Description = String.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.ru_ru }
                     }
                 }
             };

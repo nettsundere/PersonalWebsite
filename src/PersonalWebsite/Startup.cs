@@ -68,14 +68,19 @@ namespace PersonalWebsite
             services.AddTransient<ISmsSender, AuthMessageSender>();
 
             services.AddTransient<IContentRepository, ContentRepository>();
-            services.AddTransient<ILanguageProcessor, LanguageProcessor>();
+            services.AddSingleton<ILanguageManipulationService, LanguageManipulationService>();
+            services.AddTransient<IHumanReadableContentService, HumanReadableContentService>();
 
             services.AddTransient<IRequiredDataRepository, RequiredDataRepository>();
             services.AddTransient<IInternalContentRepository, InternalContentRepository>();
         }
 
         // Configure is called after ConfigureServices is called.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(
+            IApplicationBuilder app,
+            IHostingEnvironment env,
+            ILoggerFactory loggerFactory,
+            ILanguageManipulationService languageManipulationService)
         {
             loggerFactory.MinimumLevel = LogLevel.Information;
             loggerFactory.AddConsole();
@@ -112,14 +117,26 @@ namespace PersonalWebsite
             // Add MVC to the request pipeline.
             app.UseMvc(routes =>
             {
-                routes.MapRoute(nameof(PersonalWebsite.Areas.Private), "{area}/{controller}/{action}");
+                routes.MapRoute(
+                    name: nameof(PersonalWebsite.Areas.Private),
+                    template: "{area}/{controller}/{action}",
+                    defaults: new { },
+                    constraints: new { area = "private" });
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}");
+                    template: "{language?}/{controller=Home}/{action=Index}",
+                    defaults: new { },
+                    constraints: new { language = languageManipulationService.LanguageValidationRegexp() }
+                );
                 routes.MapRoute(
-                    "controllerActionRoute",
-                    "{language}/{urlName}",
-                    new { controller = "Contents", action = "Show" }
+                    name: "contentsWithLanguage",
+                    template: "{language?}/{urlName}/{controller=Contents}/{action=Show}",
+                    defaults: new { },
+                    constraints: new { language = languageManipulationService.LanguageValidationRegexp() }
+                );
+                routes.MapRoute(
+                    name: "contentsWithoutLanguage",
+                    template: "{urlName}/{controller=Contents}/{action=Show}"
                 );
             });
 
