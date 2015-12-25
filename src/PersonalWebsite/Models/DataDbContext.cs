@@ -14,16 +14,16 @@ namespace PersonalWebsite.Models
 
         public DbSet<Translation> Translations { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(builder);
+            base.OnModelCreating(modelBuilder);
 
-            var contentEntity = builder.Entity<Content>();
+            var contentEntity = modelBuilder.Entity<Content>();
             contentEntity.Property(x => x.InternalCaption).IsRequired().HasMaxLength(255);
             contentEntity.HasKey(x => x.Id);
             contentEntity.HasMany(x => x.Translations).WithOne(x => x.Content).OnDelete(DeleteBehavior.Cascade);
 
-            var translationEntity = builder.Entity<Translation>();
+            var translationEntity = modelBuilder.Entity<Translation>();
             translationEntity.HasKey(x => x.Id);
             translationEntity.HasIndex(x => new { x.Version, x.ContentId }).IsUnique();
             translationEntity.Property(x => x.ContentId).IsRequired();

@@ -10,9 +10,9 @@ namespace PersonalWebsite.Services
 {
     public class LanguageManipulationService : ILanguageManipulationService
     {
-        private Dictionary<LanguageDefinition, string> _languageDefinitionToRepresentations;
-        private Dictionary<string, LanguageDefinition> _languageRepresentationToLanguageDefinition;
-        private Dictionary<LanguageDefinition, CultureInfo> _languageDefinitionToCultureInfo;
+        private readonly Dictionary<LanguageDefinition, string> _languageDefinitionToRepresentations;
+        private readonly Dictionary<string, LanguageDefinition> _languageRepresentationToLanguageDefinition;
+        private readonly Dictionary<LanguageDefinition, CultureInfo> _languageDefinitionToCultureInfo;
 
         public LanguageDefinition DefaultLanguageDefinition
         {

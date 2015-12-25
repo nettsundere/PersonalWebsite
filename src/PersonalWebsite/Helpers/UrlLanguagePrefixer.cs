@@ -15,7 +15,7 @@ namespace PersonalWebsite.Helpers
     [HtmlTargetElement("a", Attributes = listToRun)]
     public class UrlLanguagePrefixer : TagHelper
     {
-        private ILanguageManipulationService _languageManipulationService;
+        private readonly ILanguageManipulationService _languageManipulationService;
 
         private const string listToRun = "href,prefix-with-language";
         private const string languageAttributeName = "prefix-with-language";

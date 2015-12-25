@@ -10,12 +10,16 @@ namespace PersonalWebsite.Services
 {
     public class HumanReadableContentService : IHumanReadableContentService
     {
-        private IContentRepository _contentRepository;
+        private readonly IContentRepository _contentRepository;
 
         private bool _isDisposed = false;
 
         public HumanReadableContentService(IContentRepository contentRespository)
         {
+            if(contentRespository == null)
+            {
+                throw new ArgumentNullException(nameof(contentRespository));
+            }
             _contentRepository = contentRespository;
         }
 

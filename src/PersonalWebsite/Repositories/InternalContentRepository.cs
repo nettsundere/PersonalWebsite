@@ -12,7 +12,7 @@ namespace PersonalWebsite.Repositories
     {
         private bool _isDisposed = false;
 
-        private DataDbContext _context;
+        private readonly DataDbContext _context;
 
         public InternalContentRepository(DataDbContext context)
         {

@@ -12,9 +12,9 @@ namespace PersonalWebsite.ViewModels.Content
     /// </summary>
     public class ContentLinksViewModel
     {
-        private IDictionary<string, LinkUI> _internalNamesToLinksUI;
+        private readonly IDictionary<string, LinkUI> _internalNamesToLinksUI;
 
-        private LanguageDefinition _linksLanguage;
+        private readonly LanguageDefinition _linksLanguage;
 
         public ContentLinksViewModel(
             LanguageDefinition linksLanguage,

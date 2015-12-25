@@ -74,7 +74,7 @@ namespace PersonalWebsite.Repositories
                                                 && t.Version == languageDefinition
                                               select new
                                               {
-                                                  LinkUI = new LinkUI() {
+                                                  LinkUI = new LinkUI {
                                                       LinkTitle = t.Title,
                                                       UrlName = t.UrlName
                                                   },
@@ -111,7 +111,7 @@ namespace PersonalWebsite.Repositories
 
         private ContentViewModel FillContentViewModel(string contentInternalCaption, Translation translation, IDictionary<LanguageDefinition, string> urlNames)
         {
-            return new ContentViewModel()
+            return new ContentViewModel
             {
                 Title = translation.Title,
                 Description = translation.Description,

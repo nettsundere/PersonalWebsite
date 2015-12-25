@@ -13,8 +13,8 @@ namespace PersonalWebsite.Controllers
 {
     public class ContentsController : Controller
     {
-        private IHumanReadableContentService _humanReadableContentService;
-        private ILanguageManipulationService _languageManipulationService;
+        private readonly IHumanReadableContentService _humanReadableContentService;
+        private readonly ILanguageManipulationService _languageManipulationService;
 
         public ContentsController(
             IHumanReadableContentService humanReadableContentService,
