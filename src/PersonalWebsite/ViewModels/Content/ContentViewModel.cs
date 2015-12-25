@@ -12,6 +12,7 @@ namespace PersonalWebsite.ViewModels.Content
         public string Title { get; set; }
         public string Markup { get; set; }
         public string Description { get; set; }
+        public string InternalCaption { get; set; }
         public IDictionary<LanguageDefinition, string> UrlNames { get; set; }
     }
 }

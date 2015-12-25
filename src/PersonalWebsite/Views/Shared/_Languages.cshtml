@@ -1,7 +1,17 @@
-﻿@model ContentViewModel
+﻿@model PageViewModel
 <p>
-    Different versions are available
-    <a href=@Model.UrlNames[LanguageDefinition.en_us] prefix-with-language=LanguageDefinition.en_us>In English</a>
-    <a href=@Model.UrlNames[LanguageDefinition.de_de] prefix-with-language=LanguageDefinition.de_de>Deutsch</a>
-    <a href=@Model.UrlNames[LanguageDefinition.ru_ru] prefix-with-language=LanguageDefinition.ru_ru>Русская версия</a>
+    @foreach (var item in new[] { new { Language = LanguageDefinition.en_us, Title = "English" },
+                                  new { Language = LanguageDefinition.de_de, Title = "Deutsch" },
+                                  new { Language = LanguageDefinition.ru_ru, Title = "Русская версия" } })
+    {
+        @if (Model.Language != item.Language)
+        {
+            <a href=@Model.ContentViewModel.UrlNames[item.Language] prefix-with-language=item.Language>@item.Title</a>
+        }
+        else
+        {
+            @Html.Raw($"&#10551; {item.Title}")
+        }
+    }
+
 </p>

@@ -39,7 +39,7 @@ namespace PersonalWebsite.Repositories
                                          let urlNames = (from y in c.Translations
                                                          where y.State == DataAvailabilityState.published
                                                          select new { y.Version, y.UrlName }).ToDictionary(z => z.Version, z => z.UrlName)
-                                         select FillContentViewModel(x, urlNames)).FirstOrDefault();
+                                         select FillContentViewModel(c.InternalCaption, x, urlNames)).FirstOrDefault();
 
             return contentAndTranslation;
         }
@@ -57,7 +57,7 @@ namespace PersonalWebsite.Repositories
                                          let urlNames = (from y in c.Translations
                                                         where y.State == DataAvailabilityState.published
                                                         select new { y.Version, y.UrlName }).ToDictionary(z => z.Version, z => z.UrlName)
-                                         select FillContentViewModel(x, urlNames)).FirstOrDefault();
+                                         select FillContentViewModel(c.InternalCaption, x, urlNames)).FirstOrDefault();
 
             return contentAndTranslation;
         }
@@ -109,14 +109,15 @@ namespace PersonalWebsite.Repositories
             }
         }
 
-        private ContentViewModel FillContentViewModel(Translation translation, IDictionary<LanguageDefinition, string> urlNames)
+        private ContentViewModel FillContentViewModel(string contentInternalCaption, Translation translation, IDictionary<LanguageDefinition, string> urlNames)
         {
             return new ContentViewModel()
             {
                 Title = translation.Title,
                 Description = translation.Description,
                 Markup = translation.ContentMarkup,
-                UrlNames = urlNames
+                UrlNames = urlNames,
+                InternalCaption = contentInternalCaption
             };
         }
     }

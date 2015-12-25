@@ -22,30 +22,26 @@
                         </div>
                     </div>
                     <div class="row presentation--links">
-                        <div class="col-xs-12 col-md-3">
-                            <a 
-                               prefix-with-language=@Model.Language
-                               href=@Model.ContentLinksViewModel.UrlNameFor(PredefinedPages.Welcome.ToString())
-                            >
-                                @Model.ContentLinksViewModel.CaptionFor(PredefinedPages.Welcome.ToString())
-                            </a>
-                        </div>
-                        <div class="col-xs-12 col-md-3">
-                            <a 
-                               prefix-with-language=@Model.Language
-                               href=@Model.ContentLinksViewModel.UrlNameFor(PredefinedPages.Contact.ToString())
-                            >
-                                @Model.ContentLinksViewModel.CaptionFor(PredefinedPages.Contact.ToString())
-                            </a>
-                        </div>
-                        <div class="col-xs-12 col-md-3">
-                            <a
-                               prefix-with-language=@Model.Language
-                               href=@Model.ContentLinksViewModel.UrlNameFor(PredefinedPages.Resume.ToString())
-                            >
-                                @Model.ContentLinksViewModel.CaptionFor(PredefinedPages.Resume.ToString())
-                            </a>
-                        </div>
+                        @* 
+                            Links to predefined content.
+                        *@
+                        @foreach (var predefinedPage in new []{ PredefinedPages.Welcome, PredefinedPages.Contact, PredefinedPages.Resume })
+                        {
+                            <div class="col-xs-12 col-md-3">
+                                @if (Model.ContentViewModel.InternalCaption == predefinedPage.ToString())
+                                {
+                                    @Model.ContentLinksViewModel.CaptionFor(predefinedPage.ToString())
+                                }
+                                else
+                                {
+                                    <a prefix-with-language=@Model.Language
+                                       href=@Model.ContentLinksViewModel.UrlNameFor(predefinedPage.ToString())>
+                                        @Model.ContentLinksViewModel.CaptionFor(predefinedPage.ToString())
+                                    </a>
+                                }
+                            </div>
+                        }
+                       
                         <div class="col-xs-12 col-md-3">
                             <a href="https://medium.com/@@nettsundere">Publications</a>
                         </div>
@@ -62,8 +58,8 @@
                     <footer>
                         <hr>
                         <div class="row">
-                            <div class="col-xs-12">
-                                @await Html.PartialAsync("_Languages", Model.ContentViewModel) 
+                            <div class="col-xs-12 language-switchers">
+                                @await Html.PartialAsync("_Languages", Model) 
                             </div>
                         </div>
                         <div class="row">

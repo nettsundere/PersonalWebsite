@@ -30,3 +30,7 @@ a {
 a:hover {
     text-decoration: none !important;
 }
+
+.language-switchers a {
+    white-space: nowrap;
+}
