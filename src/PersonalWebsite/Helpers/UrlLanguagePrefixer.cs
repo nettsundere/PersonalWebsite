@@ -16,6 +16,7 @@ namespace PersonalWebsite.Helpers
     public class UrlLanguagePrefixer : TagHelper
     {
         private readonly ILanguageManipulationService _languageManipulationService;
+        private readonly IPageConfiguration _pageConfiguration;
 
         private const string listToRun = "href,prefix-with-language";
         private const string languageAttributeName = "prefix-with-language";
@@ -27,14 +28,22 @@ namespace PersonalWebsite.Helpers
         [HtmlAttributeName(languageAttributeName)]
         public LanguageDefinition LanguageToPrefix { get; set; }
         
-        public UrlLanguagePrefixer(ILanguageManipulationService languageManipulationService)
+        public UrlLanguagePrefixer(
+            IPageConfiguration pageConfiguration,
+            ILanguageManipulationService languageManipulationService)
         {
+            if(pageConfiguration == null)
+            {
+                throw new ArgumentNullException(nameof(pageConfiguration));
+            }
+
             if(languageManipulationService == null)
             {
                 throw new ArgumentNullException(nameof(languageManipulationService));
             }
 
-            _languageManipulationService = languageManipulationService;   
+            _pageConfiguration = pageConfiguration;
+            _languageManipulationService = languageManipulationService;
         }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
@@ -45,17 +54,22 @@ namespace PersonalWebsite.Helpers
 
         private void ProcessInternal(TagHelperContext context, TagHelperOutput output)
         {
-            var currentHref = output.Attributes["href"].Value;
+            var currentHref = output.Attributes["href"].Value.ToString();
+            if(currentHref.Length > 0)
+            {
+                currentHref += "/";
+            }
+
             var languageToPrefix = LanguageToPrefix;
 
-            if (languageToPrefix == _languageManipulationService.DefaultLanguageDefinition)
+            if (languageToPrefix == _pageConfiguration.DefaultLanguage)
             {
-                output.Attributes["href"].Value = $"/{currentHref}/";
+                output.Attributes["href"].Value = $"/{currentHref}";
             }
             else
             {
                 var languageRepresentation = _languageManipulationService.LanguageDefinitionToLanguageRepresentation(languageToPrefix);
-                output.Attributes["href"].Value = $"/{languageRepresentation}/{currentHref}/";
+                output.Attributes["href"].Value = $"/{languageRepresentation}/{currentHref}";
             }
         }
     }

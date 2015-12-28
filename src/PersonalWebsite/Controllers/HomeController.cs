@@ -11,13 +11,20 @@ namespace PersonalWebsite.Controllers
 {
     public class HomeController : Controller
     {
-        private IHumanReadableContentService _humanReadableContentService;
-        private ILanguageManipulationService _languageManipulationService;
+        private readonly IHumanReadableContentService _humanReadableContentService;
+        private readonly ILanguageManipulationService _languageManipulationService;
+        private readonly IPageConfiguration _pageConfiguration;
 
         public HomeController(
+            IPageConfiguration pageConfiguration,
             IHumanReadableContentService humanReadableContentService, 
             ILanguageManipulationService languageManipulationService) 
         {
+            if(pageConfiguration == null)
+            {
+                throw new ArgumentNullException(nameof(pageConfiguration));
+            }
+
             if(humanReadableContentService == null)
             {
                 throw new ArgumentNullException(nameof(humanReadableContentService));
@@ -28,6 +35,7 @@ namespace PersonalWebsite.Controllers
                 throw new ArgumentNullException(nameof(languageManipulationService));
             }
 
+            _pageConfiguration = pageConfiguration;
             _humanReadableContentService = humanReadableContentService;
             _languageManipulationService = languageManipulationService;
         }
@@ -40,7 +48,7 @@ namespace PersonalWebsite.Controllers
                 LanguageDefinition languageDefinition;
                 if (String.IsNullOrWhiteSpace(language))
                 {
-                    languageDefinition = _languageManipulationService.DefaultLanguageDefinition;
+                    languageDefinition = _pageConfiguration.DefaultLanguage;
                 }
                 else
                 {
@@ -56,7 +64,9 @@ namespace PersonalWebsite.Controllers
 
                 _languageManipulationService.SetLanguage(languageDefinition);
 
-                pageVM = _humanReadableContentService.GetPageByInternalCaption(languageDefinition, PredefinedPages.Welcome.ToString());
+                pageVM = _humanReadableContentService.GetPageByInternalCaption(
+                    languageDefinition, 
+                    _pageConfiguration.DefaultPageInternalCaption);
                 if (pageVM == null)
                 {
                     return HttpNotFound();

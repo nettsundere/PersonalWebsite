@@ -9,8 +9,6 @@ namespace PersonalWebsite.Services
 {
     public interface ILanguageManipulationService
     {
-        LanguageDefinition DefaultLanguageDefinition { get; }
-
         string LanguageDefinitionToLanguageRepresentation(LanguageDefinition definition);
 
         LanguageDefinition LanguageRepresentationToLanguageDefinition(string LanguageRepresentation);

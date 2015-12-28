@@ -11,16 +11,25 @@ namespace PersonalWebsite.Services
     public class HumanReadableContentService : IHumanReadableContentService
     {
         private readonly IContentRepository _contentRepository;
+        private readonly IPageConfiguration _pageConfiguration;
 
         private bool _isDisposed = false;
 
-        public HumanReadableContentService(IContentRepository contentRespository)
+        public HumanReadableContentService(
+            IPageConfiguration pageConfiguration,
+            IContentRepository contentRespository)
         {
+            if(pageConfiguration == null)
+            {
+                throw new ArgumentNullException(nameof(pageConfiguration));
+            }
+            
             if(contentRespository == null)
             {
                 throw new ArgumentNullException(nameof(contentRespository));
             }
             _contentRepository = contentRespository;
+            _pageConfiguration = pageConfiguration;
         }
 
         /// <summary>
@@ -87,7 +96,7 @@ namespace PersonalWebsite.Services
                 );
             }
 
-            return new PageViewModel(languageDefinition, contentVM, linksVM);
+            return new PageViewModel(_pageConfiguration, languageDefinition, contentVM, linksVM);
         }
     }
 }

@@ -1,10 +1,19 @@
-﻿.body {
-    background: #eff;
+﻿body {
+    background: #fff;
+    font-family: "Ubuntu", Verdana, Geneva, Tahoma, sans-serif
 }
 
 .container-fluid {
     padding-left: 0px;
     padding-right: 0px;
+}
+
+.language--switchers {
+    padding-top: 2em;
+}
+
+.language--switchers a {
+    white-space: nowrap;
 }
 
 .presentation--header {
@@ -13,7 +22,6 @@
 }
 
 .presentation--header h1 {
-    font-weight: bold;
     font-size: 1.2em;
 }
 
@@ -23,14 +31,15 @@
     padding-bottom: 2em;
 }
 
+.presentation--links--disabled {
+    opacity: 0.9;
+    font-weight: bold;
+}
+
 a {
     border-bottom: solid 1px;
 }
 
 a:hover {
     text-decoration: none !important;
-}
-
-.language-switchers a {
-    white-space: nowrap;
 }

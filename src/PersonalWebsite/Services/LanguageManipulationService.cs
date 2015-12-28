@@ -14,11 +14,6 @@ namespace PersonalWebsite.Services
         private readonly Dictionary<string, LanguageDefinition> _languageRepresentationToLanguageDefinition;
         private readonly Dictionary<LanguageDefinition, CultureInfo> _languageDefinitionToCultureInfo;
 
-        public LanguageDefinition DefaultLanguageDefinition
-        {
-            get;
-        } = LanguageDefinition.ru_ru;
-
         public LanguageManipulationService()
         {
             _languageDefinitionToRepresentations = new Dictionary<LanguageDefinition, string>

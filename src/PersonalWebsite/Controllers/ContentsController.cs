@@ -15,10 +15,18 @@ namespace PersonalWebsite.Controllers
     {
         private readonly IHumanReadableContentService _humanReadableContentService;
         private readonly ILanguageManipulationService _languageManipulationService;
+        private readonly IPageConfiguration _pageConfiguration;
 
         public ContentsController(
+            IPageConfiguration pageConfiguration,
             IHumanReadableContentService humanReadableContentService,
             ILanguageManipulationService languageManipulationService) {
+
+            if(pageConfiguration == null)
+            {
+                throw new ArgumentNullException(nameof(pageConfiguration));
+            }
+
             if(humanReadableContentService == null)
             {
                 throw new ArgumentNullException(nameof(humanReadableContentService));
@@ -31,6 +39,7 @@ namespace PersonalWebsite.Controllers
 
             _humanReadableContentService = humanReadableContentService;
             _languageManipulationService = languageManipulationService;
+            _pageConfiguration = pageConfiguration;
         }
 
         /// <summary>
@@ -47,7 +56,7 @@ namespace PersonalWebsite.Controllers
                 LanguageDefinition languageDefinition;
                 if (String.IsNullOrWhiteSpace(language))
                 {
-                    languageDefinition = _languageManipulationService.DefaultLanguageDefinition;
+                    languageDefinition = _pageConfiguration.DefaultLanguage;
                 }
                 else
                 {

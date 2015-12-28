@@ -69,6 +69,8 @@ namespace PersonalWebsite
 
             services.AddTransient<IContentRepository, ContentRepository>();
             services.AddSingleton<ILanguageManipulationService, LanguageManipulationService>();
+            services.AddSingleton<IPageConfiguration, PageConfiguration>();
+
             services.AddTransient<IHumanReadableContentService, HumanReadableContentService>();
 
             services.AddTransient<IRequiredDataRepository, RequiredDataRepository>();
