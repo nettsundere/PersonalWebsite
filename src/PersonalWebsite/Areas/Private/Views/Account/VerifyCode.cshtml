@@ -1,10 +1,10 @@
 ﻿@model VerifyCodeViewModel
 @section Title {
-    <!-- TODO: Add title -->
+    Verify a code
 }
 
 
-<h2>@ViewData["Title"].</h2>
+<h2>Verify a code</h2>
 
 <form asp-controller="Account" asp-action="VerifyCode" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
     <div asp-validation-summary="ValidationSummary.All" class="text-danger"></div>

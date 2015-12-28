@@ -1,10 +1,10 @@
 ﻿@model ExternalLoginConfirmationViewModel
 
 @section Title {
-    <!-- TODO: Add title -->
+    External login confirmation
 }
 
-<h2>@ViewData["Title"].</h2>
+<h2>External login confirmation</h2>
 <h3>Associate your @ViewData["LoginProvider"] account.</h3>
 
 <form asp-controller="Account" asp-action="ExternalLoginConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">

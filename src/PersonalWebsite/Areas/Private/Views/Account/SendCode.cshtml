@@ -1,9 +1,9 @@
 ﻿@model SendCodeViewModel
 @section Title {
-    <!-- TODO: Add title -->
+    Two-factor auth
 }
 
-<h2>@ViewData["Title"].</h2>
+<h2>Two-factor auth</h2>
 
 <form asp-controller="Account" asp-action="SendCode" asp-route-returnurl="@Model.ReturnUrl" method="post" class="form-horizontal" role="form">
     <input asp-for="RememberMe" type="hidden" />

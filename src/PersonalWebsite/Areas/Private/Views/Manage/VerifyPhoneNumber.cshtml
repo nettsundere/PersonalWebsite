@@ -1,10 +1,9 @@
 ﻿@model VerifyPhoneNumberViewModel
 @section Title {
-    <!-- TODO: Add title -->
+    Phone number verification
 }
 
-
-<h2>@ViewData["Title"].</h2>
+<h2>Phone number verification</h2>
 
 <form asp-controller="Manage" asp-action="VerifyPhoneNumber" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
     <input asp-for="PhoneNumber" type="hidden" />
