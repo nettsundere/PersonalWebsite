@@ -132,7 +132,7 @@ namespace PersonalWebsite
                 );
                 routes.MapRoute(
                     name: "contentsWithLanguage",
-                    template: "{language?}/{urlName}/{controller=Contents}/{action=Show}",
+                    template: "{language}/{urlName}/{controller=Contents}/{action=Show}",
                     defaults: new { },
                     constraints: new { language = languageManipulationService.LanguageValidationRegexp() }
                 );
