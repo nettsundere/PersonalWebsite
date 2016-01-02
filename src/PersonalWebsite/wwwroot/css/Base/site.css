@@ -36,10 +36,14 @@
     font-weight: bold;
 }
 
-a {
-    border-bottom: solid 1px;
+a, .btn-link {
+    text-decoration: underline !important;
 }
 
-a:hover {
-    text-decoration: none !important;
+.logout--button {
+    margin: 0px;
+    margin-top: -3px;
+    margin-right: 1em;
+    display: inline-block;
+    padding: 0px;
 }

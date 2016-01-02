@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using PersonalWebsite.Lib;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNet.Identity;
 
 namespace PersonalWebsite.Repositories
 {
@@ -15,7 +17,16 @@ namespace PersonalWebsite.Repositories
     /// </summary>
     public class RequiredDataRepository : IRequiredDataRepository
     {
-        public DataDbContext _dataDbContext;
+        private readonly IConfiguration _configuration;
+
+        public RequiredDataRepository(IConfiguration configuration)
+        {
+            if(configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+            _configuration = configuration;
+        }
 
         public IList<Content> GetCriticalContent()
         {
@@ -53,6 +64,14 @@ namespace PersonalWebsite.Repositories
             };
 
             return contents;
+        }
+
+        public ApplicationUserData GetInitialUserData()
+        {
+            var name = _configuration["CoreAccount:Name"];
+            var email = _configuration["CoreAccount:Email"];
+            var password = _configuration["CoreAccount:Password"];
+            return new ApplicationUserData(name, email, password);
         }
     }
 }

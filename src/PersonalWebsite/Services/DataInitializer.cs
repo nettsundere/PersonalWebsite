@@ -9,9 +9,11 @@ namespace PersonalWebsite.Services
 {
     public class DataInitializer : IDisposable
     {
-        private IServiceProvider _serviceProvider;
-        private IRequiredDataRepository _requiredDataRepository;
-        private IInternalContentRepository _internalContentRepository;
+        private readonly IServiceProvider _serviceProvider;
+        private readonly IRequiredDataRepository _requiredDataRepository;
+        private readonly IInternalContentRepository _internalContentRepository;
+        private readonly IApplicationUserRepository _applicationUserRepository;
+
 
         public DataInitializer(IServiceProvider serviceProvider)
         {
@@ -24,12 +26,25 @@ namespace PersonalWebsite.Services
             _requiredDataRepository = serviceProvider.GetService<IRequiredDataRepository>();
 
             _internalContentRepository = _serviceProvider.GetService<IInternalContentRepository>();
+            _applicationUserRepository = _serviceProvider.GetService<IApplicationUserRepository>();
         }
 
         public void EnsureRequiredContentsAvailable()
         {
             var contents = _requiredDataRepository.GetCriticalContent();
             _internalContentRepository.EnsureContentsRangeAvailable(contents);
+        }
+
+        public void EnsureInitialUserAvaialble()
+        {
+            var user = _requiredDataRepository.GetInitialUserData();
+            _applicationUserRepository.EnsureUserAvailable(user);
+        }
+
+        public void ClearInitialUser()
+        {
+            var user = _requiredDataRepository.GetInitialUserData();
+            _applicationUserRepository.DeleteUserByEMail(user.EMail);
         }
 
         public void ClearRequiredContents()
@@ -47,6 +62,7 @@ namespace PersonalWebsite.Services
             if (!_disposed)
             {
                 _internalContentRepository.Dispose();
+                _applicationUserRepository.Dispose();
                 _disposed = true;
             }
 

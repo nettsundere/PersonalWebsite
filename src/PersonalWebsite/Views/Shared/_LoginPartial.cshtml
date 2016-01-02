@@ -2,9 +2,9 @@
 
 @if (User.IsSignedIn())
 {
-    <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="navbar-right">
+    <form asp-route-area="Private" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm">
         <a asp-controller="Manage" asp-action="Index" title="Manage">Hello @User.GetUserName()!</a>
-        <button type="submit" class="btn btn-link navbar-btn navbar-link">Log off</button>
+        <button type="submit" class="btn btn-link navbar-btn navbar-link logout--button">Log off</button>
     </form>
 }
 else

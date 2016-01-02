@@ -68,13 +68,15 @@ namespace PersonalWebsite
             services.AddTransient<ISmsSender, AuthMessageSender>();
 
             services.AddTransient<IContentRepository, ContentRepository>();
+            services.AddTransient<IApplicationUserRepository, ApplicationUserRepository>();
+            services.AddTransient<IHumanReadableContentService, HumanReadableContentService>();
+            services.AddTransient<IRequiredDataRepository, RequiredDataRepository>();
+            services.AddTransient<IInternalContentRepository, InternalContentRepository>();
+
             services.AddSingleton<ILanguageManipulationService, LanguageManipulationService>();
             services.AddSingleton<IPageConfiguration, PageConfiguration>();
 
-            services.AddTransient<IHumanReadableContentService, HumanReadableContentService>();
-
-            services.AddTransient<IRequiredDataRepository, RequiredDataRepository>();
-            services.AddTransient<IInternalContentRepository, InternalContentRepository>();
+            services.AddInstance<IConfiguration>(Configuration);
         }
 
         // Configure is called after ConfigureServices is called.
@@ -125,11 +127,17 @@ namespace PersonalWebsite
                     defaults: new { },
                     constraints: new { area = "private" });
                 routes.MapRoute(
-                    name: "default",
-                    template: "{language?}/{controller=Home}/{action=Index}",
+                    name: "defaultWithLanguage",
+                    template: "{language}/{controller=Home}/{action=Index}",
                     defaults: new { },
                     constraints: new { language = languageManipulationService.LanguageValidationRegexp() }
                 );
+                routes.MapRoute(
+                    name: "defaultWithoutLanguage",
+                    template: "{controller=Home}/{action=Index}",
+                    defaults: new { language=String.Empty }
+                );
+
                 routes.MapRoute(
                     name: "contentsWithLanguage",
                     template: "{language}/{urlName}/{controller=Contents}/{action=Show}",
@@ -147,8 +155,11 @@ namespace PersonalWebsite
                 if (env.IsDevelopment())
                 {
                     dataInitializer.ClearRequiredContents();
+                    dataInitializer.ClearInitialUser();
                 }
+
                 dataInitializer.EnsureRequiredContentsAvailable();
+                dataInitializer.EnsureInitialUserAvaialble();
             }
         }
 
