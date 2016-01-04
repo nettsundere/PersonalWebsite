@@ -1,7 +1,7 @@
 ﻿/// <binding BeforeBuild='inject' Clean='clean' />
 
 var gulp = require("gulp"),
-    rimraf = require("rimraf"),
+    del = require("del"),
     concat = require("gulp-concat"),
     cssmin = require("gulp-cssmin"),
     uglify = require("gulp-uglify"),
@@ -20,12 +20,26 @@ paths.concatCssDest = paths.webroot + "css/Build/site.min.css";
 paths.vendorJsDest = paths.webroot + "js/Build/vendor.js";
 paths.vendorCssDest = paths.webroot + "css/Build/vendor.css";
 
-gulp.task("clean:js", function (cb) {
-    rimraf(paths.concatJsDest, cb);
+// Private website area
+paths.private = {};
+paths.private.vendorJsDest = paths.webroot + "js/Build/vendor.private.js";
+paths.private.vendorCssDest = paths.webroot + "css/Build/vendor.private.css";
+
+
+gulp.task("clean:js", function () {
+    del([
+        paths.concatJsDest,
+        paths.vendorJsDest,
+        paths.private.vendorJsDest
+    ]);
 });
 
-gulp.task("clean:css", function (cb) {
-    rimraf(paths.concatCssDest, cb);
+gulp.task("clean:css", function () {
+    del([
+        paths.concatCssDest,
+        paths.vendorCssDest,
+        paths.private.vendorCssDest
+    ]);
 });
 
 gulp.task("clean", ["clean:js", "clean:css"]);
@@ -49,10 +63,42 @@ gulp.task("min", ["min:js", "min:css"]);
 var series = require("stream-series");
 var inject = require("gulp-inject");
 
-gulp.task("inject", ["min"], function () {
+gulp.task("inject", ["inject:public", "inject:private"]);
+
+gulp.task("inject:private", ["clean", "min"], function () {
+    // Private site layout
+    var privateSourceDir = "./Areas/Private/Views/Shared/";
+    var privateSourcePath = privateSourceDir + "_Layout.cshtml";
+    var privateSource = gulp.src(privateSourcePath);
+
+    var vendorCss = gulp.src([
+        // Bootstrap
+        "./wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
+    ]).pipe(concat(paths.private.vendorCssDest)).pipe(gulp.dest("."));
+
+    var vendorJs = gulp.src([
+        // jQuery
+        "./wwwroot/lib/jquery/dist/jquery.min.js",
+        "./wwwroot/lib/jquery-validation/jquery.validate.js",
+        "./wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
+
+        // Bootstrap
+        "./wwwroot/lib/bootstrap/dist/js/bootstrap.min.js",
+
+        // CKEditor
+        "./wwwroot/lib/ckeditor/ckeditor.js"
+    ]).pipe(concat(paths.private.vendorJsDest)).pipe(gulp.dest("."));
+
+    return privateSource.pipe(inject(series(vendorJs, vendorCss),  { ignorePath: "wwwroot" }))
+                        .pipe(gulp.dest(privateSourceDir));
+});
+
+gulp.task("inject:public", ["clean", "min"], function () {
+    // Site layout
     var sourceDir = "./Views/Shared/";
     var sourcePath = sourceDir + "_Layout.cshtml";
     var source = gulp.src(sourcePath);
+
     var ownCss = gulp.src([
         paths.concatCssDest
     ], { read: false });
@@ -81,6 +127,6 @@ gulp.task("inject", ["min"], function () {
             series(vendorCss, ownCss),
             series(vendorJs, ownJs)
         ),
-        { ignorePath: "wwwroot" }))
-        .pipe(gulp.dest(sourceDir));
+        { ignorePath: "wwwroot" })
+    ).pipe(gulp.dest(sourceDir));
 });
