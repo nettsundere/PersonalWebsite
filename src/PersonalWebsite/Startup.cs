@@ -73,6 +73,8 @@ namespace PersonalWebsite
             services.AddTransient<IRequiredDataRepository, RequiredDataRepository>();
             services.AddTransient<IInternalContentRepository, InternalContentRepository>();
 
+            services.AddTransient<IContentEditorRepository, ContentEditorRepository>();
+
             services.AddSingleton<ILanguageManipulationService, LanguageManipulationService>();
             services.AddSingleton<IPageConfiguration, PageConfiguration>();
 
@@ -123,7 +125,7 @@ namespace PersonalWebsite
             {
                 routes.MapRoute(
                     name: nameof(PersonalWebsite.Areas.Private),
-                    template: "{area}/{controller}/{action}",
+                    template: "{area}/{controller}/{action}/{id?}",
                     defaults: new { },
                     constraints: new { area = "private" });
                 routes.MapRoute(

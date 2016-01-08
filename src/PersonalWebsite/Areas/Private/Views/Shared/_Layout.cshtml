@@ -12,8 +12,7 @@
 <body>
     <div class="container-fluid">
         <div class="row-fluid">
-            <div class="col-md-3 col-xs-0"></div>
-            <section class="col-md-9 col-xs-12">
+            <section class="col-xs-12">
                 <header></header>
                 <article>
                     @RenderBody()
@@ -32,8 +31,13 @@
             </section>
         </div>
     </div>
+
+    <script>
+        window.CKEDITOR_BASEPATH = "/lib/ckeditor/";
+    </script>
     <!-- inject:js -->
     <script src="/js/Build/vendor.private.js"></script>
+    <script src="/js/Build/site.private.min.js"></script>
     <!-- endinject -->
 
     @RenderSection("scripts", required: false)

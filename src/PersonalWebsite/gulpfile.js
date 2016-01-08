@@ -11,11 +11,15 @@ var paths = {
     webroot: "wwwroot/"
 };
 
-paths.js = paths.webroot + "js/**/*.js";
+paths.js = paths.webroot + "js/Base/*.js";
+paths.privateJs = paths.webroot + "js/PrivateBase/*.js";
+
 paths.minJs = paths.webroot + "js/**/*.min.js";
 paths.css = paths.webroot + "css/**/*.css";
 paths.minCss = paths.webroot + "css/**/*.min.css";
 paths.concatJsDest = paths.webroot + "js/Build/site.min.js";
+paths.privateConcatJsDest = paths.webroot + "js/Build/site.private.min.js";
+
 paths.concatCssDest = paths.webroot + "css/Build/site.min.css";
 paths.vendorJsDest = paths.webroot + "js/Build/vendor.js";
 paths.vendorCssDest = paths.webroot + "css/Build/vendor.css";
@@ -44,6 +48,13 @@ gulp.task("clean:css", function () {
 
 gulp.task("clean", ["clean:js", "clean:css"]);
 
+gulp.task("min:private:js", function () {
+    gulp.src([paths.privateJs, "!" + paths.minJs], { base: "." })
+        .pipe(concat(paths.privateConcatJsDest))
+        .pipe(uglify())
+        .pipe(gulp.dest("."));
+});
+
 gulp.task("min:js", function () {
     gulp.src([paths.js, "!" + paths.minJs], { base: "." })
         .pipe(concat(paths.concatJsDest))
@@ -58,7 +69,7 @@ gulp.task("min:css", function () {
         .pipe(gulp.dest("."));
 });
 
-gulp.task("min", ["min:js", "min:css"]);
+gulp.task("min", ["min:js", "min:private:js", "min:css"]);
 
 var series = require("stream-series");
 var inject = require("gulp-inject");
@@ -76,6 +87,10 @@ gulp.task("inject:private", ["clean", "min"], function () {
         "./wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
     ]).pipe(concat(paths.private.vendorCssDest)).pipe(gulp.dest("."));
 
+    var ownJs = gulp.src([
+        paths.privateConcatJsDest
+    ], { read: false });
+
     var vendorJs = gulp.src([
         // jQuery
         "./wwwroot/lib/jquery/dist/jquery.min.js",
@@ -89,7 +104,7 @@ gulp.task("inject:private", ["clean", "min"], function () {
         "./wwwroot/lib/ckeditor/ckeditor.js"
     ]).pipe(concat(paths.private.vendorJsDest)).pipe(gulp.dest("."));
 
-    return privateSource.pipe(inject(series(vendorJs, vendorCss),  { ignorePath: "wwwroot" }))
+    return privateSource.pipe(inject(series(series(vendorJs, ownJs), vendorCss),  { ignorePath: "wwwroot" }))
                         .pipe(gulp.dest(privateSourceDir));
 });
 

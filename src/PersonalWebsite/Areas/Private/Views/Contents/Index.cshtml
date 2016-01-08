@@ -1,0 +1,31 @@
+@model ContentIndexViewModel
+
+@section Title {
+    Contents list
+}
+
+<h2>Contents list</h2>
+
+<p>
+    <a asp-action="Create" class="btn-default btn">Create new content</a>
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Available content
+        </th>
+        <th></th>
+    </tr>
+    
+@foreach (var item in Model.Contents) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.InternalCaption)
+        </td>
+        <td>
+            <a asp-action="Edit"    asp-route-id="@item.Id" class="btn btn-default">Edit</a>
+            <a asp-action="Delete"  asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+        </td>
+    </tr>
+}
+</table>
