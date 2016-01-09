@@ -6,6 +6,7 @@
     <title>@RenderSection("Title") | Private </title>
     <!-- inject:css -->
     <link rel="stylesheet" href="/css/Build/vendor.private.css">
+    <link rel="stylesheet" href="/css/Build/site.private.min.css">
     <!-- endinject -->
 
 </head>
@@ -13,11 +14,39 @@
     <div class="container-fluid">
         <div class="row-fluid">
             <section class="col-xs-12">
-                <header></header>
-                <article>
-                    @RenderBody()
-                </article>
+                <div class="navbar navbar-default navbar-fixed-top">
+                    <div class="container">
+                        <div class="navbar-brand">
+                            Private area
+                        </div>
+                        <div class="navbar-collapse">
+                            @if(User.IsSignedIn()) 
+                            {
+                                 <ul class="nav navbar-nav">
+                                    <li>
+                                        <a asp-controller="Dashboard" asp-action="Index" 
+                                           asp-this-page=@this
+                                           if-current-css-class="active">Home</a>
+                                    </li>
+                                    <li>
+                                        <a asp-controller="Manage" asp-action="Index"
+                                           asp-this-page=@this
+                                           if-current-css-class="active">Profile management</a>
+                                    </li>
+                                    <li>
+                                        <a asp-controller= "Contents" asp-action="Index"
+                                           asp-this-page=@this
+                                           if-current-css-class="active">Contents</a>
+                                    </li>
+                                </ul>
+                            }
+                        </div>
+                    </div>
+                </div>
                 <footer>
+                    <article class="container">
+                        @RenderBody()
+                    </article>
                     <hr>
                     <div class="row">
                         <div class="col-xs-12 col-md-6">

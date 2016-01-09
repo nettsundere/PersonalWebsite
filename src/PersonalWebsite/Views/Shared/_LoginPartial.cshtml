@@ -1,6 +1,4 @@
-﻿@using System.Security.Claims
-
-@if (User.IsSignedIn())
+﻿@if (User.IsSignedIn())
 {
     <form asp-route-area="Private" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm">
         <a asp-controller="Manage" asp-action="Index" title="Manage">Hello @User.GetUserName()!</a>
