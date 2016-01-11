@@ -38,7 +38,7 @@
     "dnx451": { },
     "dnxcore50": {
       "dependencies": {
-        "System.Globalization": "4.0.10"
+        "Microsoft.AspNet.Localization": "1.0.0-rc1-final"
       }
     }
   },
