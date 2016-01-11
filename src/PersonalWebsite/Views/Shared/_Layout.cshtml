@@ -1,4 +1,4 @@
-@model PageViewModel
+﻿@model PageViewModel
 
 <!DOCTYPE html>
 <html>
@@ -21,7 +21,7 @@
                             @await Html.PartialAsync("_Languages", Model)
                         </div>
                         <div class="col-xs-12 col-md-6 presentation--header">
-                            <h1>Vladimir Kiselev, software developer</h1>
+                            @await Html.PartialAsync("_Header")
                         </div>
                     </div>
                     <div class="row presentation--links">
@@ -71,10 +71,7 @@
                     </div>
                     <footer class="row-fluid">
                         <div class="row">
-                            <div class="col-xs-12 col-md-9">
-                                &copy; 2015, Vladimir `nettsundere` Kiselev
-                            </div>
-                            <div class="col-xs-12 col-md-3">
+                            <div class="col-md-push-9 col-md-3">
                                 @await Html.PartialAsync("_LoginPartial")
                             </div>
                         </div>

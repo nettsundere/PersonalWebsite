@@ -29,13 +29,21 @@ namespace PersonalWebsite.Areas.Private.Controllers
         SignInManager<ApplicationUser> signInManager,
         IEmailSender emailSender,
         ISmsSender smsSender,
-        ILoggerFactory loggerFactory)
+        ILoggerFactory loggerFactory,
+        IPrivateDefaultsService privateDefaultsService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<ManageController>();
+
+            if (privateDefaultsService == null)
+            {
+                throw new ArgumentNullException(nameof(privateDefaultsService));
+            }
+
+            privateDefaultsService.Setup();
         }
 
         //

@@ -7,6 +7,8 @@ using PersonalWebsite.Models;
 using Microsoft.AspNet.Authorization;
 using PersonalWebsite.ViewModels.Content;
 using PersonalWebsite.Repositories;
+using PersonalWebsite.Services;
+using System;
 
 namespace PersonalWebsite.Private.Controllers
 {
@@ -16,9 +18,16 @@ namespace PersonalWebsite.Private.Controllers
     {
         private readonly IContentEditorRepository _contentEditorRepository;
 
-        public ContentsController(IContentEditorRepository contentEditorRepository)
+        public ContentsController(IPrivateDefaultsService privateDefaultsService, IContentEditorRepository contentEditorRepository)
         {
-            _contentEditorRepository = contentEditorRepository;   
+            _contentEditorRepository = contentEditorRepository;
+
+            if (privateDefaultsService == null)
+            {
+                throw new ArgumentNullException(nameof(privateDefaultsService));
+            }
+
+            privateDefaultsService.Setup();
         }
 
         public IActionResult Index()
