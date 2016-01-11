@@ -23,20 +23,20 @@
                             @if(User.IsSignedIn()) 
                             {
                                  <ul class="nav navbar-nav">
-                                    <li>
-                                        <a asp-controller="Dashboard" asp-action="Index" 
-                                           asp-this-page=@this
-                                           if-current-css-class="active">Home</a>
+                                    <li asp-controller="Dashboard" asp-action="Index" 
+                                        asp-this-context=@(this.ViewContext)
+                                        if-current-css-class="active">
+                                        <a asp-controller="Dashboard" asp-action="Index">Home</a>
                                     </li>
-                                    <li>
-                                        <a asp-controller="Manage" asp-action="Index"
-                                           asp-this-page=@this
-                                           if-current-css-class="active">Profile management</a>
+                                    <li asp-controller="Manage" asp-action="Index"
+                                        asp-this-context=@(this.ViewContext)
+                                        if-current-css-class="active">
+                                        <a asp-controller="Manage" asp-action="Index">Profile management</a>
                                     </li>
-                                    <li>
-                                        <a asp-controller= "Contents" asp-action="Index"
-                                           asp-this-page=@this
-                                           if-current-css-class="active">Contents</a>
+                                    <li asp-controller= "Contents" asp-action="Index"
+                                        asp-this-context=@(this.ViewContext)
+                                        if-current-css-class="active">
+                                        <a asp-controller= "Contents" asp-action="Index">Contents</a>
                                     </li>
                                 </ul>
                             }

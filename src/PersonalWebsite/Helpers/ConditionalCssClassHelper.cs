@@ -5,19 +5,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc.Razor;
+using Microsoft.AspNet.Mvc.Rendering;
 
 namespace PersonalWebsite.Helpers
 {
-    [HtmlTargetElement("a", Attributes = listToRun)]
+    [HtmlTargetElement("li", Attributes = listToRun)]
     public class ConditionalCssClassHelper : TagHelper
     {
-        private const string listToRun = "asp-controller, asp-action, asp-this-page";
-        private const string conditionalCssClassAttribute = "if-current-css-class";
+        private const string listToRun = "asp-controller,asp-action,asp-this-context,if-current-css-class";
 
+        private const string conditionalCssClassAttribute = "if-current-css-class";
         private const string aspControllerAttribute = "asp-controller";
         private const string aspActionAttribute = "asp-action";
 
-        private const string aspThisPageAttribute = "asp-this-page";
+        private const string aspThisContextAttribute = "asp-this-context";
 
         [HtmlAttributeName(conditionalCssClassAttribute)]
         public string ConditionalCssClass { get; set; }
@@ -28,21 +29,30 @@ namespace PersonalWebsite.Helpers
         [HtmlAttributeName(aspActionAttribute)]
         public string AspAction { get; set; }
 
-        [HtmlAttributeName(aspThisPageAttribute)]
-        public RazorPage ThisPage { get; set; }
+        [HtmlAttributeName(aspThisContextAttribute)]
+        public ViewContext ThisContext { get; set; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             base.Process(context, output);
 
-            var currentControllerName = "";
-            var currentActionName = "";
+            var routeConstraints = ThisContext.ActionDescriptor.RouteConstraints;
 
-            if (AspController.ToString() == currentControllerName.ToString()
-               && AspAction.ToString() == currentActionName.ToString())
+            var currentControllerName = routeConstraints.First(x => x.RouteKey == "controller").RouteValue;
+            var currentActionName = routeConstraints.First(x => x.RouteKey == "action").RouteValue;
+
+            if (AspController == currentControllerName && AspAction == currentActionName)
             {
-                var currentClassAttribute = (string)output.Attributes["class"].Value;
-                output.Attributes["class"] = $"{currentClassAttribute} {ConditionalCssClass}";
+                TagHelperAttribute maybeClass;
+                if (output.Attributes.TryGetAttribute("Value", out maybeClass)) {
+                    if(maybeClass != null)
+                    {
+                        output.Attributes["class"] = $"{maybeClass.Value} {ConditionalCssClass}";
+                        return;
+                    }
+                }
+
+                output.Attributes["class"] = ConditionalCssClass;
             }
         }
     }
