@@ -1,10 +1,19 @@
 ﻿using Microsoft.Data.Entity;
+using Microsoft.Data.Entity.Infrastructure;
 using Microsoft.Data.Entity.Metadata;
 
 namespace PersonalWebsite.Models
 {
     public class DataDbContext : DbContext
     {
+        public DataDbContext()
+        {
+        }
+
+        public DataDbContext(DbContextOptions options) : base(options)
+        {
+        }
+
         public DbSet<Content> Contents { get; set; }
 
         public DbSet<Translation> Translations { get; set; }

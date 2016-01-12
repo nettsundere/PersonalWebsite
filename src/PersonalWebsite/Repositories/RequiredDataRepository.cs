@@ -43,9 +43,9 @@ namespace PersonalWebsite.Repositories
                     InternalCaption = PredefinedPages.Contact.ToString(),
                     Translations = new []
                     {
-                        new Translation { UrlName = "Contact", Title = "Contact", ContentMarkup = String.Empty, Description = String.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.en_us },
-                        new Translation { UrlName = "Kontakt", Title = "Kontakt", ContentMarkup = String.Empty, Description = String.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.de_de },
-                        new Translation { UrlName = "Kontakty", Title = "Контакты", ContentMarkup = String.Empty, Description = String.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.ru_ru }
+                        new Translation { UrlName = "contact", Title = "Contact", ContentMarkup = String.Empty, Description = String.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.en_us },
+                        new Translation { UrlName = "kontakt", Title = "Kontakt", ContentMarkup = String.Empty, Description = String.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.de_de },
+                        new Translation { UrlName = "kontakty", Title = "Контакты", ContentMarkup = String.Empty, Description = String.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.ru_ru }
                     }
                 },
                 new Content
@@ -53,9 +53,9 @@ namespace PersonalWebsite.Repositories
                     InternalCaption = PredefinedPages.Resume.ToString(),
                     Translations = new []
                     {
-                        new Translation { UrlName = "Resume", Title = "Resume", ContentMarkup = String.Empty, Description = String.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.en_us },
-                        new Translation { UrlName = "Lebenslauf", Title = "Lebenslauf", ContentMarkup = String.Empty, Description = String.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.de_de },
-                        new Translation { UrlName = "Rezyume",  Title = "Резюме", ContentMarkup = String.Empty, Description = String.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.ru_ru }
+                        new Translation { UrlName = "resume", Title = "Resume", ContentMarkup = String.Empty, Description = String.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.en_us },
+                        new Translation { UrlName = "lebenslauf", Title = "Lebenslauf", ContentMarkup = String.Empty, Description = String.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.de_de },
+                        new Translation { UrlName = "rezyume",  Title = "Резюме", ContentMarkup = String.Empty, Description = String.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.ru_ru }
                     }
                 }
             };
