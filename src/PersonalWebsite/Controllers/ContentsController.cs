@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using PersonalWebsite.Lib;
-using PersonalWebsite.Models;
-using PersonalWebsite.Repositories;
 using PersonalWebsite.ViewModels.Content;
 using PersonalWebsite.Services;
 

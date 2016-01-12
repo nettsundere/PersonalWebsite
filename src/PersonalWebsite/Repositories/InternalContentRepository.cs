@@ -1,10 +1,7 @@
-﻿using Microsoft.Data.Entity;
-using PersonalWebsite.Models;
+﻿using PersonalWebsite.Models;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace PersonalWebsite.Repositories
 {

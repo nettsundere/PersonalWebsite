@@ -1,9 +1,5 @@
 ﻿using PersonalWebsite.Lib;
-using PersonalWebsite.Services;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PersonalWebsite.ViewModels.Content
 {

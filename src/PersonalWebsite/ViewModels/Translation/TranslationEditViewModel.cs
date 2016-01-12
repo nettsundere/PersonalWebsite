@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using PersonalWebsite.Models;
 using PersonalWebsite.Lib;
 using System.ComponentModel.DataAnnotations;
 

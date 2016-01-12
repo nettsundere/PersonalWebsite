@@ -1,11 +1,8 @@
 ﻿using PersonalWebsite.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using PersonalWebsite.Lib;
 using Microsoft.Extensions.Configuration;
-using Microsoft.AspNet.Identity;
 
 namespace PersonalWebsite.Repositories
 {

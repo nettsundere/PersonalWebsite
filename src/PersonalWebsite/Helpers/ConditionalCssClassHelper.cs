@@ -1,10 +1,5 @@
-﻿using Microsoft.AspNet.Http;
-using Microsoft.AspNet.Razor.TagHelpers;
-using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNet.Razor.TagHelpers;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc.Razor;
 using Microsoft.AspNet.Mvc.Rendering;
 
 namespace PersonalWebsite.Helpers
