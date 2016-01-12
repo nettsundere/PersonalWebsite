@@ -7,7 +7,7 @@ namespace PersonalWebsite.Models
         /// <summary>
         /// Content unique id.
         /// </summary>
-        public virtual int Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Available content translations.
@@ -17,6 +17,6 @@ namespace PersonalWebsite.Models
         /// <summary>
         /// Content non-translated caption.
         /// </summary>
-        public virtual string InternalCaption { get; set; }
+        public string InternalCaption { get; set; }
     }
 }
