@@ -32,16 +32,41 @@ namespace PersonalWebsite.Areas.Private.Controllers
         ILoggerFactory loggerFactory,
         IPrivateDefaultsService privateDefaultsService)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _emailSender = emailSender;
-            _smsSender = smsSender;
-            _logger = loggerFactory.CreateLogger<ManageController>();
+            if (userManager == null)
+            {
+                throw new ArgumentNullException(nameof(userManager));
+            }
+
+            if (signInManager == null)
+            {
+                throw new ArgumentNullException(nameof(signInManager));
+            }
+
+            if (emailSender == null)
+            {
+                throw new ArgumentNullException(nameof(emailSender));
+            }
+
+            if (smsSender == null)
+            {
+                throw new ArgumentNullException(nameof(smsSender));
+            }
+
+            if (loggerFactory == null)
+            {
+                throw new ArgumentNullException(nameof(loggerFactory));
+            }
 
             if (privateDefaultsService == null)
             {
                 throw new ArgumentNullException(nameof(privateDefaultsService));
             }
+
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _emailSender = emailSender;
+            _smsSender = smsSender;
+            _logger = loggerFactory.CreateLogger<ManageController>();
 
             privateDefaultsService.Setup();
         }

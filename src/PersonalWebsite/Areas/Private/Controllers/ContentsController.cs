@@ -20,6 +20,11 @@ namespace PersonalWebsite.Private.Controllers
 
         public ContentsController(IPrivateDefaultsService privateDefaultsService, IContentEditorRepository contentEditorRepository)
         {
+            if(contentEditorRepository == null)
+            {
+                throw new ArgumentNullException(nameof(contentEditorRepository));
+            }
+
             _contentEditorRepository = contentEditorRepository;
 
             if (privateDefaultsService == null)
