@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using PersonalWebsite.ViewModels.Content;
 using PersonalWebsite.ViewModels.Translation;
 
 using PersonalWebsite.Models;
 using Microsoft.Data.Entity;
-using PersonalWebsite.ViewModels.Translation;
 using PersonalWebsite.Lib.Extentions;
 using PersonalWebsite.Lib;
-using System.Collections.Generic;
 
 namespace PersonalWebsite.Repositories
 {

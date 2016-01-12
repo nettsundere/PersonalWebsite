@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNet.Razor.TagHelpers;
 using PersonalWebsite.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using PersonalWebsite.Lib;
 
 namespace PersonalWebsite.Helpers
