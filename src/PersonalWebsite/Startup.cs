@@ -9,6 +9,8 @@ using PersonalWebsite.Models;
 using PersonalWebsite.Services;
 using PersonalWebsite.Repositories;
 using Microsoft.Extensions.PlatformAbstractions;
+using Microsoft.AspNet.Localization;
+using PersonalWebsite.Providers;
 
 namespace PersonalWebsite
 {
@@ -50,7 +52,6 @@ namespace PersonalWebsite
                 .AddEntityFrameworkStores<AuthDbContext>()
                 .AddDefaultTokenProviders();
 
-
             // Add MVC services to the services container.
             services.AddMvc()
                     .AddViewLocalization();
@@ -73,8 +74,6 @@ namespace PersonalWebsite
 
             services.AddSingleton<ILanguageManipulationService, LanguageManipulationService>();
             services.AddSingleton<IPageConfiguration, PageConfiguration>();
-            services.AddSingleton<IPrivateDefaultsService, PrivateDefaultsService>();
-
             services.AddInstance<IConfiguration>(Configuration);
         }
 
@@ -83,8 +82,19 @@ namespace PersonalWebsite
             IApplicationBuilder app,
             IHostingEnvironment env,
             ILoggerFactory loggerFactory,
+            IPageConfiguration pageConfiguration,
             ILanguageManipulationService languageManipulationService)
         {
+            if(pageConfiguration == null)
+            {
+                throw new ArgumentNullException(nameof(pageConfiguration));
+            }
+
+            if(languageManipulationService == null)
+            {
+                throw new ArgumentNullException(nameof(languageManipulationService));
+            }
+
             loggerFactory.MinimumLevel = LogLevel.Information;
             loggerFactory.AddConsole();
 
@@ -116,6 +126,19 @@ namespace PersonalWebsite
 
             // Add cookie-based authentication to the request pipeline.
             app.UseIdentity();
+
+            var defaultCulture = languageManipulationService
+                                   .LanguageDefinitionToCultureInfo(
+                                      pageConfiguration.DefaultLanguage
+                                   );
+            app.UseRequestLocalization(new RequestLocalizationOptions
+                {
+                    SupportedCultures = languageManipulationService.SupportedCultures,
+                    SupportedUICultures = languageManipulationService.SupportedCultures,
+                    RequestCultureProviders = new[] { new CustomUrlStringCultureProvider(languageManipulationService) }
+                }, 
+                new RequestCulture(defaultCulture, defaultCulture)
+            );
 
             // Add MVC to the request pipeline.
             app.UseMvc(routes =>

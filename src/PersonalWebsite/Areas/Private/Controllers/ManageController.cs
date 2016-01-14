@@ -29,8 +29,7 @@ namespace PersonalWebsite.Areas.Private.Controllers
         SignInManager<ApplicationUser> signInManager,
         IEmailSender emailSender,
         ISmsSender smsSender,
-        ILoggerFactory loggerFactory,
-        IPrivateDefaultsService privateDefaultsService)
+        ILoggerFactory loggerFactory)
         {
             if (userManager == null)
             {
@@ -57,18 +56,11 @@ namespace PersonalWebsite.Areas.Private.Controllers
                 throw new ArgumentNullException(nameof(loggerFactory));
             }
 
-            if (privateDefaultsService == null)
-            {
-                throw new ArgumentNullException(nameof(privateDefaultsService));
-            }
-
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<ManageController>();
-
-            privateDefaultsService.Setup();
         }
 
         //

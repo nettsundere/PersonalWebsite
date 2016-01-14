@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using PersonalWebsite.Lib;
 using System.Globalization;
 using System.Threading;
+using System.Collections.ObjectModel;
 
 namespace PersonalWebsite.Services
 {
     public class LanguageManipulationService : ILanguageManipulationService
     {
+        public ReadOnlyCollection<CultureInfo> SupportedCultures { get; }
+
         private readonly Dictionary<LanguageDefinition, string> _languageDefinitionToRepresentations;
         private readonly Dictionary<string, LanguageDefinition> _languageRepresentationToLanguageDefinition;
         private readonly Dictionary<LanguageDefinition, CultureInfo> _languageDefinitionToCultureInfo;
@@ -28,12 +31,18 @@ namespace PersonalWebsite.Services
 				["de-de"] = LanguageDefinition.de_de
             };
 
+            var enCulture = new CultureInfo("en-us");
+            var ruCulture = new CultureInfo("ru-ru");
+            var deCulture = new CultureInfo("de-de");
             _languageDefinitionToCultureInfo = new Dictionary<LanguageDefinition, CultureInfo>
             {
-				[LanguageDefinition.en_us] = new CultureInfo("en-us"),
-				[LanguageDefinition.ru_ru] = new CultureInfo("ru-ru"),
-				[LanguageDefinition.de_de] = new CultureInfo("de-de")
+				[LanguageDefinition.en_us] = enCulture,
+				[LanguageDefinition.ru_ru] = ruCulture,
+				[LanguageDefinition.de_de] = deCulture 
             };
+
+            SupportedCultures = new ReadOnlyCollection<CultureInfo>(
+                new [] { enCulture, ruCulture, deCulture });
         }
 
         public string LanguageDefinitionToLanguageRepresentation(LanguageDefinition definition)
@@ -53,19 +62,9 @@ namespace PersonalWebsite.Services
             return _languageRepresentationToLanguageDefinition[lowerCaseRepresentation];
         }
 
-        public void SetLanguage(LanguageDefinition languageDefinition)
+        public CultureInfo LanguageDefinitionToCultureInfo(LanguageDefinition languageDefinition)
         {
-            var cultureToSet = _languageDefinitionToCultureInfo[languageDefinition];
-
-            var currentThread = Thread.CurrentThread;
-
-#if DNX451
-			Thread.CurrentThread.CurrentCulture = cultureToSet;
-			Thread.CurrentThread.CurrentUICulture = cultureToSet;
-#elif DNXCORE50
-            CultureInfo.CurrentCulture = cultureToSet;
-            CultureInfo.CurrentUICulture = cultureToSet;
-#endif
+            return _languageDefinitionToCultureInfo[languageDefinition];
         }
 
         public string LanguageValidationRegexp()

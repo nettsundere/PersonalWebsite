@@ -65,8 +65,6 @@ namespace PersonalWebsite.Controllers
                     }
                 }
 
-                _languageManipulationService.SetLanguage(languageDefinition);
-
                 pageVM = _humanReadableContentService.GetPageByHumanReadableName(languageDefinition, urlName);
                 if (pageVM == null)
                 {

@@ -7,6 +7,8 @@ using PersonalWebsite.Services;
 using System;
 using Xunit;
 using PersonalWebsite.Lib;
+using PersonalWebsite.ViewModels.Content;
+using Microsoft.AspNet.Http.Internal;
 
 namespace PersonalWebsite.Tests.Controllers
 {
@@ -75,6 +77,22 @@ namespace PersonalWebsite.Tests.Controllers
             var actionResult = _contentsController.Show(language, urlName);
 
             Assert.IsType(typeof(ViewResult), actionResult);
+        }
+
+        [Theory]
+        [InlineData("En-US", "ReSuMe", LanguageDefinition.en_us)]
+        [InlineData("de-DE", "Lebenslauf", LanguageDefinition.de_de)]
+        public void SetsProperLanguage(
+            string language,
+            string urlName,
+            LanguageDefinition expectedModelLanguage)
+        {
+            SetupContent();
+
+            var result = _contentsController.Show(language, urlName) as ViewResult;
+
+            var resultModel = result.ViewData.Model as PageViewModel;
+            Assert.Equal(expectedModelLanguage, resultModel.Language);
         }
 
         private void SetupContent()

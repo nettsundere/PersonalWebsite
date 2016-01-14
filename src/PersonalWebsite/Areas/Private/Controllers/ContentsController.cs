@@ -18,7 +18,7 @@ namespace PersonalWebsite.Private.Controllers
     {
         private readonly IContentEditorRepository _contentEditorRepository;
 
-        public ContentsController(IPrivateDefaultsService privateDefaultsService, IContentEditorRepository contentEditorRepository)
+        public ContentsController(IContentEditorRepository contentEditorRepository)
         {
             if(contentEditorRepository == null)
             {
@@ -26,13 +26,6 @@ namespace PersonalWebsite.Private.Controllers
             }
 
             _contentEditorRepository = contentEditorRepository;
-
-            if (privateDefaultsService == null)
-            {
-                throw new ArgumentNullException(nameof(privateDefaultsService));
-            }
-
-            privateDefaultsService.Setup();
         }
 
         public IActionResult Index()

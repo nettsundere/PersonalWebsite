@@ -59,8 +59,6 @@ namespace PersonalWebsite.Controllers
                     }
                 }
 
-                _languageManipulationService.SetLanguage(languageDefinition);
-
                 pageVM = _humanReadableContentService.GetPageByInternalCaption(
                     languageDefinition, 
                     _pageConfiguration.DefaultPageInternalCaption);
