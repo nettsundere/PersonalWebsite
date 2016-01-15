@@ -1,4 +1,4 @@
-﻿/// <binding BeforeBuild='inject' Clean='clean' />
+﻿/// <binding BeforeBuild='inject' />
 
 var gulp = require("gulp"),
     del = require("del"),
