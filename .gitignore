@@ -9,3 +9,4 @@ src/PersonalWebsite/wwwroot/js/Build/*
 src/PersonalWebsite/wwwroot/lib/*
 
 artifacts
+src/PersonalWebsite/bin
