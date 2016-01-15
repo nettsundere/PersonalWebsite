@@ -121,7 +121,7 @@ gulp.task("inject:private", ["clean", "min"], function () {
         "./wwwroot/lib/ckeditor/ckeditor.js"
     ]).pipe(concat(paths.private.vendorJsDest)).pipe(gulp.dest("."));
 
-    return privateSource.pipe(inject(series(series(vendorJs, ownJs), series(vendorCss, ownCss)),  { ignorePath: "wwwroot" }))
+    return privateSource.pipe(inject(series(vendorJs, ownJs, vendorCss, ownCss), { ignorePath: "wwwroot" }))
                         .pipe(gulp.dest(privateSourceDir));
 });
 
@@ -155,10 +155,7 @@ gulp.task("inject:public", ["clean", "min"], function () {
     ]).pipe(concat(paths.vendorCssDest)).pipe(gulp.dest("."));
 
     return source.pipe(inject(
-        series(
-            series(vendorCss, ownCss),
-            series(vendorJs, ownJs)
-        ),
-        { ignorePath: "wwwroot" })
-    ).pipe(gulp.dest(sourceDir));
+        series(vendorCss, ownCss, vendorJs, ownJs),
+        { ignorePath: "wwwroot" }))
+        .pipe(gulp.dest(sourceDir));
 });
