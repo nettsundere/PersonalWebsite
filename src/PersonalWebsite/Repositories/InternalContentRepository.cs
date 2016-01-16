@@ -45,7 +45,8 @@ namespace PersonalWebsite.Repositories
         public void EnsureContentsRangeAvailable(IEnumerable<Content> contentsRange)
         {
             var newContents = from x in contentsRange
-                              where !_context.Contents.Contains(x)
+                              let presentInternalCaptions = from y in _context.Contents select y.InternalCaption
+                              where !presentInternalCaptions.Contains(x.InternalCaption)
                               select x;
             _context.Contents.AddRange(newContents);
             _context.SaveChanges();
