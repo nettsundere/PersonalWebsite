@@ -95,7 +95,7 @@ namespace PersonalWebsite
                 throw new ArgumentNullException(nameof(languageManipulationService));
             }
 
-            loggerFactory.MinimumLevel = LogLevel.Information;
+            loggerFactory.MinimumLevel = LogLevel.Warning;
             loggerFactory.AddConsole();
 
             // Configure the HTTP request pipeline.
@@ -115,7 +115,7 @@ namespace PersonalWebsite
                 // sends the request to the following path or controller action.
                 app.UseExceptionHandler("/Home/Error");
 
-                loggerFactory.AddDebug(LogLevel.Information);
+                loggerFactory.AddDebug(LogLevel.Critical);
             }
 
             // Add the platform handler to the request pipeline.
