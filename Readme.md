@@ -1,7 +1,11 @@
 # PersonalWebsite
-This is a full source code of my new multilingual website implemented in C# ASP 5 MVC 6 (1.0.0-rc1-final).
+This is a full source code of my new multilingual website implemented in ASP.NET Core 1.0 (former C# ASP 5 MVC 6 )(1.0.0-rc1-final).
 Deployed as x64 coreclr (1.0.0-update1) for IIS (Windows Server 2012 r2).
 Database - localdb / sql server express / using Entity Framework 7.
+
+Azure server size is Basic A0 (0.25 cores, 0.75 GB memory)
+Url: http://vladimir-kiselev.me
+
 
 # PersonalWebsite/Tests
 XUnit tests for controllers (mostly)
