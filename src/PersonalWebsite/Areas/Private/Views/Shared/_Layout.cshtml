@@ -1,14 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@RenderSection("Title") | Private </title>
-    <!-- inject:css -->
-    <link rel="stylesheet" href="/css/Build/vendor.private.css">
-    <link rel="stylesheet" href="/css/Build/site.private.min.css">
-    <!-- endinject -->
-
+    <environment names="Development,Staging,Production">
+        <link rel="stylesheet" href="~/css/Build/private.site.min.css" asp-append-version="true" />
+    </environment>
 </head>
 <body>
     <div class="container-fluid">
@@ -20,7 +18,7 @@
                             Private area
                         </div>
                         <div class="navbar-collapse">
-                            @if(User.IsSignedIn()) 
+                            @if(User.Identity.IsAuthenticated) 
                             {
                                  <ul class="nav navbar-nav">
                                     <li asp-controller="Dashboard" asp-action="Index" 
@@ -64,11 +62,9 @@
     <script>
         window.CKEDITOR_BASEPATH = "/lib/ckeditor/";
     </script>
-    <!-- inject:js -->
-    <script src="/js/Build/vendor.private.js"></script>
-    <script src="/js/Build/site.private.min.js"></script>
-    <!-- endinject -->
 
-    @RenderSection("scripts", required: false)
+    <environment names="Development,Staging,Production">
+        <script src="~/js/Build/private.site.min.js" asp-append-version="true"></script>
+    </environment>
 </body>
 </html>

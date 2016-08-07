@@ -4,8 +4,11 @@
   "dependencies": {
     "bootstrap": "3.3.6",
     "jquery": "2.1.4",
-    "jquery-validation": "1.11.1",
+    "jquery-validation": "1.14.0",
     "jquery-validation-unobtrusive": "3.2.2",
     "ckeditor": "4.5.6"
+  },
+  "resolutions": {
+    "jquery-validation": ">=1.8"
   }
 }

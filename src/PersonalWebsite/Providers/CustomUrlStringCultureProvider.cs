@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNet.Localization;
+﻿using Microsoft.AspNetCore.Localization;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Http;
+using Microsoft.AspNetCore.Http;
 using PersonalWebsite.Services;
 using System.Text.RegularExpressions;
 

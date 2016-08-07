@@ -1,7 +1,7 @@
 ﻿@model PageViewModel
-@foreach (var item in new[] { new { Language = LanguageDefinition.en_us, Title = "English" },
-                                new { Language = LanguageDefinition.de_de, Title = "Deutsch" },
-                                new { Language = LanguageDefinition.ru_ru, Title = "Русская версия" } })
+@foreach (var item in new[] { new LanguageUIDefinition(LanguageDefinition.en_us, "English"),
+                              new LanguageUIDefinition(LanguageDefinition.de_de, "Deutsch"),
+                              new LanguageUIDefinition(LanguageDefinition.ru_ru, "Русская версия") })
 {
     if (Model.ContentViewModel.UrlNames.ContainsKey(item.Language))
     {
@@ -9,16 +9,16 @@
         {
             if (Model.IsDefaultPage())
             {
-                <a href="" prefix-with-language=item.Language>@item.Title</a>
+                <a href="" prefix-with-language=@item.Language>@item.Header</a>
             }
             else
             {
-                <a href=@Model.ContentViewModel.UrlNames[item.Language] prefix-with-language=item.Language>@item.Title</a>
+                <a href=@Model.ContentViewModel.UrlNames[item.Language] prefix-with-language=@item.Language>@item.Header</a>
             }
         }
         else
         {
-            @Html.Raw($"&#10551; {item.Title}")
+            @Html.Raw($"&#10551; {item.Header}")
         }
     }
 }

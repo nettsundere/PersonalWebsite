@@ -1,6 +1,5 @@
-﻿using Microsoft.Data.Entity;
-using Microsoft.Data.Entity.Infrastructure;
-using Microsoft.Data.Entity.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace PersonalWebsite.Models
 {
@@ -14,9 +13,9 @@ namespace PersonalWebsite.Models
         {
         }
 
-        public DbSet<Content> Contents { get; set; }
+        public DbSet<Content> Content { get; set; }
 
-        public DbSet<Translation> Translations { get; set; }
+        public DbSet<Translation> Translation { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

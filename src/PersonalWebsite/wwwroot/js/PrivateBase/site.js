@@ -1,3 +1,1 @@
-﻿$(function () {
-    Ckeditor.replace(".ckeditor");
-});
+﻿

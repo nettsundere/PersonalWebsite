@@ -1,16 +1,10 @@
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
-using Microsoft.AspNet.Mvc.Rendering;
-using Microsoft.Data.Entity;
-using PersonalWebsite.Models;
-using Microsoft.AspNet.Authorization;
-using PersonalWebsite.ViewModels.Content;
-using PersonalWebsite.Repositories;
-using PersonalWebsite.Services;
 using System;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using PersonalWebsite.Repositories;
+using PersonalWebsite.ViewModels.Content;
 
-namespace PersonalWebsite.Private.Controllers
+namespace PersonalWebsite.Areas.Private.Controllers
 {
     [Authorize]
     [Area(nameof(Private))]
@@ -62,7 +56,7 @@ namespace PersonalWebsite.Private.Controllers
         {
             if (id == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
 
             ContentEditViewModel content;
@@ -74,7 +68,7 @@ namespace PersonalWebsite.Private.Controllers
 
             if (content == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
             return View(content);
         }
@@ -100,7 +94,7 @@ namespace PersonalWebsite.Private.Controllers
         {
             if (id == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
 
             ContentEditViewModel content;
@@ -112,7 +106,7 @@ namespace PersonalWebsite.Private.Controllers
             
             if (content == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
 
             return View(content);

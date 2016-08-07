@@ -1,9 +1,9 @@
 ﻿@using System.Security.Claims @*Warning workaround*@
 
-@if (User.IsSignedIn())
+@if (User.Identity.IsAuthenticated)
 {
-    <form asp-route-area="Private" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm">
-        <a asp-controller="Manage" asp-action="Index" title="Manage">Hello @User.GetUserName()!</a>
+    <form asp-controller="Account" asp-action="LogOff" asp-route-area="Private" method="post" id="logoutForm">
+        <a asp-route-area="Private" asp-controller="Manage" asp-action="Index" title="Manage">Hello @User.Identity.Name!</a>
         <button type="submit" class="btn btn-link navbar-btn navbar-link logout--button">Log off</button>
     </form>
 }

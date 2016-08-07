@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using System;
 
 namespace PersonalWebsite.Services
@@ -18,7 +19,7 @@ namespace PersonalWebsite.Services
             passwordOptions.RequireDigit = true;
             passwordOptions.RequireLowercase = true;
             passwordOptions.RequireUppercase = true;
-            passwordOptions.RequireNonLetterOrDigit = false;
+            passwordOptions.RequireNonAlphanumeric = false;
             passwordOptions.RequiredLength = 7;
         }
     }

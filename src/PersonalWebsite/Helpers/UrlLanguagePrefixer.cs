@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNet.Razor.TagHelpers;
+﻿using Microsoft.AspNetCore.Razor.TagHelpers;
 using PersonalWebsite.Services;
 using System;
 using PersonalWebsite.Lib;
@@ -61,12 +61,12 @@ namespace PersonalWebsite.Helpers
 
             if (languageToPrefix == _pageConfiguration.DefaultLanguage)
             {
-                output.Attributes["href"].Value = $"/{currentHref}";
+                output.Attributes.SetAttribute("href", currentHref);
             }
             else
             {
                 var languageRepresentation = _languageManipulationService.LanguageDefinitionToLanguageRepresentation(languageToPrefix);
-                output.Attributes["href"].Value = $"/{languageRepresentation}/{currentHref}";
+                output.Attributes.SetAttribute("href", $"/{languageRepresentation}/{currentHref}");
             }
         }
     }

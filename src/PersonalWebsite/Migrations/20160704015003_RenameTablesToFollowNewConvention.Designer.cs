@@ -1,41 +1,40 @@
-using System;
+﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using PersonalWebsite.Models;
 
-namespace PersonalWebsite.Migrations
+namespace PersonalWebsite.Migrations.DataDb
 {
     [DbContext(typeof(DataDbContext))]
-    [Migration("20151107034644_CreateContentsAndTranslations")]
-    partial class CreateContentsAndTranslations
+    [Migration("20160704015003_RenameTablesToFollowNewConvention")]
+    partial class RenameTablesToFollowNewConvention
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0-beta8-15964")
+                .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("PersonalWebsite.Models.Content", b =>
                 {
-                    b.Property<Guid>("ContentGuid")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("Relational:GeneratedValueSql", "newsequentialid()");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("InternalCaption")
                         .IsRequired()
                         .HasAnnotation("MaxLength", 255);
 
-                    b.HasKey("ContentGuid");
+                    b.HasKey("Id");
+
+                    b.ToTable("Content");
                 });
 
             modelBuilder.Entity("PersonalWebsite.Models.Translation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<Guid?>("ContentContentGuid");
 
                     b.Property<int>("ContentId");
 
@@ -61,18 +60,23 @@ namespace PersonalWebsite.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ContentId");
+
                     b.HasIndex("Version", "ContentId")
                         .IsUnique();
 
                     b.HasIndex("Version", "UrlName")
                         .IsUnique();
+
+                    b.ToTable("Translation");
                 });
 
             modelBuilder.Entity("PersonalWebsite.Models.Translation", b =>
                 {
-                    b.HasOne("PersonalWebsite.Models.Content")
-                        .WithMany()
-                        .HasForeignKey("ContentContentGuid");
+                    b.HasOne("PersonalWebsite.Models.Content", "Content")
+                        .WithMany("Translation")
+                        .HasForeignKey("ContentId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
         }
     }

@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNet.Razor.TagHelpers;
+﻿using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Linq;
-using Microsoft.AspNet.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace PersonalWebsite.Helpers
 {
@@ -31,10 +31,10 @@ namespace PersonalWebsite.Helpers
         {
             base.Process(context, output);
 
-            var routeConstraints = ThisContext.ActionDescriptor.RouteConstraints;
+            var routeConstraints = ThisContext.ActionDescriptor.RouteValues;
 
-            var currentControllerName = routeConstraints.First(x => x.RouteKey == "controller").RouteValue;
-            var currentActionName = routeConstraints.First(x => x.RouteKey == "action").RouteValue;
+            var currentControllerName = routeConstraints.First(x => x.Key == "controller").Value;
+            var currentActionName = routeConstraints.First(x => x.Key == "action").Value;
 
             if (AspController == currentControllerName && AspAction == currentActionName)
             {
@@ -42,12 +42,12 @@ namespace PersonalWebsite.Helpers
                 if (output.Attributes.TryGetAttribute("Value", out maybeClass)) {
                     if(maybeClass != null)
                     {
-                        output.Attributes["class"] = $"{maybeClass.Value} {ConditionalCssClass}";
+                        output.Attributes.SetAttribute("class", $"{maybeClass.Value} {ConditionalCssClass}");
                         return;
                     }
                 }
 
-                output.Attributes["class"] = ConditionalCssClass;
+                output.Attributes.SetAttribute("class", ConditionalCssClass);
             }
         }
     }

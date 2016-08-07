@@ -1,13 +1,13 @@
-﻿using Microsoft.AspNet.Mvc;
-using Microsoft.Data.Entity;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using PersonalWebsite.Lib;
 using PersonalWebsite.Models;
 using PersonalWebsite.Repositories;
 using PersonalWebsite.Services;
+using PersonalWebsite.ViewModels.Content;
 using System;
 using Xunit;
-using PersonalWebsite.Lib;
-using PersonalWebsite.ViewModels.Content;
 
 namespace PersonalWebsite.Tests.Controllers
 {
@@ -44,9 +44,7 @@ namespace PersonalWebsite.Tests.Controllers
         {
             // Database setup
             var services = new ServiceCollection();
-            services.AddEntityFramework()
-                    .AddSqlServer()
-                    .AddInMemoryDatabase()
+            services.AddEntityFrameworkInMemoryDatabase()
                     .AddDbContext<DataDbContext>(options =>
                         options.UseInMemoryDatabase()
                     );
@@ -81,7 +79,7 @@ namespace PersonalWebsite.Tests.Controllers
 
             var actionResult = _homeController.Index(language);
 
-            Assert.IsType(typeof(HttpNotFoundResult), actionResult);
+            Assert.IsType(typeof(NotFoundResult), actionResult);
         }
 
         [Theory]
@@ -115,7 +113,7 @@ namespace PersonalWebsite.Tests.Controllers
 
         private void SetupContent()
         {
-            _dataDbContext.Contents.Add(
+            _dataDbContext.Content.Add(
                 new Content
                 {
                     InternalCaption = _pageConfiguration.DefaultPageInternalCaption,

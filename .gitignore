@@ -1,5 +1,3 @@
-PersonalWebsite/obj/*
-PersonalWebsite/bin/*
 .vs
 src/PersonalWebsite/wwwroot/bin
 src/PersonalWebsite/node_modules
@@ -10,3 +8,7 @@ src/PersonalWebsite/wwwroot/lib/*
 
 artifacts
 src/PersonalWebsite/bin
+src/PersonalWebsite/obj
+test/PersonalWebsite.tests/bin
+test/PersonalWebsite.tests/obj
+

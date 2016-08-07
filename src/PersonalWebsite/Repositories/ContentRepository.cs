@@ -1,9 +1,9 @@
-﻿using System;
+﻿using PersonalWebsite.Lib;
+using PersonalWebsite.Models;
+using PersonalWebsite.ViewModels.Content;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using PersonalWebsite.Models;
-using PersonalWebsite.Lib;
-using PersonalWebsite.ViewModels.Content;
 
 namespace PersonalWebsite.Repositories
 {
@@ -27,8 +27,8 @@ namespace PersonalWebsite.Repositories
         {
             GuardNotDisposed();
 
-            var contentAndTranslation = (from x in _dataDbContext.Translations
-                                         join c in _dataDbContext.Contents 
+            var contentAndTranslation = (from x in _dataDbContext.Translation
+                                         join c in _dataDbContext.Content 
                                             on new { Id = x.ContentId, Caption = internalCaption } 
                                             equals new { Id = c.Id, Caption = c.InternalCaption }
                                          where x.Version == langDefinition
@@ -46,8 +46,8 @@ namespace PersonalWebsite.Repositories
             GuardNotDisposed();
 
             var lowerCaseUrlName = urlName.ToLowerInvariant();
-            var contentAndTranslation = (from x in _dataDbContext.Translations
-                                         join c in _dataDbContext.Contents on x.ContentId equals c.Id
+            var contentAndTranslation = (from x in _dataDbContext.Translation
+                                         join c in _dataDbContext.Content on x.ContentId equals c.Id
                                          where x.Version == langDefinition
                                               && x.UrlName == lowerCaseUrlName
                                               && x.State == DataAvailabilityState.published
@@ -63,8 +63,8 @@ namespace PersonalWebsite.Repositories
         {
             GuardNotDisposed();
 
-            var internalNamesToLinkViewModels = (from t in _dataDbContext.Translations
-                                              join c in _dataDbContext.Contents on t.ContentId equals c.Id
+            var internalNamesToLinkViewModels = (from t in _dataDbContext.Translation
+                                              join c in _dataDbContext.Content on t.ContentId equals c.Id
                                               where
                                                 internalContentNames.Contains(c.InternalCaption)
                                                 && t.State == DataAvailabilityState.published

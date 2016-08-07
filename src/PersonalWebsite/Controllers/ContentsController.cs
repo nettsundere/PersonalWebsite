@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using PersonalWebsite.Lib;
 using PersonalWebsite.ViewModels.Content;
 using PersonalWebsite.Services;
@@ -61,14 +61,14 @@ namespace PersonalWebsite.Controllers
                     }
                     catch
                     {
-                        return HttpNotFound();
+                        return NotFound();
                     }
                 }
 
                 pageVM = _humanReadableContentService.GetPageByHumanReadableName(languageDefinition, urlName);
                 if (pageVM == null)
                 {
-                    return HttpNotFound();
+                    return NotFound();
                 }
             }
 

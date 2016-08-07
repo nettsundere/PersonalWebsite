@@ -34,21 +34,21 @@ namespace PersonalWebsite.Repositories
 
         public void DeleteContentsByInternalCaptions(IEnumerable<string> internalCaptions)
         {
-            var contentsToRemove = from x in _context.Contents
+            var contentsToRemove = from x in _context.Content
                                    where internalCaptions.Contains(x.InternalCaption)
                                    select x;
 
-            _context.Contents.RemoveRange(contentsToRemove);
+            _context.Content.RemoveRange(contentsToRemove);
             _context.SaveChanges();
         }
 
         public void EnsureContentsRangeAvailable(IEnumerable<Content> contentsRange)
         {
             var newContents = from x in contentsRange
-                              let presentInternalCaptions = from y in _context.Contents select y.InternalCaption
+                              let presentInternalCaptions = from y in _context.Content select y.InternalCaption
                               where !presentInternalCaptions.Contains(x.InternalCaption)
                               select x;
-            _context.Contents.AddRange(newContents);
+            _context.Content.AddRange(newContents);
             _context.SaveChanges();
         }
     }

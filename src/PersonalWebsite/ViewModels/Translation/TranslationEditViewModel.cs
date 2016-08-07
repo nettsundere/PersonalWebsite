@@ -14,9 +14,11 @@ namespace PersonalWebsite.ViewModels.Translation
         [Required]
         public LanguageDefinition Version { get; set; }
 
+        [Required]
         [DisplayFormat(ConvertEmptyStringToNull = false)]
         public string Description { get; set; }
 
+        [Required]
         [DisplayFormat(ConvertEmptyStringToNull = false)]
         public string ContentMarkup { get; set; }
 

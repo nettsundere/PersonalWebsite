@@ -1,4 +1,4 @@
-@model PageViewModel
+﻿@model PageViewModel
 
 <!DOCTYPE html>
 <html>
@@ -6,11 +6,10 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>@RenderSection("Title") | @Html.Partial("_Title")</title>
-        <!-- inject:css -->
-        <link rel="stylesheet" href="/css/Build/vendor.css">
-        <link rel="stylesheet" href="/css/Build/site.min.css">
-        <!-- endinject -->
-
+        
+        <environment names="Development,Staging,Production">
+            <link rel="stylesheet" href="~/css/Build/site.min.css" asp-append-version="true" />
+        </environment>
     </head>
     <body>
         <div class="container-fluid">
@@ -79,9 +78,9 @@
                 </section>
             </div>
         </div>
-        <!-- inject:js -->
-        <script src="/js/Build/vendor.js"></script>
-        <script src="/js/Build/site.min.js"></script>
-        <!-- endinject -->
+
+        <environment names="Development,Staging,Production">
+            <script src="~/js/Build/site.min.js" asp-append-version="true"></script>
+        </environment>
     </body>
 </html>

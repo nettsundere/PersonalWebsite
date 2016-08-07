@@ -2,7 +2,7 @@
 using System;
 using System.Linq;
 using PersonalWebsite.Lib;
-using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Identity;
 
 namespace PersonalWebsite.Repositories
 {

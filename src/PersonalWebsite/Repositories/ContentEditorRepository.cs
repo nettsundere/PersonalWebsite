@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.EntityFrameworkCore;
+using PersonalWebsite.Lib;
+using PersonalWebsite.Lib.Extentions;
+using PersonalWebsite.Models;
 using PersonalWebsite.ViewModels.Content;
 using PersonalWebsite.ViewModels.Translation;
-
-using PersonalWebsite.Models;
-using Microsoft.Data.Entity;
-using PersonalWebsite.Lib.Extentions;
-using PersonalWebsite.Lib;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PersonalWebsite.Repositories
 {
@@ -31,7 +30,7 @@ namespace PersonalWebsite.Repositories
         {
             GuardNotDisposed();
 
-            var content = _dataDbContext.Contents.Add(new Content
+            var content = _dataDbContext.Content.Add(new Content
             {
                 InternalCaption = contentEditViewModel.InternalCaption
             });
@@ -47,7 +46,7 @@ namespace PersonalWebsite.Repositories
         {
             GuardNotDisposed();
 
-            var content = _dataDbContext.Contents.Include(c => c.Translations).FirstOrDefault(x => x.Id == contentId);
+            var content = _dataDbContext.Content.Include(c => c.Translations).FirstOrDefault(x => x.Id == contentId);
             if (content != null)
             {
                 var vm = new ContentEditViewModel(content);
@@ -72,7 +71,7 @@ namespace PersonalWebsite.Repositories
         {
             GuardNotDisposed();
 
-            var contentsQuery = from x in _dataDbContext.Contents
+            var contentsQuery = from x in _dataDbContext.Content
                                orderby x.Id
                                select new ContentIndexLinkUI
                                {
@@ -90,7 +89,7 @@ namespace PersonalWebsite.Repositories
         {
             GuardNotDisposed();
 
-            var content = _dataDbContext.Contents.Include(c => c.Translations)
+            var content = _dataDbContext.Content.Include(c => c.Translations)
                                         .Single(x => x.Id == contentEditViewModel.Id);
 
             var updateTime = DateTime.UtcNow;
@@ -124,7 +123,7 @@ namespace PersonalWebsite.Repositories
                 content.Translations.Add(newTranslation);
             }
 
-            _dataDbContext.Contents.Update(content);
+            _dataDbContext.Content.Update(content);
             _dataDbContext.SaveChanges();
 
             return contentEditViewModel;
@@ -133,9 +132,9 @@ namespace PersonalWebsite.Repositories
         public void Delete(int contentId)
         {
             GuardNotDisposed();
-            var content = _dataDbContext.Contents.Single(x => x.Id == contentId);
+            var content = _dataDbContext.Content.Single(x => x.Id == contentId);
 
-            _dataDbContext.Contents.Remove(content);
+            _dataDbContext.Content.Remove(content);
             _dataDbContext.SaveChanges();
         }
 

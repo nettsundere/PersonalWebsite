@@ -1,8 +1,8 @@
-using System;
-using Microsoft.Data.Entity;
-using Microsoft.Data.Entity.Infrastructure;
-using Microsoft.Data.Entity.Metadata;
-using Microsoft.Data.Entity.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using PersonalWebsite.Models;
 
 namespace PersonalWebsite.Migrations
@@ -13,7 +13,7 @@ namespace PersonalWebsite.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
+                .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("PersonalWebsite.Models.Content", b =>
@@ -26,6 +26,8 @@ namespace PersonalWebsite.Migrations
                         .HasAnnotation("MaxLength", 255);
 
                     b.HasKey("Id");
+
+                    b.ToTable("Content");
                 });
 
             modelBuilder.Entity("PersonalWebsite.Models.Translation", b =>
@@ -57,18 +59,23 @@ namespace PersonalWebsite.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ContentId");
+
                     b.HasIndex("Version", "ContentId")
                         .IsUnique();
 
                     b.HasIndex("Version", "UrlName")
                         .IsUnique();
+
+                    b.ToTable("Translation");
                 });
 
             modelBuilder.Entity("PersonalWebsite.Models.Translation", b =>
                 {
-                    b.HasOne("PersonalWebsite.Models.Content")
-                        .WithMany()
-                        .HasForeignKey("ContentId");
+                    b.HasOne("PersonalWebsite.Models.Content", "Content")
+                        .WithMany("Translations")
+                        .HasForeignKey("ContentId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
         }
     }
