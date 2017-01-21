@@ -5,13 +5,31 @@ using System;
 
 namespace PersonalWebsite.Services
 {
+    /// <summary>
+    /// Human-readable content retrieval service.
+    /// </summary>
     public class HumanReadableContentService : IHumanReadableContentService
     {
+        /// <summary>
+        /// Content repository.
+        /// </summary>
         private readonly IContentRepository _contentRepository;
+
+        /// <summary>
+        /// Page configuration.
+        /// </summary>
         private readonly IPageConfiguration _pageConfiguration;
 
+        /// <summary>
+        /// Disposing status.
+        /// </summary>
         private bool _isDisposed = false;
 
+        /// <summary>
+        /// Create <see cref="HumanReadableContentService"/>.
+        /// </summary>
+        /// <param name="pageConfiguration">Page configuration.</param>
+        /// <param name="contentRespository">Content repository.</param>
         public HumanReadableContentService(
             IPageConfiguration pageConfiguration,
             IContentRepository contentRespository)
@@ -51,10 +69,16 @@ namespace PersonalWebsite.Services
             return GetPageViewModelBy(languageDefinition, () => _contentRepository.FindTranslatedContentByUrlName(languageDefinition, urlName));
         }
 
+        /// <summary>
+        /// Finalizer.
+        /// </summary>
         ~HumanReadableContentService() {
             Dispose();
         }
 
+        /// <summary>
+        /// Dispose the object.
+        /// </summary>
         public void Dispose()
         {
             if (!_isDisposed)
@@ -65,14 +89,23 @@ namespace PersonalWebsite.Services
             }
         }
 
+        /// <summary>
+        /// Throw if <see cref="HumanReadableContentService"/> is disposed.
+        /// </summary>
         private void GuardNotDisposed()
         {
             if (_isDisposed)
             {
-                throw new ObjectDisposedException(nameof(ContentRepository));
+                throw new ObjectDisposedException(nameof(HumanReadableContentService));
             }
         }
 
+        /// <summary>
+        /// Get <see cref="PageViewModel"/> by language using content view model retrieval method.
+        /// </summary>
+        /// <param name="languageDefinition">Language.</param>
+        /// <param name="contentViewModelMethod">Localized content retrieval method.</param>
+        /// <returns></returns>
         private PageViewModel GetPageViewModelBy(LanguageDefinition languageDefinition, Func<ContentViewModel> contentViewModelMethod)
         {
             GuardNotDisposed();

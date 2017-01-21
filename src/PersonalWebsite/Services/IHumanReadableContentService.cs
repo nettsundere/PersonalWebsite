@@ -4,6 +4,9 @@ using System;
 
 namespace PersonalWebsite.Services
 {
+    /// <summary>
+    /// Human-readable content retrieval service.
+    /// </summary>
     public interface IHumanReadableContentService : IDisposable
     {
         PageViewModel GetPageByHumanReadableName(LanguageDefinition languageDefinition, string urlName);

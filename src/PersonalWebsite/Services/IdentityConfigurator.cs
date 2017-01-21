@@ -4,6 +4,9 @@ using System;
 
 namespace PersonalWebsite.Services
 {
+    /// <summary>
+    /// Identity configurator.
+    /// </summary>
     public static class IdentityConfigurator
     {
         /// <summary>

@@ -88,6 +88,5 @@ namespace PersonalWebsite.Repositories
                 throw new ObjectDisposedException(nameof(ContentRepository));
             }
         }
-
     }
 }
