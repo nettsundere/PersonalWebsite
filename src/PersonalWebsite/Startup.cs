@@ -53,7 +53,7 @@ namespace PersonalWebsite
 
             services.AddTransient<IContentRepository, ContentRepository>();
             services.AddTransient<IApplicationUserRepository, ApplicationUserRepository>();
-            services.AddTransient<IHumanReadableContentService, HumanReadableContentService>();
+            services.AddTransient<IHumanReadableContentRetrievalService, HumanReadableContentRetrievalService>();
             services.AddTransient<IRequiredDataRepository, RequiredDataRepository>();
             services.AddTransient<IInternalContentRepository, InternalContentRepository>();
 

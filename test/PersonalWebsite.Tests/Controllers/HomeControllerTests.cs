@@ -14,7 +14,7 @@ namespace PersonalWebsite.Tests.Controllers
     public class HomeControllerTests
     {
         private readonly IPageConfiguration _pageConfiguration;
-        private readonly IHumanReadableContentService _humanReadableContentService;
+        private readonly IHumanReadableContentRetrievalService _humanReadableContentService;
         private readonly ILanguageManipulationService _languageManipulationService;
 
         private readonly IContentRepository _contentRepository;
@@ -57,7 +57,7 @@ namespace PersonalWebsite.Tests.Controllers
             _dataDbContext = new DataDbContext(optionsBuilder.Options);
 
             _contentRepository = new ContentRepository(_dataDbContext);
-            _humanReadableContentService = new HumanReadableContentService(_pageConfiguration, _contentRepository);
+            _humanReadableContentService = new HumanReadableContentRetrievalService(_pageConfiguration, _contentRepository);
 
             _languageManipulationService = new LanguageManipulationService();
 

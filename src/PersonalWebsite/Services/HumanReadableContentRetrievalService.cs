@@ -8,7 +8,7 @@ namespace PersonalWebsite.Services
     /// <summary>
     /// Human-readable content retrieval service.
     /// </summary>
-    public class HumanReadableContentService : IHumanReadableContentService
+    public class HumanReadableContentRetrievalService : IHumanReadableContentRetrievalService
     {
         /// <summary>
         /// Content repository.
@@ -26,11 +26,11 @@ namespace PersonalWebsite.Services
         private bool _isDisposed = false;
 
         /// <summary>
-        /// Create <see cref="HumanReadableContentService"/>.
+        /// Create <see cref="HumanReadableContentRetrievalService"/>.
         /// </summary>
         /// <param name="pageConfiguration">Page configuration.</param>
         /// <param name="contentRespository">Content repository.</param>
-        public HumanReadableContentService(
+        public HumanReadableContentRetrievalService(
             IPageConfiguration pageConfiguration,
             IContentRepository contentRespository)
         {
@@ -72,7 +72,7 @@ namespace PersonalWebsite.Services
         /// <summary>
         /// Finalizer.
         /// </summary>
-        ~HumanReadableContentService() {
+        ~HumanReadableContentRetrievalService() {
             Dispose();
         }
 
@@ -90,13 +90,13 @@ namespace PersonalWebsite.Services
         }
 
         /// <summary>
-        /// Throw if <see cref="HumanReadableContentService"/> is disposed.
+        /// Throw if <see cref="HumanReadableContentRetrievalService"/> is disposed.
         /// </summary>
         private void GuardNotDisposed()
         {
             if (_isDisposed)
             {
-                throw new ObjectDisposedException(nameof(HumanReadableContentService));
+                throw new ObjectDisposedException(nameof(HumanReadableContentRetrievalService));
             }
         }
 

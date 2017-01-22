@@ -11,8 +11,19 @@ namespace PersonalWebsite.Controllers
     /// </summary>
     public class ContentsController : Controller
     {
-        private readonly IHumanReadableContentService _humanReadableContentService;
+        /// <summary>
+        /// Human-readable content retrieval service.
+        /// </summary>
+        private readonly IHumanReadableContentRetrievalService _humanReadableContentService;
+
+        /// <summary>
+        /// Language manipulation service.
+        /// </summary>
         private readonly ILanguageManipulationService _languageManipulationService;
+
+        /// <summary>
+        /// Page configuration.
+        /// </summary>
         private readonly IPageConfiguration _pageConfiguration;
 
         /// <summary>
@@ -23,7 +34,7 @@ namespace PersonalWebsite.Controllers
         /// <param name="languageManipulationService">Language manipulation service.</param>
         public ContentsController(
             IPageConfiguration pageConfiguration,
-            IHumanReadableContentService humanReadableContentService,
+            IHumanReadableContentRetrievalService humanReadableContentService,
             ILanguageManipulationService languageManipulationService) {
 
             if(pageConfiguration == null)

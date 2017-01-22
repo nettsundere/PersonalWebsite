@@ -14,7 +14,7 @@ namespace PersonalWebsite.Controllers
         /// <summary>
         /// Human-readable content service.
         /// </summary>
-        private readonly IHumanReadableContentService _humanReadableContentService;
+        private readonly IHumanReadableContentRetrievalService _humanReadableContentService;
         
         /// <summary>
         /// Language manipulation service. 
@@ -34,7 +34,7 @@ namespace PersonalWebsite.Controllers
         /// <param name="languageManipulationService">Language manipulation service.</param>
         public HomeController(
             IPageConfiguration pageConfiguration,
-            IHumanReadableContentService humanReadableContentService, 
+            IHumanReadableContentRetrievalService humanReadableContentService, 
             ILanguageManipulationService languageManipulationService) 
         {
             if(pageConfiguration == null)
