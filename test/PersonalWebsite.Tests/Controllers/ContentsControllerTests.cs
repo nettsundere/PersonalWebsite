@@ -22,7 +22,7 @@ namespace PersonalWebsite.Tests.Controllers
         private readonly ILanguageManipulationService _languageManipulationService;
 
         private readonly IContentRepository _contentRepository;
-        private readonly PersonalWebsite.Controllers.ContentsController _contentsController;
+        private readonly ContentsController _contentsController;
         private readonly DataDbContext _dataDbContext;
 
         /// <summary>

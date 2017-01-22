@@ -22,7 +22,7 @@ namespace PersonalWebsite.Tests.Controllers
         private readonly ILanguageManipulationService _languageManipulationService;
 
         private readonly IContentRepository _contentRepository;
-        private readonly PersonalWebsite.Controllers.HomeController _homeController;
+        private readonly HomeController _homeController;
         private readonly DataDbContext _dataDbContext;
 
         private class FakePageConfiguration : IPageConfiguration
