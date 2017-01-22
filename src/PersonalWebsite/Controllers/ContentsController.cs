@@ -1,17 +1,26 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PersonalWebsite.Lib;
-using PersonalWebsite.ViewModels.Content;
 using PersonalWebsite.Services;
+using PersonalWebsite.ViewModels.Content;
+using System;
 
 namespace PersonalWebsite.Controllers
 {
+    /// <summary>
+    /// Content retrieval controller.
+    /// </summary>
     public class ContentsController : Controller
     {
         private readonly IHumanReadableContentService _humanReadableContentService;
         private readonly ILanguageManipulationService _languageManipulationService;
         private readonly IPageConfiguration _pageConfiguration;
 
+        /// <summary>
+        /// Create <see cref="ContentsController"/>.
+        /// </summary>
+        /// <param name="pageConfiguration">Page configuration.</param>
+        /// <param name="humanReadableContentService">Human-readable content retrieval service.</param>
+        /// <param name="languageManipulationService">Language manipulation service.</param>
         public ContentsController(
             IPageConfiguration pageConfiguration,
             IHumanReadableContentService humanReadableContentService,

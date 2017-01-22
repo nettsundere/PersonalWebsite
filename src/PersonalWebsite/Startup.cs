@@ -89,10 +89,6 @@ namespace PersonalWebsite
             }
             else
             {
-                // Add Error handling middleware which catches all application specific errors and
-                // sends the request to the following path or controller action.
-                app.UseExceptionHandler("/Home/Error");
-
                 loggerFactory.AddDebug(LogLevel.Critical);
             }
 
