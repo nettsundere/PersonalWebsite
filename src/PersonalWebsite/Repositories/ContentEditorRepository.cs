@@ -10,12 +10,25 @@ using System.Linq;
 
 namespace PersonalWebsite.Repositories
 {
+    /// <summary>
+    /// Content editor repository.
+    /// </summary>
     public class ContentEditorRepository : IContentEditorRepository
     {
+        /// <summary>
+        /// Disposing status.
+        /// </summary>
         private bool _isDisposed = false;
 
+        /// <summary>
+        /// Data context.
+        /// </summary>
         private readonly DataDbContext _dataDbContext;
 
+        /// <summary>
+        /// Create <see cref="ContentEditorRepository"/>.
+        /// </summary>
+        /// <param name="dataDbContext">Data context.</param>
         public ContentEditorRepository(DataDbContext dataDbContext)
         {
             if(dataDbContext == null)
@@ -26,6 +39,11 @@ namespace PersonalWebsite.Repositories
             _dataDbContext = dataDbContext;
         }
 
+        /// <summary>
+        /// Create <see cref="ContentEditViewModel"/> representation in DB.
+        /// </summary>
+        /// <param name="contentEditViewModel">Content representation to store in DB.</param>
+        /// <returns>Updated content representation.</returns>
         public ContentEditViewModel Create(ContentEditViewModel contentEditViewModel)
         {
             GuardNotDisposed();
@@ -42,6 +60,11 @@ namespace PersonalWebsite.Repositories
             return new ContentEditViewModel(entity);
         }
 
+        /// <summary>
+        /// Read a content.
+        /// </summary>
+        /// <param name="contentId">Id of a content to read.</param>
+        /// <returns>Content representation.</returns>
         public ContentEditViewModel Read(int contentId)
         {
             GuardNotDisposed();
@@ -66,7 +89,11 @@ namespace PersonalWebsite.Repositories
                 return null;
             }       
         }
-        
+
+        /// <summary>
+        /// Read content list.
+        /// </summary>
+        /// <returns>List of content representations.</returns>
         public ContentIndexViewModel ReadList()
         {
             GuardNotDisposed();
@@ -85,6 +112,11 @@ namespace PersonalWebsite.Repositories
             };
         }
 
+        /// <summary>
+        /// Update a content.
+        /// </summary>
+        /// <param name="contentEditViewModel">Content to update.</param>
+        /// <returns>Updated content.</returns>
         public ContentEditViewModel Update(ContentEditViewModel contentEditViewModel)
         {
             GuardNotDisposed();
@@ -129,6 +161,10 @@ namespace PersonalWebsite.Repositories
             return contentEditViewModel;
         }
 
+        /// <summary>
+        /// Delete a content by id.
+        /// </summary>
+        /// <param name="contentId">Id of a content to delete.</param>
         public void Delete(int contentId)
         {
             GuardNotDisposed();
@@ -138,6 +174,9 @@ namespace PersonalWebsite.Repositories
             _dataDbContext.SaveChanges();
         }
 
+        /// <summary>
+        /// Dispose the object.
+        /// </summary>
         public void Dispose()
         {
             if (!_isDisposed)
@@ -148,11 +187,17 @@ namespace PersonalWebsite.Repositories
             }
         }
 
+        /// <summary>
+        /// Finalizer.
+        /// </summary>
         ~ContentEditorRepository()
         {
             Dispose();
         }
 
+        /// <summary>
+        /// Throw if <see cref="ContentEditorRepository"/> is disposed.
+        /// </summary>
         private void GuardNotDisposed()
         {
             if (_isDisposed)

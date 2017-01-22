@@ -7,12 +7,25 @@ using System.Linq;
 
 namespace PersonalWebsite.Repositories
 {
+    /// <summary>
+    /// Content repository.
+    /// </summary>
     public class ContentRepository : IContentRepository
     {
+        /// <summary>
+        /// Data context.
+        /// </summary>
         private DataDbContext _dataDbContext;
 
+        /// <summary>
+        /// Disposing status.
+        /// </summary>
         private bool _isDisposed = false;
 
+        /// <summary>
+        /// Create <see cref="ContentRepository"/>.
+        /// </summary>
+        /// <param name="context">Data context.</param>
         public ContentRepository(DataDbContext context)
         {
             if(context == null)
@@ -23,6 +36,12 @@ namespace PersonalWebsite.Repositories
             _dataDbContext = context;
         }
 
+        /// <summary>
+        /// Find translated content by language and internal caption.
+        /// </summary>
+        /// <param name="langDefinition">Required language.</param>
+        /// <param name="internalCaption">Required internal caption.</param>
+        /// <returns>Translated content representation.</returns>
         public ContentViewModel FindTranslatedContentByInternalCaption(LanguageDefinition langDefinition, string internalCaption)
         {
             GuardNotDisposed();
@@ -41,6 +60,12 @@ namespace PersonalWebsite.Repositories
             return contentAndTranslation;
         }
 
+        /// <summary>
+        /// Find translated content by language and url name.
+        /// </summary>
+        /// <param name="langDefinition">Required language.</param>
+        /// <param name="urlName">Required Url name.</param>
+        /// <returns>Translated content representation.</returns>
         public ContentViewModel FindTranslatedContentByUrlName(LanguageDefinition langDefinition, string urlName)
         {
             GuardNotDisposed();
@@ -59,6 +84,12 @@ namespace PersonalWebsite.Repositories
             return contentAndTranslation;
         }
 
+        /// <summary>
+        /// Get content links for a particular language.
+        /// </summary>
+        /// <param name="languageDefinition">Required language.</param>
+        /// <param name="internalContentNames">List of required content names.</param>
+        /// <returns>Data required to display all human-readable links to content pages depending on current language.</returns>
         public ContentLinksViewModel GetContentLinksPresentationData(LanguageDefinition languageDefinition, IList<string> internalContentNames)
         {
             GuardNotDisposed();
@@ -83,11 +114,17 @@ namespace PersonalWebsite.Repositories
                 internalNamesToLinkViewModels);
         }
 
+        /// <summary>
+        /// Finalizer.
+        /// </summary>
         ~ContentRepository()
         {
             Dispose();
         }
 
+        /// <summary>
+        /// Dispose the object.
+        /// </summary>
         public void Dispose()
         {
             if (!_isDisposed)
@@ -106,6 +143,13 @@ namespace PersonalWebsite.Repositories
             }
         }
 
+        /// <summary>
+        /// Fill content view model fields.
+        /// </summary>
+        /// <param name="contentInternalCaption">Internal caption of a content.</param>
+        /// <param name="translation">Content translation.</param>
+        /// <param name="urlNames">Url names (for all content translations).</param>
+        /// <returns>Data required to display a content.</returns>
         private ContentViewModel FillContentViewModel(string contentInternalCaption, Translation translation, IDictionary<LanguageDefinition, string> urlNames)
         {
             return new ContentViewModel

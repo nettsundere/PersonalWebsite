@@ -5,6 +5,9 @@ using PersonalWebsite.ViewModels.Content;
 
 namespace PersonalWebsite.Repositories
 {
+    /// <summary>
+    /// Content repository.
+    /// </summary>
     public interface IContentRepository : IDisposable
     {
         ContentViewModel FindTranslatedContentByUrlName(LanguageDefinition langDefinition, string urlName);

@@ -14,8 +14,15 @@ namespace PersonalWebsite.Repositories
     /// </summary>
     public class RequiredDataRepository : IRequiredDataRepository
     {
+        /// <summary>
+        /// Configuration.
+        /// </summary>
         private readonly IConfiguration _configuration;
 
+        /// <summary>
+        /// Create <see cref="RequiredDataRepository"/>.
+        /// </summary>
+        /// <param name="configuration">Configuration.</param>
         public RequiredDataRepository(IConfiguration configuration)
         {
             if(configuration == null)
@@ -25,7 +32,7 @@ namespace PersonalWebsite.Repositories
             _configuration = configuration;
         }
 
-        public IList<Content> GetCriticalContent()
+        public IReadOnlyList<Content> GetCriticalContent()
         {
             var contents = new [] {
                 new Content

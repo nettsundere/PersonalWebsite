@@ -4,9 +4,12 @@ using PersonalWebsite.Lib;
 
 namespace PersonalWebsite.Repositories
 {
+    /// <summary>
+    /// Required data repository.
+    /// </summary>
     public interface IRequiredDataRepository
     {
-        IList<Content> GetCriticalContent();
+        IReadOnlyList<Content> GetCriticalContent();
 
         ApplicationUserData GetInitialUserData();
     }

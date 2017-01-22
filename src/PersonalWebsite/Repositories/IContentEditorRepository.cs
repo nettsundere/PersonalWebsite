@@ -3,6 +3,9 @@ using PersonalWebsite.ViewModels.Content;
 
 namespace PersonalWebsite.Repositories
 {
+    /// <summary>
+    /// Content editor repository.
+    /// </summary>
     public interface IContentEditorRepository : IDisposable
     {
         ContentEditViewModel Create(ContentEditViewModel contentEditViewModel);

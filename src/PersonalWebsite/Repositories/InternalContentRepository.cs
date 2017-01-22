@@ -5,12 +5,19 @@ using System.Linq;
 
 namespace PersonalWebsite.Repositories
 {
+    /// <summary>
+    /// Internal content repository.
+    /// </summary>
     public class InternalContentRepository : IInternalContentRepository
     {
         private bool _isDisposed = false;
 
         private readonly DataDbContext _context;
 
+        /// <summary>
+        /// Create <see cref="InternalContentRepository"/>.
+        /// </summary>
+        /// <param name="context">Data context.</param>
         public InternalContentRepository(DataDbContext context)
         {
             _context = context;
@@ -22,9 +29,8 @@ namespace PersonalWebsite.Repositories
             {
                  _context.Dispose();
                 _isDisposed = true;
+                GC.SuppressFinalize(this);
             }
-
-            GC.SuppressFinalize(this);
         }
 
         ~InternalContentRepository()
