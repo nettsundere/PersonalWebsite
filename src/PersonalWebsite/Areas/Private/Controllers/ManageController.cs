@@ -1,28 +1,62 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PersonalWebsite.Models;
-using PersonalWebsite.Services;
 using PersonalWebsite.ViewModels.Manage;
+using System;
+using System.Threading.Tasks;
 
 namespace PersonalWebsite.Areas.Private.Controllers
 {
+    /// <summary>
+    /// Management controller.
+    /// </summary>
     [Authorize]
     [Area(nameof(Private))]
     public class ManageController : Controller
     {
+        /// <summary>
+        /// Types of messages to show.
+        /// </summary>
+        public enum ManageMessageId
+        {
+            /// <summary>
+            /// Password changed: success.
+            /// </summary>
+            ChangePasswordSuccess,
+
+            /// <summary>
+            /// Error.
+            /// </summary>
+            Error
+        }
+
+        /// <summary>
+        /// User Manager.
+        /// </summary>
         private readonly UserManager<ApplicationUser> _userManager;
+
+        /// <summary>
+        /// SignIn Manager.
+        /// </summary>
         private readonly SignInManager<ApplicationUser> _signInManager;
+
+        /// <summary>
+        /// Logger.
+        /// </summary>
         private readonly ILogger _logger;
 
+        /// <summary>
+        /// Create <see cref="ManageController"/>
+        /// </summary>
+        /// <param name="userManager">User manager.</param>
+        /// <param name="signInManager">SignIn manager.</param>
+        /// <param name="loggerFactory">Logger factory.</param>
         public ManageController(
-        UserManager<ApplicationUser> userManager,
-        SignInManager<ApplicationUser> signInManager,
-        ILoggerFactory loggerFactory)
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            ILoggerFactory loggerFactory)
         {
             if (userManager == null)
             {
@@ -44,40 +78,43 @@ namespace PersonalWebsite.Areas.Private.Controllers
             _logger = loggerFactory.CreateLogger<ManageController>();
         }
 
-        //
-        // GET: /Manage/Index
+        /// <summary>
+        /// Get Index, User management index page.
+        /// </summary>
+        /// <param name="message">Optional message to show.</param>
+        /// <returns>User management index page.</returns>
         [HttpGet]
         public async Task<IActionResult> Index(ManageMessageId? message = null)
         {
             ViewData["StatusMessage"] =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-                : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
                 : message == ManageMessageId.Error ? "An error has occurred."
-                : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
-                : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
                 : "";
 
             var user = await GetCurrentUserAsync();
             var model = new IndexViewModel
             {
-                HasPassword = await _userManager.HasPasswordAsync(user),
-                Logins = await _userManager.GetLoginsAsync(user),
-                BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user)
+                HasPassword = true,
+                Logins = await _userManager.GetLoginsAsync(user)
             };
             return View(model);
         }
 
-        //
-        // GET: /Manage/ChangePassword
+        /// <summary>
+        /// Get ChangePassword, get an interface to change a password.
+        /// </summary>
+        /// <returns>Interface to change a password.</returns>
         [HttpGet]
         public IActionResult ChangePassword()
         {
             return View();
         }
 
-        //
-        // POST: /Manage/ChangePassword
+        /// <summary>
+        /// Post ChangePassword, password change attempt.
+        /// </summary>
+        /// <param name="model">Password change view model.</param>
+        /// <returns>Redirect to management index or error.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
@@ -102,98 +139,10 @@ namespace PersonalWebsite.Areas.Private.Controllers
             return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
         }
 
-        //
-        // GET: /Manage/SetPassword
-        [HttpGet]
-        public IActionResult SetPassword()
-        {
-            return View();
-        }
-
-        //
-        // POST: /Manage/SetPassword
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SetPassword(SetPasswordViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            var user = await GetCurrentUserAsync();
-            if (user != null)
-            {
-                var result = await _userManager.AddPasswordAsync(user, model.NewPassword);
-                if (result.Succeeded)
-                {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction(nameof(Index), new { Message = ManageMessageId.SetPasswordSuccess });
-                }
-                AddErrors(result);
-                return View(model);
-            }
-            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
-        }
-
-        //GET: /Manage/ManageLogins
-        [HttpGet]
-        public async Task<IActionResult> ManageLogins(ManageMessageId? message = null)
-        {
-            ViewData["StatusMessage"] =
-                message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
-                : message == ManageMessageId.AddLoginSuccess ? "The external login was added."
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : "";
-            var user = await GetCurrentUserAsync();
-            if (user == null)
-            {
-                return View("Error");
-            }
-            var userLogins = await _userManager.GetLoginsAsync(user);
-            var otherLogins = _signInManager.GetExternalAuthenticationSchemes().Where(auth => userLogins.All(ul => auth.AuthenticationScheme != ul.LoginProvider)).ToList();
-            ViewData["ShowRemoveButton"] = user.PasswordHash != null || userLogins.Count > 1;
-            return View(new ManageLoginsViewModel
-            {
-                CurrentLogins = userLogins,
-                OtherLogins = otherLogins
-            });
-        }
-
-        //
-        // POST: /Manage/LinkLogin
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult LinkLogin(string provider)
-        {
-            // Request a redirect to the external login provider to link a login for the current user
-            var redirectUrl = Url.Action("LinkLoginCallback", "Manage");
-            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl, _userManager.GetUserId(User));
-            return Challenge(properties, provider);
-        }
-
-        //
-        // GET: /Manage/LinkLoginCallback
-        [HttpGet]
-        public async Task<ActionResult> LinkLoginCallback()
-        {
-            var user = await GetCurrentUserAsync();
-            if (user == null)
-            {
-                return View("Error");
-            }
-            var info = await _signInManager.GetExternalLoginInfoAsync(await _userManager.GetUserIdAsync(user));
-            if (info == null)
-            {
-                return RedirectToAction(nameof(ManageLogins), new { Message = ManageMessageId.Error });
-            }
-            var result = await _userManager.AddLoginAsync(user, info);
-            var message = result.Succeeded ? ManageMessageId.AddLoginSuccess : ManageMessageId.Error;
-            return RedirectToAction(nameof(ManageLogins), new { Message = message });
-        }
-
-        #region Helpers
-
+        /// <summary>
+        /// Add errors.
+        /// </summary>
+        /// <param name="result">Identity result.</param>
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)
@@ -202,23 +151,13 @@ namespace PersonalWebsite.Areas.Private.Controllers
             }
         }
 
-        public enum ManageMessageId
-        {
-            AddPhoneSuccess,
-            AddLoginSuccess,
-            ChangePasswordSuccess,
-            SetTwoFactorSuccess,
-            SetPasswordSuccess,
-            RemoveLoginSuccess,
-            RemovePhoneSuccess,
-            Error
-        }
-
+        /// <summary>
+        /// Get current user.
+        /// </summary>
+        /// <returns>Current application user.</returns>
         private Task<ApplicationUser> GetCurrentUserAsync()
         {
             return _userManager.GetUserAsync(HttpContext.User);
         }
-
-        #endregion
     }
 }
