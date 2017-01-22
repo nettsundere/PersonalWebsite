@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using PersonalWebsite.Controllers;
 using PersonalWebsite.Lib;
 using PersonalWebsite.Models;
 using PersonalWebsite.Repositories;
@@ -11,6 +12,9 @@ using Xunit;
 
 namespace PersonalWebsite.Tests.Controllers
 {
+    /// <summary>
+    /// Test <see cref="HomeController"/>.
+    /// </summary>
     public class HomeControllerTests
     {
         private readonly IPageConfiguration _pageConfiguration;
@@ -40,6 +44,9 @@ namespace PersonalWebsite.Tests.Controllers
             }
         }
 
+        /// <summary>
+        /// Create <see cref="HomeControllerTests"/>.
+        /// </summary>
         public HomeControllerTests()
         {
             // Database setup
@@ -62,7 +69,7 @@ namespace PersonalWebsite.Tests.Controllers
             _languageManipulationService = new LanguageManipulationService();
 
             // Controller initialization
-            _homeController = new PersonalWebsite.Controllers.HomeController(
+            _homeController = new HomeController(
                 _pageConfiguration,
                 _humanReadableContentService,
                 _languageManipulationService
