@@ -18,7 +18,7 @@ namespace PersonalWebsite.Repositories
         /// <summary>
         /// Disposing status.
         /// </summary>
-        private bool _isDisposed = false;
+        private bool _isDisposed;
 
         /// <summary>
         /// Data context.
