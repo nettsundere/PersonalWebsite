@@ -11,9 +11,9 @@ namespace PersonalWebsite.Areas.Private.Controllers
     public class DashboardController : Controller
     {
         /// <summary>
-        /// Render list of all content.
+        /// Get Index, Render dashboard - main page.
         /// </summary>
-        /// <returns>List of all content.</returns>
+        /// <returns>Dashboard.</returns>
         public IActionResult Index()
         {
             return View();
