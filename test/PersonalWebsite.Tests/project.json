@@ -6,7 +6,8 @@
     "dotnet-test-xunit": "2.2.0-preview2-build1029",
     "Microsoft.EntityFrameworkCore.InMemory": "1.1.0",
     "Microsoft.DotNet.InternalAbstractions": "1.0.1-beta-003206",
-    "PersonalWebsite": "1.0.0-*"
+    "PersonalWebsite": "1.0.0-*",
+    "Moq": "4.6.38-alpha"
   },
   "frameworks": {
     "netcoreapp1.1": {
