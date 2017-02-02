@@ -116,12 +116,6 @@ namespace PersonalWebsite
 
             using (var dataInitializer = new DataInitializer(app.ApplicationServices))
             {
-                if (env.IsDevelopment())
-                {
-                    dataInitializer.ClearRequiredContents();
-                    dataInitializer.ClearInitialUser();
-                }
-
                 dataInitializer.EnsureRequiredContentsAvailable();
                 dataInitializer.EnsureInitialUserAvaialble();
             }
