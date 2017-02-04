@@ -32,14 +32,16 @@ namespace PersonalWebsite
                 name: nameof(PersonalWebsite.Areas.Private),
                 template: "{area:exists}/{controller}/{action}/{id?}",
                 defaults: new { },
-                constraints: new { area = "private" }
+                constraints: new { area = nameof(PersonalWebsite.Areas.Private) }
             );
-            
+
+            var langRegex = _languageManipulationService.LanguageValidationRegexp;
+
             routes.MapRoute(
                 name: "defaultWithLanguage",
                 template: "{language}/{controller=Home}/{action=Index}",
                 defaults: new { },
-                constraints: new { language = _languageManipulationService.LanguageValidationRegexp() }
+                constraints: new { language = langRegex }
             );
 
             routes.MapRoute(
@@ -52,7 +54,7 @@ namespace PersonalWebsite
                 name: "contentsWithLanguage",
                 template: "{language}/{urlName}/{controller=Content}/{action=Show}",
                 defaults: new { },
-                constraints: new { language = _languageManipulationService.LanguageValidationRegexp() }
+                constraints: new { language = langRegex }
             );
 
             routes.MapRoute(

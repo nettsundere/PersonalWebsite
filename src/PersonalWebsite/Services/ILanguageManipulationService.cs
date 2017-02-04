@@ -16,6 +16,11 @@ namespace PersonalWebsite.Services
         ReadOnlyCollection<CultureInfo> SupportedCultures { get; }
 
         /// <summary>
+        /// Language validation regular expression.
+        /// </summary>
+        string LanguageValidationRegexp { get; }
+
+        /// <summary>
         /// Convert <see cref="LanguageDefinition"/> to its <see cref="string"/> representation.
         /// </summary>
         /// <param name="definition">language.</param>
@@ -35,11 +40,5 @@ namespace PersonalWebsite.Services
         /// <param name="languageDefinition">Language.</param>
         /// <returns><see cref="CultureInfo"/> corresponding to <paramref name="languageDefinition"/></returns>
         CultureInfo LanguageDefinitionToCultureInfo(LanguageDefinition languageDefinition);
-
-        /// <summary>
-        /// Language validation regexp.
-        /// </summary>
-        /// <returns>Language validation regexp (string representation).</returns>
-        string LanguageValidationRegexp();
     }
 }

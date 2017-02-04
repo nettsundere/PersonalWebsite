@@ -1,9 +1,8 @@
-﻿using System;
+﻿using PersonalWebsite.Lib;
+using System;
 using System.Collections.Generic;
-using PersonalWebsite.Lib;
-using System.Globalization;
-using System.Threading;
 using System.Collections.ObjectModel;
+using System.Globalization;
 
 namespace PersonalWebsite.Services
 {
@@ -20,6 +19,11 @@ namespace PersonalWebsite.Services
         private readonly IReadOnlyDictionary<LanguageDefinition, string> _languageDefinitionToRepresentations;
         private readonly IReadOnlyDictionary<string, LanguageDefinition> _languageRepresentationToLanguageDefinition;
         private readonly IReadOnlyDictionary<LanguageDefinition, CultureInfo> _languageDefinitionToCultureInfo;
+
+        /// <summary>
+        /// Language validation regular expression.
+        /// </summary>
+        public string LanguageValidationRegexp { get; }
 
         /// <summary>
         /// Create <see cref="LanguageManipulationService"/>.
@@ -52,6 +56,8 @@ namespace PersonalWebsite.Services
 
             SupportedCultures = new ReadOnlyCollection<CultureInfo>(
                 new [] { enCulture, ruCulture, deCulture });
+
+            LanguageValidationRegexp = $"^({String.Join("|", _languageRepresentationToLanguageDefinition.Keys)})$";
         }
         /// <summary>
         /// Convert <see cref="LanguageDefinition"/> to its <see cref="string"/> representation.
@@ -88,20 +94,6 @@ namespace PersonalWebsite.Services
         public CultureInfo LanguageDefinitionToCultureInfo(LanguageDefinition languageDefinition)
         {
             return _languageDefinitionToCultureInfo[languageDefinition];
-        }
-
-        /// <summary>
-        /// Language validation regexp.
-        /// </summary>
-        /// <returns>Language validation regexp (string representation).</returns>
-        public string LanguageValidationRegexp()
-        {
-            return $"^{LanguagesRegexpVariablePart()}$";
-        }
-
-        private string LanguagesRegexpVariablePart()
-        {
-            return String.Join("|", _languageRepresentationToLanguageDefinition.Keys);
         }
     }
 }

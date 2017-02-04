@@ -29,7 +29,6 @@ namespace PersonalWebsite.Providers
                 throw new ArgumentNullException(nameof(httpContext));
             }
 
-
             var path = httpContext.Request.Path.ToString();
             var languageParts = path.Split('/');
 
@@ -39,7 +38,7 @@ namespace PersonalWebsite.Providers
 
                 if(!String.IsNullOrWhiteSpace(maybeLanguage))
                 {
-                    var languageValidation = _languageManipulationService.LanguageValidationRegexp();
+                    var languageValidation = _languageManipulationService.LanguageValidationRegexp;
                     if (Regex.IsMatch(maybeLanguage, languageValidation, RegexOptions.IgnoreCase))
                     {
                         var languageDefinition = _languageManipulationService.LanguageRepresentationToLanguageDefinition(maybeLanguage);
