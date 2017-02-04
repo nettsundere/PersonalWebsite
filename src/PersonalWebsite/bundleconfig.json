@@ -21,8 +21,7 @@
   {
     "outputFileName": "wwwroot/js/Build/site.min.js",
     "inputFiles": [
-      "wwwroot/lib/jquery/dist/jquery.js",
-      "wwwroot/lib/bootstrap/dist/js/bootstrap.js",
+      "wwwroot/js/Base/analytics.js",
       "wwwroot/js/Base/site.js"
     ],
     "minify": {

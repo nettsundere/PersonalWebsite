@@ -1,4 +1,5 @@
 ﻿/// <autosync enabled="true" />
+/// <reference path="js/base/analytics.js" />
 /// <reference path="js/base/site.js" />
 /// <reference path="js/build/private.site.min.js" />
 /// <reference path="js/build/site.min.js" />
