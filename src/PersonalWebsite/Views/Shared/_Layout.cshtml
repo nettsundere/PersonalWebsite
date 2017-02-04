@@ -1,10 +1,9 @@
-﻿@model PageViewModel
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
     <head>
+        @model PageViewModel
+
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>@RenderSection("Title") | @Html.Partial("_Title")</title>
         
         <environment names="Development,Staging,Production">
@@ -12,71 +11,20 @@
         </environment>
     </head>
     <body>
-        <div class="container-fluid">
-            <div class="row-fluid">
-                <div class="col-xs-12">
-                    <div class="row">
-                        <div class="col-xs-12 col-md-3 language--switchers">
-                            @Html.Partial("_Languages", Model)
-                        </div>
-                        <div class="col-xs-12 col-md-6 presentation--header">
-                            @Html.Partial("_Header")
-                        </div>
-                    </div>
-                    <div class="row presentation--links">
-                        @* 
-                            Links to predefined content.
-                        *@
-                        @foreach (var predefinedPage in new []{ PredefinedPages.Welcome, PredefinedPages.Contact, PredefinedPages.Resume })
-                        {
-                            <div class="col-xs-12 col-md-3">
-                                @if (Model.ContentViewModel.InternalCaption == predefinedPage.ToString())
-                                {
-                                    <span class="presentation--links--disabled">
-                                        @Model.ContentLinksViewModel.CaptionFor(predefinedPage.ToString())
-                                    </span>
-                                }
-                                else
-                                {
-                                    if (@Model.IsDefaultPage(predefinedPage.ToString()))
-                                    {
-                                        <a prefix-with-language=@Model.Language
-                                           href="">
-                                            @Model.ContentLinksViewModel.CaptionFor(predefinedPage.ToString())
-                                        </a>
-                                    }
-                                    else
-                                    {
-                                        <a prefix-with-language=@Model.Language
-                                           href=@Model.ContentLinksViewModel.UrlNameFor(predefinedPage.ToString())>
-                                            @Model.ContentLinksViewModel.CaptionFor(predefinedPage.ToString())
-                                        </a>
-                                    }
+        <header>
+            @Html.Partial("_Header")
+        </header>
 
-                                }
-                            </div>
-                        }
-                       
-                        <div class="col-xs-12 col-md-3">
-                            <a href="https://medium.com/@@nettsundere">Blog <small>(In english)</small></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row-fluid">
-                <section class="col-xs-12">
-                    <div class="row-fluid">
-                        @RenderBody()
-                    </div>
-                    <footer class="row-fluid">
-                        <div class="row">
-                            <div class="col-md-push-9 col-md-3">
-                                @Html.Partial("_LoginPartial")
-                            </div>
-                        </div>
-                    </footer>
-                </section>
-            </div>
+        <div class="languages">
+            @Html.Partial("_Languages", Model)
+        </div>
+
+        <div class="links">
+            @Html.Partial("_Links")
+        </div>
+
+        <div class="content">
+            @RenderBody()
         </div>
 
         <environment names="Development,Staging,Production">

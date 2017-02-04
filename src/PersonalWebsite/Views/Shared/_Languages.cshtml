@@ -18,7 +18,9 @@
         }
         else
         {
-            @Html.Raw($"&#10551; {item.Header}")
+            <span class="active">
+                @item.Header
+            </span>
         }
     }
 }

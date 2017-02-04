@@ -1,49 +1,65 @@
 ﻿body {
     background: #fff;
-    font-family: "Ubuntu", Verdana, Geneva, Tahoma, sans-serif
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    margin: 0px;
+    padding: 0px;
 }
 
-.container-fluid {
-    padding-left: 0px;
-    padding-right: 0px;
+a {
+    color: #0026ff;
 }
 
-.language--switchers {
-    padding-top: 2em;
+.languages {
+    margin-left: 20%;
+    margin-bottom: 2em;
 }
 
-.language--switchers a {
+.languages a, .active {
+    margin-right: 1em;
     white-space: nowrap;
 }
 
-.presentation--header {
-    font-size: 2em;
-    line-height: 2em;
-}
-
-.presentation--header h1 {
-    font-size: 1.2em;
-}
-
-.presentation--links {
-    font-size: 2em;
-    line-height: 1.7em;
-    padding-bottom: 2em;
-}
-
-.presentation--links--disabled {
-    opacity: 0.9;
+.languages .active
+{
+    color: #1a6213;
     font-weight: bold;
 }
 
-a, .btn-link {
-    text-decoration: underline !important;
+.languages .active:before
+{
+    content: "//";
 }
 
-.logout--button {
-    margin: 0px;
-    margin-top: -3px;
-    margin-right: 1em;
-    display: inline-block;
-    padding: 0px;
+header {
+    text-align: center;
+    width: 80%;
+    margin: 3em auto;
+}
+
+.links {
+    width: 100%;
+    min-height: 3em;
+    float: left;
+    padding: 1em 20%;
+    box-sizing: border-box;
+}
+
+.links .link {
+    width: 20%;
+    min-width: 10em;
+    height: 2em;
+    float: left;
+}
+
+.links .link .active {
+    font-weight: bold;
+}
+
+.content {
+    margin-left: 20%;
+    width: 60%;
+    background: #eee;
+    min-height: 300px;
+    float: left;
+    padding: 1em;
 }

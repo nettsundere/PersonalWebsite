@@ -2,7 +2,6 @@
   {
     "outputFileName": "wwwroot/css/Build/site.min.css",
     "inputFiles": [
-      "wwwroot/lib/bootstrap/dist/css/bootstrap.css",
       "wwwroot/css/Base/site.css"
     ],
     "minify": {
