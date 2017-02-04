@@ -69,7 +69,7 @@ namespace PersonalWebsite.Helpers
                 }
                 else
                 {
-                    output.Attributes.SetAttribute(hrefAttribute, currentHref);
+                    output.Attributes.SetAttribute(hrefAttribute, $"/{currentHref}");
                 }
             }
             else
