@@ -52,14 +52,14 @@ namespace PersonalWebsite
 
             routes.MapRoute(
                 name: "contentsWithLanguage",
-                template: "{language}/{urlName}/{controller=Content}/{action=Show}",
+                template: "{language}/{urlName}/{controller=Contents}/{action=Show}",
                 defaults: new { },
                 constraints: new { language = langRegex }
             );
 
             routes.MapRoute(
                 name: "contentsWithoutLanguage",
-                template: "{urlName}/{controller=Content}/{action=Show}"
+                template: "{urlName}/{controller=Contents}/{action=Show}"
             );
         }
     }
