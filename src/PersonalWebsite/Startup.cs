@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -46,6 +47,11 @@ namespace PersonalWebsite
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AuthDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.Configure<IdentityOptions>(
+                // Configure login page path
+                x => x.Cookies.ApplicationCookie.LoginPath = new PathString("/Private/Account/Login")
+            );
 
             // Add MVC services to the services container.
             services.AddMvc()
@@ -97,6 +103,7 @@ namespace PersonalWebsite
 
             // Add cookie-based authentication to the request pipeline.
             app.UseIdentity();
+            
 
             var defaultCulture = languageManipulationService
                                    .LanguageDefinitionToCultureInfo(
