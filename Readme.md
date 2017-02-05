@@ -2,7 +2,9 @@
 This is a full source code of my new multilingual website implemented in ASP.NET Core (MVC)
 
 Azure server size is Standard A0 (1 core, 0.75 GB memory)
-Url: http://vladimir-kiselev.me
+
+# See it in action
+http://vladimir-kiselev.me
 
 # PersonalWebsite/Tests
 XUnit tests
