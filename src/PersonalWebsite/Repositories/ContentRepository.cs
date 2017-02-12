@@ -15,7 +15,7 @@ namespace PersonalWebsite.Repositories
         /// <summary>
         /// Data context.
         /// </summary>
-        private DataDbContext _dataDbContext;
+        private readonly DataDbContext _dataDbContext;
 
         /// <summary>
         /// Disposing status.
@@ -46,16 +46,13 @@ namespace PersonalWebsite.Repositories
         {
             GuardNotDisposed();
 
-            var contentAndTranslation = (from x in _dataDbContext.Translation
-                                         join c in _dataDbContext.Content 
-                                            on new { Id = x.ContentId, Caption = internalCaption } 
-                                            equals new { Id = c.Id, Caption = c.InternalCaption }
-                                         where x.Version == langDefinition
-                                               && x.State == DataAvailabilityState.published
-                                         let urlNames = (from y in c.Translations
-                                                         where y.State == DataAvailabilityState.published
-                                                         select new { y.Version, y.UrlName }).ToDictionary(z => z.Version, z => z.UrlName)
-                                         select FillContentViewModel(c.InternalCaption, x, urlNames)).FirstOrDefault();
+            var contentAndTranslation = (from translations in _dataDbContext.Translation
+                                         join contents in _dataDbContext.Content
+                                            on new { Id = translations.ContentId, Caption = internalCaption }
+                                            equals new { Id = contents.Id, Caption = contents.InternalCaption }
+                                         where translations.Version == langDefinition
+                                               && translations.State == DataAvailabilityState.published
+                                         select FillContentViewModel(contents.InternalCaption, translations, FindUrlNames(contents.Id))).FirstOrDefault();
 
             return contentAndTranslation;
         }
@@ -71,15 +68,13 @@ namespace PersonalWebsite.Repositories
             GuardNotDisposed();
 
             var lowerCaseUrlName = urlName.ToLowerInvariant();
-            var contentAndTranslation = (from x in _dataDbContext.Translation
-                                         join c in _dataDbContext.Content on x.ContentId equals c.Id
-                                         where x.Version == langDefinition
-                                              && x.UrlName == lowerCaseUrlName
-                                              && x.State == DataAvailabilityState.published
-                                         let urlNames = (from y in c.Translations
-                                                        where y.State == DataAvailabilityState.published
-                                                        select new { y.Version, y.UrlName }).ToDictionary(z => z.Version, z => z.UrlName)
-                                         select FillContentViewModel(c.InternalCaption, x, urlNames)).FirstOrDefault();
+
+            var contentAndTranslation = (from translation in _dataDbContext.Translation
+                                         where translation.Version == langDefinition
+                                              && translation.UrlName == lowerCaseUrlName
+                                              && translation.State == DataAvailabilityState.published
+                                         let content = translation.Content
+                                         select FillContentViewModel(content.InternalCaption, translation, FindUrlNames(content.Id))).FirstOrDefault();
 
             return contentAndTranslation;
         }
@@ -95,9 +90,8 @@ namespace PersonalWebsite.Repositories
             GuardNotDisposed();
 
             var internalNamesToLinkViewModels = (from t in _dataDbContext.Translation
-                                              join c in _dataDbContext.Content on t.ContentId equals c.Id
                                               where
-                                                internalContentNames.Contains(c.InternalCaption)
+                                                internalContentNames.Contains(t.Content.InternalCaption)
                                                 && t.State == DataAvailabilityState.published
                                                 && t.Version == languageDefinition
                                               select new
@@ -106,7 +100,7 @@ namespace PersonalWebsite.Repositories
                                                       LinkTitle = t.Title,
                                                       UrlName = t.UrlName
                                                   },
-                                                  InternalCaption = c.InternalCaption
+                                                  InternalCaption = t.Content.InternalCaption
                                               }).ToDictionary(x => x.InternalCaption, x => x.LinkUI);
 
             return new ContentLinksViewModel(
@@ -160,6 +154,24 @@ namespace PersonalWebsite.Repositories
                 UrlNames = urlNames,
                 InternalCaption = contentInternalCaption
             };
+        }
+
+        /// <summary>
+        /// Find all url names for a particular content.
+        /// </summary>
+        /// <param name="contentId">Content identifier.</param>
+        /// <returns>All url names for a particular content.</returns>
+        private Dictionary<LanguageDefinition, string> FindUrlNames(int contentId)
+        {
+            var urlNames = (
+                from translations in _dataDbContext.Translation
+                where
+                    translations.ContentId == contentId
+                    && translations.State == DataAvailabilityState.published
+                select new { translations.Version, translations.UrlName }
+            ).ToDictionary(z => z.Version, z => z.UrlName);
+
+            return urlNames;
         }
     }
 }
