@@ -1,20 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{31927374-615D-4822-B249-BB4F1B018F3C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AF3AECF1-0A6D-41BD-9447-07B036ECEBF4}"
-	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
-	EndProjectSection
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PersonalWebsite", "src\PersonalWebsite\PersonalWebsite.xproj", "{844B1750-1C58-4C54-8AD5-9B67338E4E13}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PersonalWebsite.Tests", "test\PersonalWebsite.Tests\PersonalWebsite.Tests.xproj", "{9037DBB8-409A-4822-B27E-F5987DDACAD8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{4FA889CA-456B-4515-B64C-CBA3F20A016A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonalWebsite", "src\PersonalWebsite\PersonalWebsite.csproj", "{844B1750-1C58-4C54-8AD5-9B67338E4E13}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonalWebsite.Tests", "test\PersonalWebsite.Tests\PersonalWebsite.Tests.csproj", "{9037DBB8-409A-4822-B27E-F5987DDACAD8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
