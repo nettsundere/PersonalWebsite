@@ -22,6 +22,7 @@
     "outputFileName": "wwwroot/js/Build/site.min.js",
     "inputFiles": [
       "wwwroot/js/Base/analytics.js",
+      "wwwroot/js/Base/insights.js",
       "wwwroot/js/Base/site.js"
     ],
     "minify": {
@@ -33,6 +34,8 @@
   {
     "outputFileName": "wwwroot/js/Build/private.site.min.js",
     "inputFiles": [
+      "wwwroot/js/Base/analytics.js",
+      "wwwroot/js/Base/insights.js",
       "wwwroot/lib/jquery/dist/jquery.js",
       "wwwroot/lib/bootstrap/dist/js/bootstrap.js",
       "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
