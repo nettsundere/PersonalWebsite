@@ -16,15 +16,26 @@ namespace Reference
         /// <param name="args">Arguments.</param>
         public static void Main(string[] args)
         {
-            var host = new WebHostBuilder()
+            var host = BuildWebHost(args);
+
+            host.Run();
+        }
+
+        /// <summary>
+        /// Enable DbContext discovery 
+        /// (allows dotnet ef database update to build DB Contexts properly)
+        /// </summary>
+        /// <param name="args">Startup arguments.</param>
+        /// <returns></returns>
+        public static IWebHost BuildWebHost(string[] args)
+        {
+            return new WebHostBuilder()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()
                 .UseApplicationInsights()
                 .Build();
-
-            host.Run();
         }
     }
 }

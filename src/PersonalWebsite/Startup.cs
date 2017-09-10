@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
@@ -23,12 +23,6 @@ namespace PersonalWebsite
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
-            if (env.IsDevelopment())
-            {
-                // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets();
-            }
-
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
         }
@@ -39,7 +33,7 @@ namespace PersonalWebsite
         public void ConfigureServices(IServiceCollection services)
         {
             var sqlContextConfigurator = new DbContextConfigurator(Configuration);
-            services.AddEntityFramework()
+            services.AddEntityFrameworkSqlServer()
                 .AddDbContext<AuthDbContext>(sqlContextConfigurator.Configure)
                 .AddDbContext<DataDbContext>(sqlContextConfigurator.Configure);
 
@@ -48,10 +42,7 @@ namespace PersonalWebsite
                 .AddEntityFrameworkStores<AuthDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.Configure<IdentityOptions>(
-                // Configure login page path
-                x => x.Cookies.ApplicationCookie.LoginPath = new PathString("/Private/Account/Login")
-            );
+            services.ConfigureApplicationCookie(options => options.LoginPath = "/Private/Account/Login");
 
             // Add MVC services to the services container.
             services.AddMvc()
@@ -102,8 +93,7 @@ namespace PersonalWebsite
             app.UseStaticFiles();
 
             // Add cookie-based authentication to the request pipeline.
-            app.UseIdentity();
-            
+            app.UseAuthentication();
 
             var defaultCulture = languageManipulationService
                                    .LanguageDefinitionToCultureInfo(

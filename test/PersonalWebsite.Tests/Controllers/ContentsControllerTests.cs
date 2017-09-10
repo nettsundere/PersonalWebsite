@@ -31,17 +31,19 @@ namespace PersonalWebsite.Tests.Controllers
         public ContentsControllerTests()
         {
             // Database setup
+            const string databaseName = "ContentsTest";
+
             var services = new ServiceCollection();
             services.AddEntityFrameworkInMemoryDatabase()
                     .AddDbContext<DataDbContext>(options =>
-                        options.UseInMemoryDatabase()
+                        options.UseInMemoryDatabase(databaseName)
                     );
 
             // Dependencies initializations
             _pageConfiguration = new PageConfiguration();
 
             var optionsBuilder = new DbContextOptionsBuilder<DataDbContext>();
-            optionsBuilder.UseInMemoryDatabase();
+            optionsBuilder.UseInMemoryDatabase(databaseName);
             _dataDbContext = new DataDbContext(optionsBuilder.Options);
 
             _contentRepository = new ContentRepository(_dataDbContext);

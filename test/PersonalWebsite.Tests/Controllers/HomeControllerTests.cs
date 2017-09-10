@@ -49,18 +49,21 @@ namespace PersonalWebsite.Tests.Controllers
         /// </summary>
         public HomeControllerTests()
         {
+            const string databaseName = "HomeTest";
+
             // Database setup
             var services = new ServiceCollection();
             services.AddEntityFrameworkInMemoryDatabase()
                     .AddDbContext<DataDbContext>(options =>
-                        options.UseInMemoryDatabase()
+                        options.UseInMemoryDatabase(databaseName)
                     );
 
             // Dependencies initializations
             _pageConfiguration = new FakePageConfiguration();
 
             var optionsBuilder = new DbContextOptionsBuilder<DataDbContext>();
-            optionsBuilder.UseInMemoryDatabase();
+            optionsBuilder.UseInMemoryDatabase(databaseName);
+
             _dataDbContext = new DataDbContext(optionsBuilder.Options);
 
             _contentRepository = new ContentRepository(_dataDbContext);

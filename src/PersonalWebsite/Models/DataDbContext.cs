@@ -5,10 +5,6 @@ namespace PersonalWebsite.Models
 {
     public class DataDbContext : DbContext
     {
-        public DataDbContext()
-        {
-        }
-
         public DataDbContext(DbContextOptions options) : base(options)
         {
         }
