@@ -32,7 +32,7 @@ namespace PersonalWebsite.Migrations
                     State = table.Column<int>(nullable: false),
                     Title = table.Column<string>(nullable: false),
                     UpdatedAt = table.Column<DateTime>(nullable: false),
-                    UrlName = table.Column<string>(nullable: false),
+                    UrlName = table.Column<string>(nullable: false, maxLength: 450),
                     Version = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
