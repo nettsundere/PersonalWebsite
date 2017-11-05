@@ -13,4 +13,4 @@ test/PersonalWebsite.tests/bin
 test/PersonalWebsite.tests/obj
 
 src/PersonalWebsite/*.user
-
+obj
