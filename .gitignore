@@ -1,7 +1,7 @@
 .vs
 src/PersonalWebsite/wwwroot/bin
 src/PersonalWebsite/node_modules
-src/PersonalWebsite/Properties/PublishProfiles/PersonalWebsite.pubxml.user
+src/PersonalWebsite/Properties/PublishProfiles/*
 src/PersonalWebsite/wwwroot/css/Build/*
 src/PersonalWebsite/wwwroot/js/Build/*
 src/PersonalWebsite/wwwroot/lib/*
