@@ -38,9 +38,9 @@ namespace PersonalWebsite.Helpers
 
             if (AspController == currentControllerName && AspAction == currentActionName)
             {
-                TagHelperAttribute maybeClass;
-                if (output.Attributes.TryGetAttribute("Value", out maybeClass)) {
-                    if(maybeClass != null)
+                if (output.Attributes.TryGetAttribute("Value", out TagHelperAttribute maybeClass))
+                {
+                    if (maybeClass != null)
                     {
                         output.Attributes.SetAttribute("class", $"{maybeClass.Value} {ConditionalCssClass}");
                         return;

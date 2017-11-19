@@ -14,12 +14,7 @@ namespace PersonalWebsite
 
         public RoutesBuilder(ILanguageManipulationService languageManipulationService)
         {
-            if(languageManipulationService == null)
-            {
-                throw new ArgumentNullException(nameof(languageManipulationService));
-            }
-
-            _languageManipulationService = languageManipulationService;
+            _languageManipulationService = languageManipulationService ?? throw new ArgumentNullException(nameof(languageManipulationService));
         }
 
         /// <summary>

@@ -22,12 +22,7 @@ namespace PersonalWebsite.Areas.Private.Controllers
         /// <param name="contentEditorRepository">Content editor repository.</param>
         public ContentsController(IContentEditorRepository contentEditorRepository)
         {
-            if(contentEditorRepository == null)
-            {
-                throw new ArgumentNullException(nameof(contentEditorRepository));
-            }
-
-            _contentEditorRepository = contentEditorRepository;
+            _contentEditorRepository = contentEditorRepository ?? throw new ArgumentNullException(nameof(contentEditorRepository));
         }
 
         /// <summary>

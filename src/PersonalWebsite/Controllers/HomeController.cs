@@ -37,24 +37,9 @@ namespace PersonalWebsite.Controllers
             IHumanReadableContentRetrievalService humanReadableContentService, 
             ILanguageManipulationService languageManipulationService) 
         {
-            if(pageConfiguration == null)
-            {
-                throw new ArgumentNullException(nameof(pageConfiguration));
-            }
-
-            if(humanReadableContentService == null)
-            {
-                throw new ArgumentNullException(nameof(humanReadableContentService));
-            }
-
-            if(languageManipulationService == null)
-            {
-                throw new ArgumentNullException(nameof(languageManipulationService));
-            }
-
-            _pageConfiguration = pageConfiguration;
-            _humanReadableContentService = humanReadableContentService;
-            _languageManipulationService = languageManipulationService;
+            _pageConfiguration = pageConfiguration ?? throw new ArgumentNullException(nameof(pageConfiguration));
+            _humanReadableContentService = humanReadableContentService ?? throw new ArgumentNullException(nameof(humanReadableContentService));
+            _languageManipulationService = languageManipulationService ?? throw new ArgumentNullException(nameof(languageManipulationService));
         }
 
         /// <summary>

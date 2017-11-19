@@ -34,17 +34,8 @@ namespace PersonalWebsite.Services
             IPageConfiguration pageConfiguration,
             IContentRepository contentRespository)
         {
-            if(pageConfiguration == null)
-            {
-                throw new ArgumentNullException(nameof(pageConfiguration));
-            }
-            
-            if(contentRespository == null)
-            {
-                throw new ArgumentNullException(nameof(contentRespository));
-            }
-            _contentRepository = contentRespository;
-            _pageConfiguration = pageConfiguration;
+            _contentRepository = contentRespository ?? throw new ArgumentNullException(nameof(contentRespository));
+            _pageConfiguration = pageConfiguration ?? throw new ArgumentNullException(nameof(pageConfiguration));
         }
 
         /// <summary>

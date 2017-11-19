@@ -31,18 +31,8 @@ namespace PersonalWebsite.Helpers
             IPageConfiguration pageConfiguration,
             ILanguageManipulationService languageManipulationService)
         {
-            if(pageConfiguration == null)
-            {
-                throw new ArgumentNullException(nameof(pageConfiguration));
-            }
-
-            if(languageManipulationService == null)
-            {
-                throw new ArgumentNullException(nameof(languageManipulationService));
-            }
-
-            _pageConfiguration = pageConfiguration;
-            _languageManipulationService = languageManipulationService;
+            _pageConfiguration = pageConfiguration ?? throw new ArgumentNullException(nameof(pageConfiguration));
+            _languageManipulationService = languageManipulationService ?? throw new ArgumentNullException(nameof(languageManipulationService));
         }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)

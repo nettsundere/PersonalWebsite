@@ -20,12 +20,7 @@ namespace PersonalWebsite.Services
         /// <param name="configuration">Configuration object.</param>
         public DbContextConfigurator(IConfiguration configuration)
         {
-            if(configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
-
-            Configuration = configuration;
+            Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         /// <summary>

@@ -58,23 +58,13 @@ namespace PersonalWebsite.Areas.Private.Controllers
             SignInManager<ApplicationUser> signInManager,
             ILoggerFactory loggerFactory)
         {
-            if (userManager == null)
-            {
-                throw new ArgumentNullException(nameof(userManager));
-            }
-
-            if (signInManager == null)
-            {
-                throw new ArgumentNullException(nameof(signInManager));
-            }
-
             if (loggerFactory == null)
             {
                 throw new ArgumentNullException(nameof(loggerFactory));
             }
 
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
             _logger = loggerFactory.CreateLogger<ManageController>();
         }
 
