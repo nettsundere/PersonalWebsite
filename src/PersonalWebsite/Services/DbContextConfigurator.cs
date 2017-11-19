@@ -34,7 +34,7 @@ namespace PersonalWebsite.Services
         /// <param name="builder"><see cref="DbContextOptionsBuilder"/> object to configure.</param>
         public void Configure(DbContextOptionsBuilder builder)
         {
-            builder.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]);
+            builder.UseSqlServer(Configuration.GetConnectionString("Database"));
         }
     }
 }
