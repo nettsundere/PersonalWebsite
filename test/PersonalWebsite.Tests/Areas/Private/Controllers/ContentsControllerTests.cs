@@ -126,7 +126,7 @@ namespace PersonalWebsite.Tests.Areas.Private.Controllers
             var actionResult = subject.Edit(fakeContent);
 
             fakeContentRepository.Verify(x => x.Update(fakeContent));
-            Assert.IsType(typeof(RedirectToActionResult), actionResult);
+            Assert.IsType<RedirectToActionResult>(actionResult);
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace PersonalWebsite.Tests.Areas.Private.Controllers
             var actionResult = subject.Create(fakeContent);
 
             fakeContentRepository.Verify(x => x.Create(fakeContent));
-            Assert.IsType(typeof(RedirectToActionResult), actionResult);
+            Assert.IsType<RedirectToActionResult>(actionResult);
         }
 
 
@@ -160,7 +160,7 @@ namespace PersonalWebsite.Tests.Areas.Private.Controllers
 
             var actionResult = subject.Delete(fakeContent.Id);
    
-            Assert.IsType(typeof(ViewResult), actionResult);
+            Assert.IsType<ViewResult>(actionResult);
         }
 
         /// <summary>
@@ -176,7 +176,7 @@ namespace PersonalWebsite.Tests.Areas.Private.Controllers
 
             var actionResult = subject.DeleteConfirmed(fakeContent.Id);
 
-            Assert.IsType(typeof(RedirectToActionResult), actionResult);
+            Assert.IsType<RedirectToActionResult>(actionResult);
         }
     }
 }

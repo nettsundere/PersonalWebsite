@@ -19,7 +19,7 @@ namespace PersonalWebsite.Tests.Areas.Private.Controllers
         {
             var actionResult = _subject.Index();
 
-            Assert.IsType(typeof(ViewResult), actionResult);
+            Assert.IsType<ViewResult>(actionResult);
         }
     }
 }

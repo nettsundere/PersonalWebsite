@@ -89,7 +89,7 @@ namespace PersonalWebsite.Tests.Controllers
 
             var actionResult = _homeController.Index(language);
 
-            Assert.IsType(typeof(NotFoundResult), actionResult);
+            Assert.IsType<NotFoundResult>(actionResult);
         }
 
         [Theory]
@@ -103,7 +103,7 @@ namespace PersonalWebsite.Tests.Controllers
 
             var actionResult = _homeController.Index(language);
 
-            Assert.IsType(typeof(ViewResult), actionResult);
+            Assert.IsType<ViewResult>(actionResult);
         }
 
         [Theory]

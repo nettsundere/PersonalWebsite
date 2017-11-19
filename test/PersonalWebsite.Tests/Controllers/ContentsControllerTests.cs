@@ -69,7 +69,7 @@ namespace PersonalWebsite.Tests.Controllers
 
             var actionResult = _contentsController.Show(language, urlName);
 
-            Assert.IsType(typeof(NotFoundResult), actionResult);
+            Assert.IsType<NotFoundResult>(actionResult);
         }
 
         [Theory]
@@ -82,7 +82,7 @@ namespace PersonalWebsite.Tests.Controllers
 
             var actionResult = _contentsController.Show(language, urlName);
 
-            Assert.IsType(typeof(ViewResult), actionResult);
+            Assert.IsType<ViewResult>(actionResult);
         }
 
         [Theory]
