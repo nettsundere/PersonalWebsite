@@ -29,6 +29,10 @@ namespace PersonalWebsite.Repositories
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
+        /// <summary>
+        /// Get mission-critical content.
+        /// </summary>
+        /// <returns>The list of exceptionally important content records.</returns>
         public IReadOnlyList<Content> GetCriticalContent()
         {
             var contents = new [] {
@@ -67,7 +71,11 @@ namespace PersonalWebsite.Repositories
             return contents;
         }
 
-        public ApplicationUserData GetInitialUserData()
+        /// <summary>
+        /// Get the <see cref="ApplicationUserData"/> of a default user.
+        /// </summary>
+        /// <returns>Default user data.</returns>
+        public ApplicationUserData GetDefaultUserData()
         {
             var name = _configuration["CoreAccount:Name"];
             var email = _configuration["CoreAccount:Email"];

@@ -57,7 +57,7 @@ namespace PersonalWebsite.Services
             GuardNotDisposed();
 
             var contents = _requiredDataRepository.GetCriticalContent();
-            _internalContentRepository.EnsureContentsRangeAvailable(contents);
+            _internalContentRepository.EnsureContentListAvailable(contents);
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace PersonalWebsite.Services
         {
             GuardNotDisposed();
 
-            var user = _requiredDataRepository.GetInitialUserData();
+            var user = _requiredDataRepository.GetDefaultUserData();
             _applicationUserRepository.EnsureUserAvailable(user);
         }
 
@@ -78,7 +78,7 @@ namespace PersonalWebsite.Services
         {
             GuardNotDisposed();
 
-            var user = _requiredDataRepository.GetInitialUserData();
+            var user = _requiredDataRepository.GetDefaultUserData();
             _applicationUserRepository.DeleteUserByEMail(user.EMail);
         }
 
@@ -89,9 +89,7 @@ namespace PersonalWebsite.Services
         {
             GuardNotDisposed();
 
-            var requiredContentsNames = from x in _requiredDataRepository.GetCriticalContent()
-                                        select x.InternalCaption;
-
+            var requiredContentsNames = _requiredDataRepository.GetCriticalContent().Select(x => x.InternalCaption).ToList();
             _internalContentRepository.DeleteContentsByInternalCaptions(requiredContentsNames);
         }
 

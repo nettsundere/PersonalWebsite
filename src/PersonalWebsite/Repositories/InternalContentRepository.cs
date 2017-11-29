@@ -25,6 +25,9 @@ namespace PersonalWebsite.Repositories
             _context = context;
         }
 
+        /// <summary>
+        /// Dispose.
+        /// </summary>
         public void Dispose()
         {
             if (!_isDisposed)
@@ -35,12 +38,20 @@ namespace PersonalWebsite.Repositories
             }
         }
 
+        /// <summary>
+        /// <see cref="InternalContentRepository"/> finalizer.
+        /// </summary>
         ~InternalContentRepository()
         {
             Dispose();
         }
 
-        public void DeleteContentsByInternalCaptions(IEnumerable<string> internalCaptions)
+
+        /// <summary>
+        /// Delete content having name in the list of <paramref name="internalCaptions"/>.
+        /// </summary>
+        /// <param name="internalCaptions">List of content captions to delete by.</param>
+        public void DeleteContentsByInternalCaptions(IReadOnlyList<string> internalCaptions)
         {
             var contentsToRemove = from x in _context.Content
                                    where internalCaptions.Contains(x.InternalCaption)
@@ -50,7 +61,11 @@ namespace PersonalWebsite.Repositories
             _context.SaveChanges();
         }
 
-        public void EnsureContentsRangeAvailable(IEnumerable<Content> contentsRange)
+        /// <summary>
+        /// Ensure that <paramref name="contentList"/> is available in the repository.
+        /// </summary>
+        /// <param name="contentList">Content list.</param>
+        public void EnsureContentListAvailable(IReadOnlyList<Content> contentsRange)
         {
             var newContents = from x in contentsRange
                               let presentInternalCaptions = from y in _context.Content select y.InternalCaption
