@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Razor.TagHelpers;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Linq;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace PersonalWebsite.Helpers
 {

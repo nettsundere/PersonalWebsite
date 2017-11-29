@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Moq;
 using PersonalWebsite.Areas.Private.Controllers;
-using PersonalWebsite.Repositories;
 using PersonalWebsite.ViewModels.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WebsiteContent.Repositories;
+using WebsiteContent.Repositories.DTO;
 using Xunit;
 
 namespace PersonalWebsite.Tests.Areas.Private.Controllers
@@ -24,31 +25,37 @@ namespace PersonalWebsite.Tests.Areas.Private.Controllers
             {
                 yield return new[]
                 {
-                    new ContentIndexViewModel
-                    {
-                        Contents = Enumerable.Empty<ContentIndexLinkUI>()
-                    }
+                    new ContentIndexViewModel(
+                        new ContentPrivateEditListData()
+                        {
+                           Contents = Enumerable.Empty<ContentPrivateLinksData>()
+                        }
+                    )
                 };
                 yield return new[]
                 {
-                    new ContentIndexViewModel
-                    {
-                        Contents = new []
+                    new ContentIndexViewModel(
+                        new ContentPrivateEditListData()
                         {
-                            new ContentIndexLinkUI { Id = -1, InternalCaption = "fake1" }
+                            Contents = new []
+                            {
+                                new ContentPrivateLinksData { Id = -1, InternalCaption = "fake1" }
+                            }
                         }
-                    }
+                    )
                 };
                 yield return new[]
                 {
-                    new ContentIndexViewModel
-                    {
-                        Contents = new []
+                    new ContentIndexViewModel(
+                        new ContentPrivateEditListData()
                         {
-                            new ContentIndexLinkUI { Id = -1, InternalCaption = "fake1" },
-                            new ContentIndexLinkUI { Id = 3, InternalCaption = "fake3" }
+                            Contents = new []
+                            {
+                                new ContentPrivateLinksData { Id = -1, InternalCaption = "fake1" },
+                                new ContentPrivateLinksData { Id = 3, InternalCaption = "fake3" }
+                            }
                         }
-                    }
+                    )
                 };
             }
         }
@@ -64,7 +71,7 @@ namespace PersonalWebsite.Tests.Areas.Private.Controllers
 
                 yield return new object[]
                 {
-                    new ContentEditViewModel
+                    new ContentPrivateEditData()
                     {
                         Id = -2,
                         InternalCaption = "Test",
@@ -96,15 +103,16 @@ namespace PersonalWebsite.Tests.Areas.Private.Controllers
         /// <summary>
         /// Test Get edit returns content editor.
         /// </summary>
-        /// <param name="content">Content stub.</param>
+        /// <param name="privateEditData">Private edit data.</param>
         /// <param name="expectedResultType">Expected result type.</param>
         [Theory]
         [MemberData(nameof(ContentDataExamples))]
-        public void ReturnsContentEditor(ContentEditViewModel content, Type expectedResultType)
+        public void ReturnsContentEditor(ContentPrivateEditData privateEditData, Type expectedResultType)
         {
             var fakeId = -1;
             var fakeContentRepository = new Mock<IContentEditorRepository>();
-            fakeContentRepository.Setup(x => x.Read(fakeId)).Returns(content);
+
+            fakeContentRepository.Setup(x => x.Read(fakeId)).Returns(privateEditData);
             var subject = new ContentsController(fakeContentRepository.Object);
 
             var actionResult = subject.Edit(fakeId);
@@ -118,14 +126,14 @@ namespace PersonalWebsite.Tests.Areas.Private.Controllers
         [Fact]
         public void ChangesContent()
         {
-            var fakeContent = new ContentEditViewModel();
+            var fakeContent = new ContentPrivateEditData() { Id = 100 };
             var fakeContentRepository = new Mock<IContentEditorRepository>();
             fakeContentRepository.Setup(x => x.Update(fakeContent)).Returns(fakeContent);
             var subject = new ContentsController(fakeContentRepository.Object);
 
-            var actionResult = subject.Edit(fakeContent);
+            var actionResult = subject.Edit(new ContentAndTranslationsEditViewModel(fakeContent));
 
-            fakeContentRepository.Verify(x => x.Update(fakeContent));
+            fakeContentRepository.Verify(x => x.Update(It.IsAny<ContentPrivateEditData>()));
             Assert.IsType<RedirectToActionResult>(actionResult);
         }
 
@@ -135,14 +143,14 @@ namespace PersonalWebsite.Tests.Areas.Private.Controllers
         [Fact]
         public void CreatesContent()
         {
-            var fakeContent = new ContentEditViewModel();
+            var fakeContent = new ContentPrivateEditData();
             var fakeContentRepository = new Mock<IContentEditorRepository>();
             fakeContentRepository.Setup(x => x.Create(fakeContent)).Returns(fakeContent);
             var subject = new ContentsController(fakeContentRepository.Object);
 
-            var actionResult = subject.Create(fakeContent);
+            var actionResult = subject.Create(new ContentAndTranslationsEditViewModel(fakeContent));
 
-            fakeContentRepository.Verify(x => x.Create(fakeContent));
+            fakeContentRepository.Verify(x => x.Create(It.IsAny<ContentPrivateEditData>()));
             Assert.IsType<RedirectToActionResult>(actionResult);
         }
 
@@ -153,7 +161,7 @@ namespace PersonalWebsite.Tests.Areas.Private.Controllers
         [Fact]
         public void ConfirmsContentRemoval()
         {
-            var fakeContent = new ContentEditViewModel { Id = -1 };
+            var fakeContent = new ContentPrivateEditData { Id = -1 };
             var fakeContentRepository = new Mock<IContentEditorRepository>();
             fakeContentRepository.Setup(x => x.Read(fakeContent.Id)).Returns(fakeContent);
             var subject = new ContentsController(fakeContentRepository.Object);
@@ -169,7 +177,7 @@ namespace PersonalWebsite.Tests.Areas.Private.Controllers
         [Fact]
         public void DeletesContent()
         {
-            var fakeContent = new ContentEditViewModel { Id = -1 };
+            var fakeContent = new ContentPrivateEditData { Id = -1 };
             var fakeContentRepository = new Mock<IContentEditorRepository>();
             fakeContentRepository.Setup(x => x.Delete(fakeContent.Id));
             var subject = new ContentsController(fakeContentRepository.Object);

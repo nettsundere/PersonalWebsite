@@ -8,6 +8,9 @@ using PersonalWebsite.Repositories;
 using PersonalWebsite.Services;
 using PersonalWebsite.ViewModels.Content;
 using System;
+using WebsiteContent.Lib;
+using WebsiteContent.Models;
+using WebsiteContent.Repositories;
 using Xunit;
 
 namespace PersonalWebsite.Tests.Controllers
@@ -15,16 +18,19 @@ namespace PersonalWebsite.Tests.Controllers
     /// <summary>
     /// Test <see cref="HomeController"/>.
     /// </summary>
-    public class HomeControllerTests
+    public class HomeControllerTests : IDisposable
     {
         private readonly IPageConfiguration _pageConfiguration;
         private readonly IHumanReadableContentRetrievalService _humanReadableContentService;
         private readonly ILanguageManipulationService _languageManipulationService;
 
-        private readonly IContentRepository _contentRepository;
+        private readonly IContentViewerRepository _contentRepository;
         private readonly HomeController _homeController;
         private readonly DataDbContext _dataDbContext;
 
+        /// <summary>
+        /// Fake page configuration.
+        /// </summary>
         private class FakePageConfiguration : IPageConfiguration
         {
             public LanguageDefinition DefaultLanguage
@@ -66,7 +72,7 @@ namespace PersonalWebsite.Tests.Controllers
 
             _dataDbContext = new DataDbContext(optionsBuilder.Options);
 
-            _contentRepository = new ContentRepository(_dataDbContext);
+            _contentRepository = new ContentViewerRepository(_dataDbContext);
             _humanReadableContentService = new HumanReadableContentRetrievalService(_pageConfiguration, _contentRepository);
 
             _languageManipulationService = new LanguageManipulationService();
@@ -121,6 +127,17 @@ namespace PersonalWebsite.Tests.Controllers
             Assert.Equal(expectedModelLanguage, resultModel.Language);
         }
 
+        /// <summary>
+        /// Global dispose.
+        /// </summary>
+        public void Dispose()
+        {
+            _humanReadableContentService.Dispose();
+        }
+
+        /// <summary>
+        /// Setup content.
+        /// </summary>
         private void SetupContent()
         {
             _dataDbContext.Content.Add(

@@ -1,8 +1,9 @@
-﻿using PersonalWebsite.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using PersonalWebsite.Lib;
 using Microsoft.Extensions.Configuration;
+using WebsiteContent.Repositories;
+using WebsiteContent.Models;
+using WebsiteContent.Lib;
 
 namespace PersonalWebsite.Repositories
 {
@@ -25,11 +26,7 @@ namespace PersonalWebsite.Repositories
         /// <param name="configuration">Configuration.</param>
         public RequiredDataRepository(IConfiguration configuration)
         {
-            if(configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
-            _configuration = configuration;
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         public IReadOnlyList<Content> GetCriticalContent()

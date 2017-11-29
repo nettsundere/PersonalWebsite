@@ -1,14 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using PersonalWebsite.Models;
 
-namespace PersonalWebsite.Models
+namespace PersonalWebstie.Models
 {
-    // Add profile data for application users by adding properties to the ApplicationUser class
-    public class ApplicationUser : IdentityUser
-    {
-    }
-
     public class AuthDbContext : IdentityDbContext<ApplicationUser>
     {
         public AuthDbContext(DbContextOptions<AuthDbContext> options)

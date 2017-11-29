@@ -1,6 +1,6 @@
-﻿namespace PersonalWebsite.ViewModels.Content
+﻿namespace WebsiteContent.Repositories.DTO
 {
-    public class ContentIndexLinkUI
+    public class ContentPrivateLinksData
     {
         public int Id { get; set; }
 

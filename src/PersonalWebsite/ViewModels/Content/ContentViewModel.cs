@@ -1,36 +1,36 @@
-﻿using PersonalWebsite.Lib;
-using System.Collections.Generic;
+﻿using System;
+using WebsiteContent.Repositories.DTO;
 
 namespace PersonalWebsite.ViewModels.Content
 {
     /// <summary>
     /// Content view model.
     /// </summary>
-    public class ContentViewModel
+    public class ContentViewModel : ContentPublicViewData
     {
         /// <summary>
-        /// Title.
+        /// Create <see cref="ContentViewModel"/>.
         /// </summary>
-        public string Title { get; set; }
+        public ContentViewModel() : this(new ContentPublicViewData())
+        {
+        }
 
         /// <summary>
-        /// Html markup.
+        /// Create <see cref="ContentViewModel"/>.
         /// </summary>
-        public string Markup { get; set; }
+        /// <param name="contentPublicViewData">Public content data.</param>
+        public ContentViewModel(ContentPublicViewData contentPublicViewData)
+        {
+            if (contentPublicViewData == null)
+            {
+                throw new ArgumentNullException(nameof(contentPublicViewData));
+            }
 
-        /// <summary>
-        /// Page description.
-        /// </summary>
-        public string Description { get; set; }
-
-        /// <summary>
-        /// Internal caption.
-        /// </summary>
-        public string InternalCaption { get; set; }
-
-        /// <summary>
-        /// Url names (different translations).
-        /// </summary>
-        public IDictionary<LanguageDefinition, string> UrlNames { get; set; }
+            Description = contentPublicViewData.Description;
+            InternalCaption = contentPublicViewData.InternalCaption;
+            Markup = contentPublicViewData.Markup;
+            Title = contentPublicViewData.Title;
+            UrlNames = contentPublicViewData.UrlNames;
+        }
     }
 }

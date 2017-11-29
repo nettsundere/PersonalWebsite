@@ -1,6 +1,7 @@
-﻿using PersonalWebsite.Lib;
-using PersonalWebsite.Services;
+﻿using PersonalWebsite.Services;
 using System;
+using WebsiteContent.Lib;
+using WebsiteContent.Repositories.DTO;
 
 namespace PersonalWebsite.ViewModels.Content
 {
@@ -15,38 +16,48 @@ namespace PersonalWebsite.ViewModels.Content
         public ContentViewModel ContentViewModel { get; private set; }
         public ContentLinksViewModel ContentLinksViewModel { get; private set; }
 
+        /// <summary>
+        /// Create <see cref="PageViewModel"/>.
+        /// </summary>
+        /// <param name="pageConfiguration">Page configuration.</param>
+        /// <param name="language">Language.</param>
+        /// <param name="contentPublicViewData">Content view data.</param>
+        /// <param name="contentPublicLinksData">Content links data.</param>
         public PageViewModel(
             IPageConfiguration pageConfiguration,
             LanguageDefinition language,
-            ContentViewModel contentViewModel,
-            ContentLinksViewModel contentLinksViewModel)
+            ContentPublicViewData contentPublicViewData,
+            ContentPublicLinksData contentPublicLinksData)
         {
-            if(pageConfiguration == null)
+            if (contentPublicViewData == null)
             {
-                throw new ArgumentNullException(nameof(pageConfiguration));
+                throw new ArgumentNullException(nameof(contentPublicViewData));
             }
 
-            if (contentViewModel == null)
+            if(contentPublicLinksData == null)
             {
-                throw new ArgumentNullException(nameof(contentViewModel));
+                throw new ArgumentNullException(nameof(contentPublicLinksData));
             }
 
-            if(contentLinksViewModel == null)
-            {
-                throw new ArgumentNullException(nameof(contentLinksViewModel));
-            }
-
-            _pageConfiguration = pageConfiguration;
+            _pageConfiguration = pageConfiguration ?? throw new ArgumentNullException(nameof(pageConfiguration));
             Language = language;
-            ContentViewModel = contentViewModel;
-            ContentLinksViewModel = contentLinksViewModel;
+            ContentViewModel = new ContentViewModel(contentPublicViewData);
+            ContentLinksViewModel = new ContentLinksViewModel(contentPublicLinksData);
         }
 
+        /// <summary>
+        /// Return a <c>bool</c> value indicating whether it is a default page.
+        /// </summary>
+        /// <returns>A <c>bool</c> value indicating whether it is a default page.</returns>
         public bool IsDefaultPage()
         {
             return ContentViewModel.InternalCaption == _pageConfiguration.DefaultPageInternalCaption;
         }
 
+        /// <summary>
+        /// Return a <c>bool</c> value indicating whether a page having <paramref name="internalContentCaption"/> is a default page.
+        /// </summary>
+        /// <returns>A <c>bool</c> value indicating whether <paramref name="internalContentCaption"/> is a default page.</returns>
         public bool IsDefaultPage(string internalContentCaption)
         {
             return internalContentCaption == _pageConfiguration.DefaultPageInternalCaption;

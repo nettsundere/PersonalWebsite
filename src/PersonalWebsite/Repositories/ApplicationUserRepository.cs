@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using PersonalWebsite.Lib;
 using PersonalWebsite.Models;
+using PersonalWebstie.Models;
 using System;
 using System.Linq;
+using WebsiteContent.Lib;
+using WebsiteContent.Repositories;
 
 namespace PersonalWebsite.Repositories
 {
@@ -33,18 +35,8 @@ namespace PersonalWebsite.Repositories
         /// <param name="authDbContext">Auth DB context.</param>
         public ApplicationUserRepository(UserManager<ApplicationUser> userManager, AuthDbContext authDbContext)
         {
-            if(userManager == null)
-            {
-                throw new ArgumentNullException(nameof(userManager));
-            }
-
-            if (authDbContext == null)
-            {
-                throw new ArgumentNullException(nameof(authDbContext));
-            }
-
-            _userManager = userManager;
-            _authDbContext = authDbContext;
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _authDbContext = authDbContext ?? throw new ArgumentNullException(nameof(authDbContext));
         }
 
         /// <summary>

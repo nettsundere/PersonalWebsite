@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+using WebsiteContent.Models;
 
 namespace PersonalWebsite.Models
 {

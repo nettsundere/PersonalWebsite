@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PersonalWebsite.Repositories;
 using PersonalWebsite.ViewModels.Content;
 using System;
+using WebsiteContent.Repositories;
+using WebsiteContent.Repositories.DTO;
 
 namespace PersonalWebsite.Areas.Private.Controllers
 {
@@ -31,12 +32,15 @@ namespace PersonalWebsite.Areas.Private.Controllers
         /// <returns>All content list representation.</returns>
         public IActionResult Index()
         {
-            ContentIndexViewModel content;
+            ContentPrivateEditListData content;
             using(_contentEditorRepository)
             {
                 content = _contentEditorRepository.ReadList();
             }
-            return View(content);
+
+            var viewModel = new ContentIndexViewModel(content);
+
+            return View(viewModel);
         }
 
         /// <summary>
@@ -51,17 +55,17 @@ namespace PersonalWebsite.Areas.Private.Controllers
         /// <summary>
         /// Create a content.
         /// </summary>
-        /// <param name="content">Content data.</param>
+        /// <param name="content">Content and translation data.</param>
         /// <returns>Redirect to a list or error.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(ContentEditViewModel content)
+        public IActionResult Create(ContentAndTranslationsEditViewModel content)
         {
             if (ModelState.IsValid)
             {
                 using (_contentEditorRepository)
                 {
-                    _contentEditorRepository.Create(content);
+                    _contentEditorRepository.Create(content.GetContentEditData());
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -80,7 +84,7 @@ namespace PersonalWebsite.Areas.Private.Controllers
                 return NotFound();
             }
 
-            ContentEditViewModel content;
+            ContentPrivateEditData content;
 
             using(_contentEditorRepository)
             {
@@ -91,27 +95,31 @@ namespace PersonalWebsite.Areas.Private.Controllers
             {
                 return NotFound();
             }
-            return View(content);
+
+            var viewModel = new ContentAndTranslationsEditViewModel(content);
+
+            return View(viewModel);
         }
 
         /// <summary>
         /// Post Edit, change particular content.
         /// </summary>
-        /// <param name="content">New content data.</param>
+        /// <param name="content">New content and translation data.</param>
         /// <returns>Content editor interface.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(ContentEditViewModel content)
+        public IActionResult Edit(ContentAndTranslationsEditViewModel content)
         {
             if (ModelState.IsValid)
             {
                 using(_contentEditorRepository)
                 {
-                    _contentEditorRepository.Update(content);
+                    _contentEditorRepository.Update(content.GetContentEditData());
                 }
 
                 return RedirectToAction(nameof(Edit), new { id = content.Id });
             }
+
             return View(content);
         }
 
@@ -128,7 +136,7 @@ namespace PersonalWebsite.Areas.Private.Controllers
                 return NotFound();
             }
 
-            ContentEditViewModel content;
+            ContentPrivateEditData content;
 
             using(_contentEditorRepository)
             {
@@ -140,7 +148,8 @@ namespace PersonalWebsite.Areas.Private.Controllers
                 return NotFound();
             }
 
-            return View(content);
+            var viewModel = new ContentAndTranslationsEditViewModel(content);
+            return View(viewModel);
         }
 
         /// <summary>

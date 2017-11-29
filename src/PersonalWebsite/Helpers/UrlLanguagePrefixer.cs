@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
 using PersonalWebsite.Services;
 using System;
-using PersonalWebsite.Lib;
+using WebsiteContent.Lib;
 
 namespace PersonalWebsite.Helpers
 {

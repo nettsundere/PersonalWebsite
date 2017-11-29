@@ -11,6 +11,8 @@ using PersonalWebsite.Models;
 using PersonalWebsite.Providers;
 using PersonalWebsite.Repositories;
 using PersonalWebsite.Services;
+using PersonalWebstie.Models;
+using WebsiteContent.Repositories;
 
 namespace PersonalWebsite
 {
@@ -48,7 +50,7 @@ namespace PersonalWebsite
             services.AddMvc()
                     .AddViewLocalization();
 
-            services.AddTransient<IContentRepository, ContentRepository>();
+            services.AddTransient<IContentViewerRepository, ContentViewerRepository>();
             services.AddTransient<IApplicationUserRepository, ApplicationUserRepository>();
             services.AddTransient<IHumanReadableContentRetrievalService, HumanReadableContentRetrievalService>();
             services.AddTransient<IRequiredDataRepository, RequiredDataRepository>();

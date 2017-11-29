@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PersonalWebsite.Lib
+namespace WebsiteContent.Lib
 {
     /// <summary>
     /// Represents user data required to create a user.

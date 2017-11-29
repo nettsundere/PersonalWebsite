@@ -9,8 +9,11 @@ src/PersonalWebsite/wwwroot/lib/*
 artifacts
 src/PersonalWebsite/bin
 src/PersonalWebsite/obj
+src/WebsiteContent/bin
+src/WebsiteContent/obj
 test/PersonalWebsite.tests/bin
 test/PersonalWebsite.tests/obj
 
 src/PersonalWebsite/*.user
+src/WebsiteContent/*.user
 obj

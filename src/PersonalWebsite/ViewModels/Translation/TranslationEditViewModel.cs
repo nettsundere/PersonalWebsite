@@ -1,59 +1,68 @@
 ﻿using System;
-using PersonalWebsite.Lib;
 using System.ComponentModel.DataAnnotations;
+using WebsiteContent.Lib;
+using WebsiteContent.Repositories.DTO;
 
 namespace PersonalWebsite.ViewModels.Translation
 {
-    public class TranslationEditViewModel
+    /// <summary>
+    /// Translation edit view model.
+    /// </summary>
+    public class TranslationEditViewModel : TranslationPrivateEditData
     {
-        public int Id { get; set; }
+        [Required]
+        public override string Title { get; set; }
 
         [Required]
-        public string Title { get; set; }
-
-        [Required]
-        public LanguageDefinition Version { get; set; }
+        public override LanguageDefinition Version { get; set; }
 
         [Required]
         [DisplayFormat(ConvertEmptyStringToNull = false)]
-        public string Description { get; set; }
+        public override string Description { get; set; }
 
         [Required]
         [DisplayFormat(ConvertEmptyStringToNull = false)]
-        public string ContentMarkup { get; set; }
+        public override string ContentMarkup { get; set; }
 
         [Required]
-        public DataAvailabilityState State { get; set; }
+        public override DataAvailabilityState State { get; set; }
 
         [Required]
-        public string UrlName { get; set; }
+        public override string UrlName { get; set; }
 
         [Required]
-        public DateTime UpdatedAt { get; set; }
+        public override DateTime UpdatedAt { get; set; }
 
         [Required]
-        public int ContentId { get; set; }
+        public override int ContentId { get; set; }
 
-        public TranslationEditViewModel()
+        /// <summary>
+        /// Create <see cref="TranslationEditViewModel"/>.
+        /// </summary>
+        public TranslationEditViewModel() : this(new TranslationPrivateEditData())
         {
         }
 
-        public TranslationEditViewModel(Models.Translation translation)
+        /// <summary>
+        /// Create <see cref="TranslationEditViewModel"/>.
+        /// </summary>
+        /// <param name="data">Translation edit data.</param>
+        public TranslationEditViewModel(TranslationPrivateEditData data)
         {
-            if(translation == null)
+            if (data == null)
             {
-                throw new ArgumentNullException(nameof(translation));
+                throw new ArgumentNullException(nameof(data));
             }
 
-            Id = translation.Id;
-            Title = translation.Title;
-            Version = translation.Version;
-            Description = translation.Description;
-            ContentMarkup = translation.ContentMarkup;
-            State = translation.State;
-            UrlName = translation.UrlName;
-            UpdatedAt = translation.UpdatedAt;
-            ContentId = translation.ContentId;
+            ContentId = data.ContentId;
+            ContentMarkup = data.ContentMarkup;
+            Description = data.Description;
+            Title = data.Title;
+            Id = data.Id;
+            State = data.State;
+            UpdatedAt = data.UpdatedAt;
+            UrlName = data.UrlName;
+            Version = data.Version;
         }
     }
 }

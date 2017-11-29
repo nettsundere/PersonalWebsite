@@ -1,7 +1,8 @@
-﻿using PersonalWebsite.Lib;
-using PersonalWebsite.Repositories;
-using PersonalWebsite.ViewModels.Content;
+﻿using PersonalWebsite.ViewModels.Content;
 using System;
+using WebsiteContent.Lib;
+using WebsiteContent.Repositories;
+using WebsiteContent.Repositories.DTO;
 
 namespace PersonalWebsite.Services
 {
@@ -13,7 +14,7 @@ namespace PersonalWebsite.Services
         /// <summary>
         /// Content repository.
         /// </summary>
-        private readonly IContentRepository _contentRepository;
+        private readonly IContentViewerRepository _contentRepository;
 
         /// <summary>
         /// Page configuration.
@@ -32,7 +33,7 @@ namespace PersonalWebsite.Services
         /// <param name="contentRespository">Content repository.</param>
         public HumanReadableContentRetrievalService(
             IPageConfiguration pageConfiguration,
-            IContentRepository contentRespository)
+            IContentViewerRepository contentRespository)
         {
             _contentRepository = contentRespository ?? throw new ArgumentNullException(nameof(contentRespository));
             _pageConfiguration = pageConfiguration ?? throw new ArgumentNullException(nameof(pageConfiguration));
@@ -97,27 +98,27 @@ namespace PersonalWebsite.Services
         /// <param name="languageDefinition">Language.</param>
         /// <param name="contentViewModelMethod">Localized content retrieval method.</param>
         /// <returns></returns>
-        private PageViewModel GetPageViewModelBy(LanguageDefinition languageDefinition, Func<ContentViewModel> contentViewModelMethod)
+        private PageViewModel GetPageViewModelBy(LanguageDefinition languageDefinition, Func<ContentPublicViewData> contentViewModelMethod)
         {
             GuardNotDisposed();
 
-            ContentViewModel contentVM;
-            ContentLinksViewModel linksVM;
+            ContentPublicViewData contentViewData;
+            ContentPublicLinksData linksData;
             using (_contentRepository)
             {
-                contentVM = contentViewModelMethod();
+                contentViewData = contentViewModelMethod();
 
-                if (contentVM == null)
+                if (contentViewData == null)
                 {
                     return null; // No content available.
                 }
 
-                linksVM = _contentRepository.GetContentLinksPresentationData(languageDefinition,
+                linksData = _contentRepository.GetContentLinksPresentationData(languageDefinition,
                     Enum.GetNames(typeof(PredefinedPages))
                 );
             }
 
-            return new PageViewModel(_pageConfiguration, languageDefinition, contentVM, linksVM);
+            return new PageViewModel(_pageConfiguration, languageDefinition, contentViewData, linksData);
         }
     }
 }

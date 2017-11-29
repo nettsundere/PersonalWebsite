@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PersonalWebsite.Lib;
 using PersonalWebsite.Lib.Extentions;
 using PersonalWebsite.Models;
 using PersonalWebsite.ViewModels.Content;
@@ -7,6 +6,10 @@ using PersonalWebsite.ViewModels.Translation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WebsiteContent.Lib;
+using WebsiteContent.Models;
+using WebsiteContent.Repositories;
+using WebsiteContent.Repositories.DTO;
 
 namespace PersonalWebsite.Repositories
 {
@@ -31,20 +34,15 @@ namespace PersonalWebsite.Repositories
         /// <param name="dataDbContext">Data context.</param>
         public ContentEditorRepository(DataDbContext dataDbContext)
         {
-            if(dataDbContext == null)
-            {
-                throw new ArgumentNullException(nameof(dataDbContext));
-            }
-
-            _dataDbContext = dataDbContext;
+            _dataDbContext = dataDbContext ?? throw new ArgumentNullException(nameof(dataDbContext));
         }
 
         /// <summary>
-        /// Create <see cref="ContentEditViewModel"/> representation in DB.
+        /// Create <see cref="ContentPrivateEditData"/> representation in DB.
         /// </summary>
         /// <param name="contentEditViewModel">Content representation to store in DB.</param>
         /// <returns>Updated content representation.</returns>
-        public ContentEditViewModel Create(ContentEditViewModel contentEditViewModel)
+        public ContentPrivateEditData Create(ContentPrivateEditData contentEditViewModel)
         {
             GuardNotDisposed();
 
@@ -57,7 +55,7 @@ namespace PersonalWebsite.Repositories
 
             var entity = content.Entity;
 
-            return new ContentEditViewModel(entity);
+            return new ContentPrivateEditData(entity);
         }
 
         /// <summary>
@@ -65,24 +63,23 @@ namespace PersonalWebsite.Repositories
         /// </summary>
         /// <param name="contentId">Id of a content to read.</param>
         /// <returns>Content representation.</returns>
-        public ContentEditViewModel Read(int contentId)
+        public ContentPrivateEditData Read(int contentId)
         {
             GuardNotDisposed();
 
             var content = _dataDbContext.Content.Include(c => c.Translations).FirstOrDefault(x => x.Id == contentId);
             if (content != null)
             {
-                var vm = new ContentEditViewModel(content);
+                var data = new ContentPrivateEditData(content);
 
                 // Build missing translations
-
                 var missingTranslations = from x in Enum.GetValues(typeof(LanguageDefinition)).Cast<LanguageDefinition>()
-                                                 where !vm.Translations.Select(t => t.Version).Contains(x)
-                                                 select new TranslationEditViewModel(new Translation()) { ContentId = vm.Id, Version = x };
+                                            where !data.Translations.Select(t => t.Version).Contains(x)
+                                            select new TranslationPrivateEditData(new Translation()) { ContentId = data.Id, Version = x };
 
-                vm.Translations = vm.Translations.Concat(missingTranslations).ToList();
+                data.Translations = data.Translations.Concat(missingTranslations).ToList();
 
-                return vm;
+                return data;
             }
             else
             {
@@ -94,19 +91,19 @@ namespace PersonalWebsite.Repositories
         /// Read content list.
         /// </summary>
         /// <returns>List of content representations.</returns>
-        public ContentIndexViewModel ReadList()
+        public ContentPrivateEditListData ReadList()
         {
             GuardNotDisposed();
 
             var contentsQuery = from x in _dataDbContext.Content
                                orderby x.Id
-                               select new ContentIndexLinkUI
+                               select new ContentPrivateLinksData
                                {
                                    Id = x.Id,
                                    InternalCaption = x.InternalCaption
                                };
 
-            return new ContentIndexViewModel
+            return new ContentPrivateEditListData
             {
                 Contents = contentsQuery.ToList()
             };
@@ -115,25 +112,25 @@ namespace PersonalWebsite.Repositories
         /// <summary>
         /// Update a content.
         /// </summary>
-        /// <param name="contentEditViewModel">Content to update.</param>
+        /// <param name="data">Data to update with.</param>
         /// <returns>Updated content.</returns>
-        public ContentEditViewModel Update(ContentEditViewModel contentEditViewModel)
+        public ContentPrivateEditData Update(ContentPrivateEditData data)
         {
             GuardNotDisposed();
 
             var content = _dataDbContext.Content.Include(c => c.Translations)
-                                        .Single(x => x.Id == contentEditViewModel.Id);
+                                        .Single(x => x.Id == data.Id);
 
             var updateTime = DateTime.UtcNow;
 
-            content.InternalCaption = contentEditViewModel.InternalCaption;
+            content.InternalCaption = data.InternalCaption;
 
-            var newTranslations = from x in contentEditViewModel.Translations
+            var newTranslations = from x in data.Translations
                                     where x.Id == default(int)
-                                    let translation = (new Translation()).UpdateFromViewModel(x)
+                                    let translation = (new Translation()).UpdateFromTranslationPrivateEditData(x)
                                    select translation;
 
-            var updatedOldData = from x in contentEditViewModel.Translations
+            var updatedOldData = from x in data.Translations
                                   where x.Id != default(int)
                                   select x;
 
@@ -144,7 +141,7 @@ namespace PersonalWebsite.Repositories
             // Update existing translations
             foreach(var translationAndChange in translationsAndChanges)
             {
-                translationAndChange.translation.UpdateFromViewModel(translationAndChange.changes);
+                translationAndChange.translation.UpdateFromTranslationPrivateEditData(translationAndChange.changes);
                 translationAndChange.translation.UpdatedAt = updateTime;
             }
 
@@ -158,7 +155,7 @@ namespace PersonalWebsite.Repositories
             _dataDbContext.Content.Update(content);
             _dataDbContext.SaveChanges();
 
-            return contentEditViewModel;
+            return data;
         }
 
         /// <summary>

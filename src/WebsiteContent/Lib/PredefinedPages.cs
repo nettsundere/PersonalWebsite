@@ -1,4 +1,4 @@
-﻿namespace PersonalWebsite.Lib
+﻿namespace WebsiteContent.Lib
 {
     /// <summary>
     /// Internal captions for predefined pages set.

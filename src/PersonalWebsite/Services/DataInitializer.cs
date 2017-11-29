@@ -2,6 +2,7 @@
 using PersonalWebsite.Repositories;
 using System;
 using System.Linq;
+using WebsiteContent.Repositories;
 
 namespace PersonalWebsite.Services
 {
@@ -41,12 +42,7 @@ namespace PersonalWebsite.Services
         /// <param name="serviceProvider">Service provider.</param>
         public DataInitializer(IServiceProvider serviceProvider)
         {
-            if(serviceProvider == null)
-            {
-                throw new ArgumentNullException(nameof(serviceProvider));
-            }
-
-            _serviceProvider = serviceProvider;
+            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             _requiredDataRepository = serviceProvider.GetService<IRequiredDataRepository>();
 
             _internalContentRepository = _serviceProvider.GetService<IInternalContentRepository>();

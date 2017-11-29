@@ -1,9 +1,8 @@
-﻿namespace PersonalWebsite.ViewModels.Content
+﻿namespace WebsiteContent.Repositories.DTO
 {
-    /// <summary>
     /// Presents url and content for human readable link.
     /// </summary>
-    public class LinkUI
+    public class ContentPublicLinkUI
     {
         /// <summary>
         /// Link URL human-readable content.

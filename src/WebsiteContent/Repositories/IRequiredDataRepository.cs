@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using PersonalWebsite.Models;
-using PersonalWebsite.Lib;
+using WebsiteContent.Lib;
+using WebsiteContent.Models;
 
-namespace PersonalWebsite.Repositories
+namespace WebsiteContent.Repositories
 {
     /// <summary>
     /// Required data repository.

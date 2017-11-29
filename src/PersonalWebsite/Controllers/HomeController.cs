@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PersonalWebsite.Lib;
 using PersonalWebsite.Services;
 using PersonalWebsite.ViewModels.Content;
 using System;
+using WebsiteContent.Lib;
 
 namespace PersonalWebsite.Controllers
 {

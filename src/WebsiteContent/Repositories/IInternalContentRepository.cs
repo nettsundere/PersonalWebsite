@@ -1,8 +1,8 @@
-﻿using PersonalWebsite.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using WebsiteContent.Models;
 
-namespace PersonalWebsite.Repositories
+namespace WebsiteContent.Repositories
 {
     /// <summary>
     /// Internal content repository.

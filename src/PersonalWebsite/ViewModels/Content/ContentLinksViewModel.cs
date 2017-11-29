@@ -1,39 +1,57 @@
-﻿using PersonalWebsite.Lib;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using WebsiteContent.Lib;
+using WebsiteContent.Repositories.DTO;
 
 namespace PersonalWebsite.ViewModels.Content
 {
     /// <summary>
     /// Represents data required to display all human-readable links to content pages depending on current language. 
     /// </summary>
-    public class ContentLinksViewModel
+    public class ContentLinksViewModel : ContentPublicLinksData
     {
-        private readonly IDictionary<string, LinkUI> _internalNamesToLinksUI;
-
-        private readonly LanguageDefinition _linksLanguage;
-
-        public ContentLinksViewModel(
-            LanguageDefinition linksLanguage,
-            IDictionary<string, LinkUI> internalNamesToLinksUI)
+        /// <summary>
+        /// Create <see cref="ContentLinksViewModel"/>.
+        /// </summary>
+        /// <param name="data">Public content links data.</param>
+        public ContentLinksViewModel(ContentPublicLinksData data)
         {
-            if(internalNamesToLinksUI == null)
+            if (data == null)
             {
-                throw new ArgumentNullException(nameof(internalNamesToLinksUI));
+                throw new ArgumentNullException(nameof(data));
             }
 
-            _internalNamesToLinksUI = internalNamesToLinksUI;
-            _linksLanguage = linksLanguage;
+            InternalNamesToLinks = data.InternalNamesToLinks;
         }
 
+        /// <summary>
+        /// Get a caption for a page having <paramref name="internalContentCaption"/>.
+        /// </summary>
+        /// <param name="internalContentCaption">Internal page caption.</param>
+        /// <returns>Caption for a page having <paramref name="internalContentCaption"/>.</returns>
         public string CaptionFor(string internalContentCaption)
         {
-            return _internalNamesToLinksUI[internalContentCaption].LinkTitle;
+            if (internalContentCaption == null)
+            {
+                throw new ArgumentNullException(nameof(internalContentCaption));
+            }
+
+            return InternalNamesToLinks[internalContentCaption].LinkTitle;
         }
 
+        /// <summary>
+        /// Get a url name for a page having <paramref name="internalContentCaption"/>
+        /// </summary>
+        /// <param name="internalContentCaption">Internal page caption.</param>
+        /// <returns>Url name for a page having <paramref name="internalContentCaption"/>.</returns>
         public string UrlNameFor(string internalContentCaption)
         {
-            return _internalNamesToLinksUI[internalContentCaption].UrlName;
+            if (internalContentCaption == null)
+            {
+                throw new ArgumentNullException(nameof(internalContentCaption));
+            }
+
+            return InternalNamesToLinks[internalContentCaption].UrlName;
         }
     }
 } 

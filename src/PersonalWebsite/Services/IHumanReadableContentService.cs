@@ -1,6 +1,6 @@
-﻿using PersonalWebsite.Lib;
-using PersonalWebsite.ViewModels.Content;
+﻿using PersonalWebsite.ViewModels.Content;
 using System;
+using WebsiteContent.Lib;
 
 namespace PersonalWebsite.Services
 {
