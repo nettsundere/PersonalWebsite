@@ -20,7 +20,7 @@
   </Target>
 
   <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
-    <Exec Command="bower install" WorkingDirectory="..\PersonalWebsite\" />
+    <Exec Command="bower install" />
     <Exec Command="dotnet bundle" />
   </Target>
 
