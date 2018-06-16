@@ -1,4 +1,5 @@
 .vs
+.idea
 src/PersonalWebsite/wwwroot/bin
 src/PersonalWebsite/node_modules
 src/PersonalWebsite/Properties/PublishProfiles/*
