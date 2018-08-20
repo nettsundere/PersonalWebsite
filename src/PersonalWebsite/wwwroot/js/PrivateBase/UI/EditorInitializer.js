@@ -1,7 +1,8 @@
 export default class EditorInitializer {
     static Initialize(editorSelector)
     {
-        document.querySelectorAll(editorSelector).forEach((item) => {
-        })
+        // An opensource editor could be initialized here
+        //document.querySelectorAll(editorSelector).forEach((item) => {
+        //})
     }
 }
