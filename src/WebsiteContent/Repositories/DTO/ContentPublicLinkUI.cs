@@ -1,5 +1,6 @@
 ﻿namespace WebsiteContent.Repositories.DTO
 {
+    /// <summary>
     /// Presents url and content for human readable link.
     /// </summary>
     public class ContentPublicLinkUI

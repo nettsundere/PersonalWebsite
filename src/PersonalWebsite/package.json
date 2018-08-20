@@ -1,0 +1,30 @@
+{
+  "version": "1.0.0",
+  "name": "personal_website",
+  "private": true,
+  "devDependencies": {
+    "@babel/core": "7.0.0-beta.51",
+    "@babel/preset-env": "7.0.0-beta.51",
+    "babel-loader": "8.0.0-beta.4",
+    "css-loader": "0.28.11",
+    "cssnano": "4.0.0-rc.2",
+    "mini-css-extract-plugin": "0.4.0",
+    "postcss-cssnext": "3.1.0",
+    "postcss-import": "11.1.0",
+    "postcss-loader": "2.1.5",
+    "optimize-css-assets-webpack-plugin": "4.0.2",
+    "webpack": "4.10.2",
+    "webpack-cli": "3.0.8"
+  },
+  "dependencies": {
+    "bootstrap": "4.1.1",
+    "@ckeditor/ckeditor5-build-classic": "10.1.0",
+    "popper.js": "1.14.3",
+    "jquery": "3.3.1",
+    "jquery-validation": "1.14.0",
+    "jquery-validation-unobtrusive": "3.2.8"
+  },
+  "scripts": {
+    "build": "webpack"
+  }
+}

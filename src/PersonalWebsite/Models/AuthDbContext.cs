@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using PersonalWebsite.Models;
 
-namespace PersonalWebstie.Models
+namespace PersonalWebsite.Models
 {
     public class AuthDbContext : IdentityDbContext<ApplicationUser>
     {

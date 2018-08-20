@@ -13,8 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonalWebsite", "src\Pers
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonalWebsite.Tests", "test\PersonalWebsite.Tests\PersonalWebsite.Tests.csproj", "{9037DBB8-409A-4822-B27E-F5987DDACAD8}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{9D26CDC9-85FB-4134-B196-84CAED6A3EE9}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebsiteContent", "src\WebsiteContent\WebsiteContent.csproj", "{421491CB-DC19-498D-A4DB-E0769B920093}"
 EndProject
 Global

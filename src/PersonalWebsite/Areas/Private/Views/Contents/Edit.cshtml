@@ -7,36 +7,39 @@
 <h2>Content editor</h2>
 
 <form asp-action="Edit">
-    <div class="form-horizontal">
+    <div>
         <div asp-validation-summary="All" class="text-danger"></div>
         <input type="hidden" asp-for="Id" />
-        <div class="form-group">
-            <label class="col-md-2 control-label">Internal caption</label>
+        <div class="form-group row">
+            <label class="col-md-2">Internal caption</label>
             <div class="col-md-10">
                 <input asp-for="InternalCaption" class="form-control" />
-                <span asp-validation-for="InternalCaption" class="text-danger" />
+                <span asp-validation-for="InternalCaption" class="text-danger"></span>
             </div>
         </div>
-        <div class="form-group">
-            <ul class="nav nav-tabs">
-                <li class="active">
-                    <a href="#@LanguageDefinition.en_us-tab" data-toggle="tab">
-                        English
-                    </a>
-                </li>
-                <li>
-                    <a href="#@LanguageDefinition.ru_ru-tab" data-toggle="tab">
-                        Russian
-                    </a>
-                </li>
-                <li>
-                    <a href="#@LanguageDefinition.de_de-tab" data-toggle="tab">
-                        German
-                    </a>
-                </li>
-            </ul>
-
-            <div class="tab-content">
+        <div class="form-group row">
+            <nav class="col-12">
+                <ul class="nav nav-tabs" id="langTab" role="tablist">
+                    <li class="nav-item">
+                        <a href="#@LanguageDefinition.en_us-tab" data-toggle="tab" class="nav-link active">
+                            English
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#@LanguageDefinition.ru_ru-tab" data-toggle="tab" class="nav-link">
+                            Russian
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#@LanguageDefinition.de_de-tab" data-toggle="tab" class="nav-link">
+                            German
+                        </a>
+                    </li>
+                </ul> 
+            </nav>
+        </div>
+        <div class="form-group row">
+            <div class="col-12 tab-content" id="langTabContent">
                 @for (var i = 0; i < Model.Translations.Count; i++)
                 {
                     var maybeActive = "";
@@ -44,60 +47,59 @@
                     {
                         maybeActive = "active";
                     }
-                    <div role="tabpanel" class="tab-pane fade in @maybeActive" id="@Model.Translations[i].Version-tab">
-                        <br />
-                        
-                        @if (Model.Translations[i].Id != default(int))
+                    <div role="tabpanel" class="tab-pane @maybeActive" id="@Model.Translations[i].Version-tab">
+                        <br/>
+
+                        @if (Model.Translations[i].Id != default)
                         {
-                            <input asp-for="@Model.Translations[i].Id" type="hidden" />
+                            <input asp-for="@Model.Translations[i].Id" type="hidden"/>
                         }
 
-                        <input asp-for="@Model.Translations[i].ContentId" type="hidden" />
-                        <input asp-for="@Model.Translations[i].Version" type="hidden" />
+                        <input asp-for="@Model.Translations[i].ContentId" type="hidden"/>
+                        <input asp-for="@Model.Translations[i].Version" type="hidden"/>
 
-                        <div class="form-group">
-                            <label class="col-xs-6 col-md-2 control-label">Visibility</label>
-                            <div class="col-xs-6 col-md-3">
+                        <div class="form-group row">
+                            <label class="col-6 col-md-2">Visibility</label>
+                            <div class="col-6 col-md-6">
                                 <select asp-for="@Model.Translations[i].State" asp-items="Html.GetEnumSelectList<DataAvailabilityState>()" class="form-control"></select>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-md-2 control-label">Title</label>
+                        <div class="form-group row">
+                            <label class="col-md-2">Title</label>
                             <div class="col-md-10">
-                                <input asp-for=@Model.Translations[i].Title class="form-control" />
-                                <span asp-validation-for=@Model.Translations[i].Title class="text-danger" />
+                                <input asp-for=@Model.Translations[i].Title class="form-control"/>
+                                <span asp-validation-for=@Model.Translations[i].Title class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-md-2 control-label">Url name</label>
+                        <div class="form-group row">
+                            <label class="col-md-2">Url name</label>
                             <div class="col-md-10">
-                                <input asp-for=@Model.Translations[i].UrlName class="form-control" />
-                                <span asp-validation-for=@Model.Translations[i].UrlName class="text-danger" />
+                                <input asp-for=@Model.Translations[i].UrlName class="form-control"/>
+                                <span asp-validation-for=@Model.Translations[i].UrlName class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-md-2 control-label">Description</label>
+                        <div class="form-group row">
+                            <label class="col-md-2">Description</label>
                             <div class="col-md-10">
-                                <input asp-for=@Model.Translations[i].Description class="form-control" />
-                                <span asp-validation-for=@Model.Translations[i].Description class="text-danger" />
+                                <input asp-for=@Model.Translations[i].Description class="form-control"/>
+                                <span asp-validation-for=@Model.Translations[i].Description class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-md-2 control-label">Content</label>
+                        <div class="form-group row">
+                            <label class="col-md-2">Content</label>
                             <div class="col-md-10">
-                                <textarea asp-for=@Model.Translations[i].ContentMarkup class="form-control ckeditor"></textarea>
-                                <span asp-validation-for=@Model.Translations[i].ContentMarkup class="text-danger" />
+                                <textarea asp-for=@Model.Translations[i].ContentMarkup class="form-control" data-role="content-editor" rows="1"></textarea>
+                                <span asp-validation-for=@Model.Translations[i].ContentMarkup class="text-danger"></span>
                             </div>
                         </div>
                     </div>
                 }
             </div>
-            <hr />
         </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+        <div class="form-group row">
+            <div class="offset-md-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </div>
     </div>

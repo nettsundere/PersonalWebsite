@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.IO;
 using Microsoft.AspNetCore.Hosting;
-using PersonalWebsite;
+using Microsoft.Extensions.DependencyInjection;
+using PersonalWebsite.Services;
 
-namespace Reference
+namespace PersonalWebsite
 {
     public class Program
     {
@@ -18,6 +15,13 @@ namespace Reference
         {
             var host = BuildWebHost(args);
 
+            using (var scope = host.Services.CreateScope())
+            using (var dataInitializer = new DataInitializer(scope.ServiceProvider))
+            {
+                dataInitializer.EnsureRequiredContentsAvailable();
+                dataInitializer.EnsureInitialUserAvaialble();
+            }
+            
             host.Run();
         }
 
@@ -27,12 +31,11 @@ namespace Reference
         /// </summary>
         /// <param name="args">Startup arguments.</param>
         /// <returns></returns>
-        public static IWebHost BuildWebHost(string[] args)
+        private static IWebHost BuildWebHost(string[] args)
         {
             return new WebHostBuilder()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
                 .UseStartup<Startup>()
                 .UseApplicationInsights()
                 .Build();

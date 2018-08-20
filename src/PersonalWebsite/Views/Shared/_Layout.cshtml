@@ -4,31 +4,27 @@
         @model PageViewModel
 
         <meta charset="utf-8" />
-        <title>@RenderSection("Title") | @Html.Partial("_Title")</title>
+        <title>@RenderSection("Title") | @await Html.PartialAsync("_Title")</title>
         
-        <environment names="Development,Staging,Production">
-            <link rel="stylesheet" href="~/css/Build/site.min.css" asp-append-version="true" />
-        </environment>
+        <link rel="stylesheet" href="~/css/Build/app.css" asp-append-version="true" />
     </head>
     <body>
         <header>
-            @Html.Partial("_Header")
+            @await Html.PartialAsync("_Header")
         </header>
 
         <div class="languages">
-            @Html.Partial("_Languages", Model)
+            @await Html.PartialAsync("_Languages", Model)
         </div>
 
         <div class="links">
-            @Html.Partial("_Links")
+            @await Html.PartialAsync("_Links")
         </div>
 
         <div class="content">
             @RenderBody()
         </div>
 
-        <environment names="Development,Staging,Production">
-            <script src="~/js/Build/site.min.js" asp-append-version="true"></script>
-        </environment>
+        <script src="~/js/Build/app.bundle.js" asp-append-version="true"></script>
     </body>
 </html>

@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -11,7 +9,6 @@ using PersonalWebsite.Models;
 using PersonalWebsite.Providers;
 using PersonalWebsite.Repositories;
 using PersonalWebsite.Services;
-using PersonalWebstie.Models;
 using WebsiteContent.Repositories;
 
 namespace PersonalWebsite
@@ -80,7 +77,6 @@ namespace PersonalWebsite
             // Add the following to the request pipeline only in development environment.
             if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
 
@@ -112,12 +108,6 @@ namespace PersonalWebsite
             );
 
             app.UseMvc(routesBuilder.Build);
-
-            using (var dataInitializer = new DataInitializer(app.ApplicationServices))
-            {
-                dataInitializer.EnsureRequiredContentsAvailable();
-                dataInitializer.EnsureInitialUserAvaialble();
-            }
         }
     }
 }
