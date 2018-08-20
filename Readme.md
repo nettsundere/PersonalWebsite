@@ -1,5 +1,5 @@
 # PersonalWebsite
-This is a full source code of my new multilingual website implemented in ASP.NET Core (MVC)
+This is a full source code of my multilingual website implemented in ASP.NET Core
 
 Hosting: Azure, App Service, West US 2
 
