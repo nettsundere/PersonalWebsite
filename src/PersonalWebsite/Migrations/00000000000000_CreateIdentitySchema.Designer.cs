@@ -2,8 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using PersonalWebstie.Models;
 using System;
+using PersonalWebsite.Models;
 
 namespace PersonalWebsite.Migrations
 {

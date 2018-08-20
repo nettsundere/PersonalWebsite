@@ -4,11 +4,11 @@
     Delete a content
 }
 
-<h2>Delete</h2>
-
-<h3>Are you sure you want to delete this?</h3>
+<div class="row text-danger">
+    Are you sure you want to delete this page?
+</div>
 <div>
-    <dl class="dl-horizontal">
+    <dl>
         <dt>
             Internal caption:
         </dt>
@@ -18,9 +18,9 @@
     </dl>
     
     <form asp-action="Delete">
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-danger" /> |
-            <a asp-action="Index">Back to List</a>
+        <div class="form-group row">
+            <input type="submit" value="Delete" class="btn btn-danger" />
+            <a asp-action="Index" class="btn">or go back to List</a>
         </div>
     </form>
 </div>

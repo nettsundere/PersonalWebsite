@@ -2,53 +2,52 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@RenderSection("Title") | Private </title>
-    <environment names="Development,Staging,Production">
-        <link rel="stylesheet" href="~/css/Build/private.site.min.css" asp-append-version="true" />
-    </environment>
+    <link rel="stylesheet" href="~/css/Build/pritvateApp.css" asp-append-version="true" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
 <body>
     <div class="container-fluid">
-        <div class="row-fluid">
-            <section class="col-xs-12">
-                <div class="navbar navbar-default navbar-fixed-top">
-                    <div class="container">
-                        <div class="navbar-brand">
-                            Private area
-                        </div>
-                        <div class="navbar-collapse">
-                            @if(User.Identity.IsAuthenticated) 
-                            {
-                                 <ul class="nav navbar-nav">
-                                    <li asp-controller="Dashboard" asp-action="Index" 
-                                        asp-this-context=@(this.ViewContext)
-                                        if-current-css-class="active">
-                                        <a asp-controller="Dashboard" asp-action="Index">Home</a>
-                                    </li>
-                                    <li asp-controller="Manage" asp-action="Index"
-                                        asp-this-context=@(this.ViewContext)
-                                        if-current-css-class="active">
-                                        <a asp-controller="Manage" asp-action="Index">Profile management</a>
-                                    </li>
-                                    <li asp-controller= "Contents" asp-action="Index"
-                                        asp-this-context=@(this.ViewContext)
-                                        if-current-css-class="active">
-                                        <a asp-controller= "Contents" asp-action="Index">Contents</a>
-                                    </li>
-                                </ul>
-                            }
-                        </div>
+        <div class="row">
+            <section class="col-12">
+                <nav class="navbar navbar-expand-md navbar-light bg-light">
+                    <div class="navbar-brand">
+                        Dashboard
                     </div>
-                </div>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarToggle">
+                        @if(User.Identity.IsAuthenticated) 
+                        {
+                             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                                <li asp-controller="Dashboard" asp-action="Index" 
+                                    asp-this-context=@(this.ViewContext)
+                                    if-current-css-class="nav-item active" class="nav-item">
+                                    <a asp-controller="Dashboard" asp-action="Index" class="nav-link">Home</a>
+                                </li>
+                                <li asp-controller="Manage" asp-action="Index"
+                                    asp-this-context=@(this.ViewContext)
+                                    if-current-css-class="nav-item active" class="nav-item">
+                                    <a asp-controller="Manage" asp-action="Index" class="nav-link">Profile management</a>
+                                </li>
+                                <li asp-controller= "Contents" asp-action="Index"
+                                    asp-this-context=@(this.ViewContext)
+                                    if-current-css-class="nav-item active" class="nav-item">
+                                    <a asp-controller= "Contents" asp-action="Index" class="nav-link">Contents</a>
+                                </li>
+                            </ul>
+                        }
+                    </div>
+                </nav>
                 <footer>
-                    <article class="container">
+                    <article class="container-fluid">
                         @RenderBody()
                     </article>
                     <hr>
                     <div class="row">
-                        <div class="col-xs-12 col-md-6">
-                            <p>&copy; 2017, Vladimir `nettsundere` Kiselev</p>
+                        <div class="col-12 col-md-6">
+                            <p>&copy; 2018, Vladimir `nettsundere` Kiselev</p>
                         </div>
                     </div>
                 </footer>
@@ -56,12 +55,6 @@
         </div>
     </div>
 
-    <script>
-        window.CKEDITOR_BASEPATH = "/lib/ckeditor/";
-    </script>
-
-    <environment names="Development,Staging,Production">
-        <script src="~/js/Build/private.site.min.js" asp-append-version="true"></script>
-    </environment>
+    <script src="~/js/Build/pritvateApp.bundle.js" asp-append-version="true"></script>
 </body>
 </html>

@@ -44,15 +44,15 @@ namespace PersonalWebsite.Repositories
         {
             GuardNotDisposed();
 
-            var contentAndTranslation = (from translations in _dataDbContext.Translation
-                                         join contents in _dataDbContext.Content
-                                            on new { Id = translations.ContentId, Caption = internalCaption }
-                                            equals new { Id = contents.Id, Caption = contents.InternalCaption }
-                                         where translations.Version == langDefinition
-                                               && translations.State == DataAvailabilityState.published
-                                         select FillContentPublicViewData(contents.InternalCaption, translations, FindUrlNames(contents.Id))).FirstOrDefault();
+            var contentAndTranslation = (from translation in _dataDbContext.Translation
+                                         join content in _dataDbContext.Content
+                                            on new { Id = translation.ContentId, Caption = internalCaption }
+                                            equals new { Id = content.Id, Caption = content.InternalCaption }
+                                         where translation.Version == langDefinition
+                                               && translation.State == DataAvailabilityState.published
+                                         select new ContentAndTranslation(content, translation)).FirstOrDefault();
 
-            return contentAndTranslation;
+            return BuildContentPublicViewData(contentAndTranslation);
         }
 
         /// <summary>
@@ -72,9 +72,9 @@ namespace PersonalWebsite.Repositories
                                               && translation.UrlName == lowerCaseUrlName
                                               && translation.State == DataAvailabilityState.published
                                          let content = translation.Content
-                                         select FillContentPublicViewData(content.InternalCaption, translation, FindUrlNames(content.Id))).FirstOrDefault();
+                                         select new ContentAndTranslation(content, translation)).FirstOrDefault();
 
-            return contentAndTranslation;
+            return BuildContentPublicViewData(contentAndTranslation);
         }
 
         /// <summary>
@@ -173,6 +173,24 @@ namespace PersonalWebsite.Repositories
             ).ToDictionary(z => z.Version, z => z.UrlName);
 
             return urlNames;
+        }
+        
+        /// <summary>
+        /// Build <see cref="ContentPublicViewData"/> using the <see cref="ContentAndTranslation"/> data.
+        /// </summary>
+        /// <param name="contentAndTranslation">Content and translation data.</param>
+        /// <returns><see cref="ContentPublicViewData"/> data.</returns>
+        private ContentPublicViewData BuildContentPublicViewData(ContentAndTranslation contentAndTranslation)
+        {
+            if (contentAndTranslation == default)
+            {
+                return default;
+            }
+            
+            var content = contentAndTranslation.Content;
+            var translation = contentAndTranslation.Translation;
+                
+            return FillContentPublicViewData(content.InternalCaption, translation, FindUrlNames(content.Id));
         }
     }
 }

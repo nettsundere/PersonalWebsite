@@ -7,18 +7,18 @@
 <h2>Create</h2>
 
 <form asp-action="Create">
-    <div class="form-horizontal">
+    <div>
         <div asp-validation-summary="All" class="text-danger"></div>
-        <div class="form-group">
-            <label class="col-md-2 control-label">Internal caption</label>
+        <div class="form-group row">
+            <label class="col-md-2">Internal caption</label>
             <div class="col-md-10">
                 <input asp-for="InternalCaption" class="form-control" />
-                <span asp-validation-for="InternalCaption" class="text-danger" />
+                <span asp-validation-for="InternalCaption" class="text-danger"></span>
             </div>
         </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+        <div class="form-group row">
+            <div class="offset-md-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </div>
     </div>

@@ -1,0 +1,24 @@
+version: '3'
+services:
+  # Development-only database (DB is in cloud in production)
+  database:
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "DevelopmentPassword0_2"
+    image: "microsoft/mssql-server-linux:2017-CU8"
+    ports:
+      - 1433:1433
+    expose:
+      - 1433
+
+  # Website instance
+  website:
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+    volumes:
+      - "../nginx/website_development.conf:/etc/nginx/conf.d/website_development.conf"
+      
+  # Migrations
+  migration:
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
