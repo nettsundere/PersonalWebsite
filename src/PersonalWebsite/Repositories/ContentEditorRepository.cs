@@ -1,10 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PersonalWebsite.Lib.Extentions;
 using PersonalWebsite.Models;
-using PersonalWebsite.ViewModels.Content;
-using PersonalWebsite.ViewModels.Translation;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using WebsiteContent.Lib;
 using WebsiteContent.Models;

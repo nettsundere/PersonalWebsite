@@ -1,6 +1,4 @@
-﻿using PersonalWebsite.Lib;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Globalization;
 using WebsiteContent.Lib;
 

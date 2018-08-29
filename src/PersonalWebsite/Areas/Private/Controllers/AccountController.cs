@@ -98,7 +98,7 @@ namespace PersonalWebsite.Areas.Private.Controllers
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation(4, "User logged out.");
-            return RedirectToAction(nameof(HomeController.Index), "Home", new { area = String.Empty });
+            return RedirectToAction(nameof(HomeController.Index), "Home", new { area = string.Empty });
         }
 
         /// <summary>

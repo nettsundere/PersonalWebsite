@@ -1,8 +1,4 @@
-﻿using PersonalWebsite.Lib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System;
 using WebsiteContent.Lib;
 
 namespace PersonalWebsite.ViewModels.Content

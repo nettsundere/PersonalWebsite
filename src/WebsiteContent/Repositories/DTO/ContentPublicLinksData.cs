@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using WebsiteContent.Lib;
+﻿using System.Collections.Generic;
 
 namespace WebsiteContent.Repositories.DTO
 {
