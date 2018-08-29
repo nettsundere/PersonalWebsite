@@ -15,17 +15,17 @@ namespace WebsiteContent.Lib
 
         public ApplicationUserData(string name, string email, string password)
         {
-            if(String.IsNullOrWhiteSpace(name))
+            if(string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentException(nameof(name));
             }
 
-            if (String.IsNullOrWhiteSpace(email))
+            if (string.IsNullOrWhiteSpace(email))
             {
                 throw new ArgumentException(nameof(email));
             }
 
-            if (String.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(password))
             {
                 throw new ArgumentException(nameof(password));
             }

@@ -57,7 +57,7 @@ namespace PersonalWebsite.Services
             SupportedCultures = new ReadOnlyCollection<CultureInfo>(
                 new [] { enCulture, ruCulture, deCulture });
 
-            LanguageValidationRegexp = $"^({String.Join("|", _languageRepresentationToLanguageDefinition.Keys)})$";
+            LanguageValidationRegexp = $"^({string.Join("|", _languageRepresentationToLanguageDefinition.Keys)})$";
         }
         /// <summary>
         /// Convert <see cref="LanguageDefinition"/> to its <see cref="string"/> representation.
@@ -76,7 +76,7 @@ namespace PersonalWebsite.Services
         /// <returns><see cref="LanguageDefinition"/> corresponding to <paramref name="languageRepresentation"/></returns>
         public LanguageDefinition LanguageRepresentationToLanguageDefinition(string languageRepresentation)
         {
-            if (String.IsNullOrWhiteSpace(languageRepresentation))
+            if (string.IsNullOrWhiteSpace(languageRepresentation))
             {
                 throw new ArgumentException("Null or whitespace", nameof(languageRepresentation));
             }

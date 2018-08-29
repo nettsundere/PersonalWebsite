@@ -29,7 +29,7 @@ namespace PersonalWebsite.ViewModels.Content
         /// <param name="header">The header for a language value</param>
         public LanguageUIDefinition(LanguageDefinition language, string header)
         {
-            if(String.IsNullOrWhiteSpace(header))
+            if(string.IsNullOrWhiteSpace(header))
             {
                 throw new ArgumentException("Language header cannot be empty");
             }

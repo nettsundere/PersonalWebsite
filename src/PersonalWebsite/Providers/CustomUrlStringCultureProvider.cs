@@ -35,7 +35,7 @@ namespace PersonalWebsite.Providers
             {
                 var maybeLanguage = languageParts[1];
 
-                if(!String.IsNullOrWhiteSpace(maybeLanguage))
+                if(!string.IsNullOrWhiteSpace(maybeLanguage))
                 {
                     var languageValidation = _languageManipulationService.LanguageValidationRegexp;
                     if (Regex.IsMatch(maybeLanguage, languageValidation, RegexOptions.IgnoreCase))

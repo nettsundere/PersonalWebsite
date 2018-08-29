@@ -115,16 +115,16 @@ namespace PersonalWebsite.Tests.Controllers
                         new Translation {
                             UrlName = "resume",
                             Title = "Resume",
-                            ContentMarkup = String.Empty,
-                            Description = String.Empty,
+                            ContentMarkup = string.Empty,
+                            Description = string.Empty,
                             State = DataAvailabilityState.published,
                             Version = LanguageDefinition.en_us
                         },
                         new Translation {
                             UrlName = "lebenslauf",
                             Title = "Lebenslauf",
-                            ContentMarkup = String.Empty,
-                            Description = String.Empty,
+                            ContentMarkup = string.Empty,
+                            Description = string.Empty,
                             State = DataAvailabilityState.published,
                             Version = LanguageDefinition.de_de
                         }

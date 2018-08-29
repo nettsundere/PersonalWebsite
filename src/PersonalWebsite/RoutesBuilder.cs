@@ -42,7 +42,7 @@ namespace PersonalWebsite
             routes.MapRoute(
                 name: "defaultWithoutLanguage",
                 template: "{controller=Home}/{action=Index}",
-                defaults: new { language = String.Empty }
+                defaults: new { language = string.Empty }
             );
 
             routes.MapRoute(

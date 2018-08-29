@@ -53,7 +53,7 @@ namespace PersonalWebsite.Helpers
 
             if (languageToPrefix == _pageConfiguration.DefaultLanguage)
             {
-                if(String.IsNullOrEmpty(currentHref))
+                if(string.IsNullOrEmpty(currentHref))
                 {
                     output.Attributes.SetAttribute(hrefAttribute, "/");
                 }

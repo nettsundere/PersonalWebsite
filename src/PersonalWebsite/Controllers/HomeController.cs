@@ -53,7 +53,7 @@ namespace PersonalWebsite.Controllers
             using (_humanReadableContentService)
             {
                 LanguageDefinition languageDefinition;
-                if (String.IsNullOrWhiteSpace(language))
+                if (string.IsNullOrWhiteSpace(language))
                 {
                     languageDefinition = _pageConfiguration.DefaultLanguage;
                 }
