@@ -14,7 +14,7 @@ RUN npm install --production
 RUN npm run-script build
 
 # Setup runtime
-FROM microsoft/dotnet:2.1-aspnetcore-runtime AS runtime
+FROM microsoft/dotnet:2.1.3-aspnetcore-runtime AS runtime
 WORKDIR /app
 
 # copy build
