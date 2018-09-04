@@ -1,11 +1,11 @@
-version: '3'
+version: "3"
 services:
   # Development-only database (DB is in cloud in production)
   database:
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_SA_PASSWORD: "DevelopmentPassword0_2"
-    image: "microsoft/mssql-server-linux:2017-CU8"
+    image: "microsoft/mssql-server-linux:latest"
     ports:
       - 1433:1433
     expose:
