@@ -3,7 +3,6 @@ services:
   # Website instance
   website:
     depends_on:
-      - "database"
       - "migration"
     build:
       context: "../src"
@@ -20,8 +19,6 @@ services:
     restart: "always"
   # Migrations
   migration:
-    depends_on:
-      - "database"
     build:
       context: "../src"
       dockerfile: "PersonalWebsite/Migrations/Dockerfile"

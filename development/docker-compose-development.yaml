@@ -13,6 +13,9 @@ services:
 
   # Website instance
   website:
+    depends_on:
+      - "migration"
+      - "database"
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
     volumes:
@@ -20,5 +23,7 @@ services:
       
   # Migrations
   migration:
+    depends_on:
+      - "database"
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
