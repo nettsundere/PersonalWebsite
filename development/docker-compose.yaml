@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   # Website instance
   website:
@@ -16,6 +16,7 @@ services:
     expose:
       - "80"
       - "443"
+    network_mode: "bridge"
     restart: "always"
   # Migrations
   migration:
@@ -27,3 +28,4 @@ services:
     environment:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
       ASPNETCORE_ENVIRONMENT: "Production"
+    network_mode: "bridge"
