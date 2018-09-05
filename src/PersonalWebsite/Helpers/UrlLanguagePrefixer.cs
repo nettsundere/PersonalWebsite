@@ -53,20 +53,23 @@ namespace PersonalWebsite.Helpers
 
             if (languageToPrefix == _pageConfiguration.DefaultLanguage)
             {
-                if(string.IsNullOrEmpty(currentHref))
-                {
-                    output.Attributes.SetAttribute(HrefAttribute, "/");
-                }
-                else
-                {
-                    output.Attributes.SetAttribute(HrefAttribute, $"/{currentHref}");
-                }
+                output.Attributes.SetAttribute(HrefAttribute, GetCurrentOrRootHref(currentHref));
             }
             else
             {
                 var languageRepresentation = _languageManipulationService.LanguageDefinitionToLanguageRepresentation(languageToPrefix);
                 output.Attributes.SetAttribute(HrefAttribute, $"/{languageRepresentation}/{currentHref}");
             }
+        }
+
+        /// <summary>
+        /// Get current href or default root href.
+        /// </summary>
+        /// <param name="currentHref">Possible current href.</param>
+        /// <returns><paramref name="currentHref"/> href or default href.</returns>
+        private static string GetCurrentOrRootHref(string currentHref)
+        {
+            return string.IsNullOrEmpty(currentHref) ? "/" : $"/{currentHref}";
         }
     }
 }
