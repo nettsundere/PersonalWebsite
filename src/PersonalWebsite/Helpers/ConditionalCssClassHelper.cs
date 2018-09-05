@@ -4,27 +4,27 @@ using System.Linq;
 
 namespace PersonalWebsite.Helpers
 {
-    [HtmlTargetElement("li", Attributes = listToRun)]
+    [HtmlTargetElement("li", Attributes = ListToRun)]
     public class ConditionalCssClassHelper : TagHelper
     {
-        private const string listToRun = "asp-controller,asp-action,asp-this-context,if-current-css-class";
+        private const string ListToRun = "asp-controller,asp-action,asp-this-context,if-current-css-class";
 
-        private const string conditionalCssClassAttribute = "if-current-css-class";
-        private const string aspControllerAttribute = "asp-controller";
-        private const string aspActionAttribute = "asp-action";
+        private const string ConditionalCssClassAttribute = "if-current-css-class";
+        private const string AspControllerAttribute = "asp-controller";
+        private const string AspActionAttribute = "asp-action";
 
-        private const string aspThisContextAttribute = "asp-this-context";
+        private const string AspThisContextAttribute = "asp-this-context";
 
-        [HtmlAttributeName(conditionalCssClassAttribute)]
+        [HtmlAttributeName(ConditionalCssClassAttribute)]
         public string ConditionalCssClass { get; set; }
 
-        [HtmlAttributeName(aspControllerAttribute)]
+        [HtmlAttributeName(AspControllerAttribute)]
         public string AspController { get; set; }
 
-        [HtmlAttributeName(aspActionAttribute)]
+        [HtmlAttributeName(AspActionAttribute)]
         public string AspAction { get; set; }
 
-        [HtmlAttributeName(aspThisContextAttribute)]
+        [HtmlAttributeName(AspThisContextAttribute)]
         public ViewContext ThisContext { get; set; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)

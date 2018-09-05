@@ -9,22 +9,22 @@ namespace PersonalWebsite.Helpers
     /// Helper which prefixes href attributes of an A tag with language representation if required.
     /// Default language just adds / at the beginning.
     /// </summary>
-    [HtmlTargetElement("a", Attributes = listToRun)]
+    [HtmlTargetElement("a", Attributes = ListToRun)]
     public class UrlLanguagePrefixer : TagHelper
     {
         private readonly ILanguageManipulationService _languageManipulationService;
         private readonly IPageConfiguration _pageConfiguration;
 
-        private const string listToRun = "href,prefix-with-language";
-        private const string languageAttributeName = "prefix-with-language";
+        private const string ListToRun = "href,prefix-with-language";
+        private const string LanguageAttributeName = "prefix-with-language";
 
-        private const string hrefAttribute = "href";
+        private const string HrefAttribute = "href";
 
         /// <summary>
         /// Language to prefix in href attribute.
         /// HREF attribute should contain relative url (no domain or schema parts).
         /// </summary>
-        [HtmlAttributeName(languageAttributeName)]
+        [HtmlAttributeName(LanguageAttributeName)]
         public LanguageDefinition LanguageToPrefix { get; set; }
         
         public UrlLanguagePrefixer(
@@ -47,7 +47,7 @@ namespace PersonalWebsite.Helpers
         /// <param name="output">Tag output.</param>
         private void ProcessLanguagePrefix(TagHelperOutput output)
         {
-            var currentHref = output.Attributes[hrefAttribute].Value.ToString();
+            var currentHref = output.Attributes[HrefAttribute].Value.ToString();
 
             var languageToPrefix = LanguageToPrefix;
 
@@ -55,17 +55,17 @@ namespace PersonalWebsite.Helpers
             {
                 if(string.IsNullOrEmpty(currentHref))
                 {
-                    output.Attributes.SetAttribute(hrefAttribute, "/");
+                    output.Attributes.SetAttribute(HrefAttribute, "/");
                 }
                 else
                 {
-                    output.Attributes.SetAttribute(hrefAttribute, $"/{currentHref}");
+                    output.Attributes.SetAttribute(HrefAttribute, $"/{currentHref}");
                 }
             }
             else
             {
                 var languageRepresentation = _languageManipulationService.LanguageDefinitionToLanguageRepresentation(languageToPrefix);
-                output.Attributes.SetAttribute(hrefAttribute, $"/{languageRepresentation}/{currentHref}");
+                output.Attributes.SetAttribute(HrefAttribute, $"/{languageRepresentation}/{currentHref}");
             }
         }
     }
