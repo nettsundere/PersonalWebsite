@@ -35,15 +35,18 @@ namespace PersonalWebsite.Repositories
         /// <returns>The list of exceptionally important content records.</returns>
         public IReadOnlyList<Content> GetCriticalContent()
         {
+            var placeholderContentMarkup = "<h1>Test</h1>";
+            var placeholderDescription = "Description";
+            
             var contents = new [] {
                 new Content
                 {
                     InternalCaption = PredefinedPages.Welcome.ToString(),
                     Translations = new []
                     {
-                        new Translation { UrlName = "Welcome", Title = "Welcome", ContentMarkup = string.Empty, Description = string.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.en_us },
-                        new Translation { UrlName = "Willkommen", Title = "Willkommen", ContentMarkup = string.Empty, Description = string.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.de_de },
-                        new Translation { UrlName = "Privet",  Title = "Приветствую", ContentMarkup = string.Empty, Description = string.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.ru_ru }
+                        new Translation { UrlName = "Welcome", Title = "Welcome", ContentMarkup = placeholderContentMarkup, Description = placeholderDescription, State = DataAvailabilityState.published, Version = LanguageDefinition.en_us },
+                        new Translation { UrlName = "Willkommen", Title = "Willkommen", ContentMarkup = placeholderContentMarkup, Description = placeholderDescription, State = DataAvailabilityState.published, Version = LanguageDefinition.de_de },
+                        new Translation { UrlName = "Privet",  Title = "Приветствую", ContentMarkup = placeholderContentMarkup, Description = placeholderDescription, State = DataAvailabilityState.published, Version = LanguageDefinition.ru_ru }
                     }
                 },
                 new Content
@@ -51,9 +54,9 @@ namespace PersonalWebsite.Repositories
                     InternalCaption = PredefinedPages.Contact.ToString(),
                     Translations = new []
                     {
-                        new Translation { UrlName = "contact", Title = "Contact", ContentMarkup = string.Empty, Description = string.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.en_us },
-                        new Translation { UrlName = "kontakt", Title = "Kontakt", ContentMarkup = string.Empty, Description = string.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.de_de },
-                        new Translation { UrlName = "kontakty", Title = "Контакты", ContentMarkup = string.Empty, Description = string.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.ru_ru }
+                        new Translation { UrlName = "contact", Title = "Contact", ContentMarkup = placeholderContentMarkup, Description = placeholderDescription, State = DataAvailabilityState.published, Version = LanguageDefinition.en_us },
+                        new Translation { UrlName = "kontakt", Title = "Kontakt", ContentMarkup = placeholderContentMarkup, Description = placeholderDescription, State = DataAvailabilityState.published, Version = LanguageDefinition.de_de },
+                        new Translation { UrlName = "kontakty", Title = "Контакты", ContentMarkup = placeholderContentMarkup, Description = placeholderDescription, State = DataAvailabilityState.published, Version = LanguageDefinition.ru_ru }
                     }
                 },
                 new Content
@@ -61,9 +64,9 @@ namespace PersonalWebsite.Repositories
                     InternalCaption = PredefinedPages.Resume.ToString(),
                     Translations = new []
                     {
-                        new Translation { UrlName = "resume", Title = "Resume", ContentMarkup = string.Empty, Description = string.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.en_us },
-                        new Translation { UrlName = "lebenslauf", Title = "Lebenslauf", ContentMarkup = string.Empty, Description = string.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.de_de },
-                        new Translation { UrlName = "rezyume",  Title = "Резюме", ContentMarkup = string.Empty, Description = string.Empty, State = DataAvailabilityState.published, Version = LanguageDefinition.ru_ru }
+                        new Translation { UrlName = "resume", Title = "Resume", ContentMarkup = placeholderContentMarkup, Description = placeholderDescription, State = DataAvailabilityState.published, Version = LanguageDefinition.en_us },
+                        new Translation { UrlName = "lebenslauf", Title = "Lebenslauf", ContentMarkup = placeholderContentMarkup, Description = placeholderDescription, State = DataAvailabilityState.published, Version = LanguageDefinition.de_de },
+                        new Translation { UrlName = "rezyume",  Title = "Резюме", ContentMarkup = placeholderContentMarkup, Description = placeholderDescription, State = DataAvailabilityState.published, Version = LanguageDefinition.ru_ru }
                     }
                 }
             };
