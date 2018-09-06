@@ -17,8 +17,15 @@ namespace PersonalWebsite.Repositories
     /// </summary>
     public class ContentEditorRepository : IContentEditorRepository
     {
+        /// <summary>
+        /// Service provider for controlling dependencies.
+        /// </summary>
         private readonly IServiceProvider _serviceProvider;
         
+        /// <summary>
+        /// Create <see cref="ContentEditorRepository"/>.
+        /// </summary>
+        /// <param name="serviceProvider">Service provider</param>
         public ContentEditorRepository(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
