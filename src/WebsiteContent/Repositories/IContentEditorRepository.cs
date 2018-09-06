@@ -6,7 +6,7 @@ namespace WebsiteContent.Repositories
     /// <summary>
     /// Content editor repository.
     /// </summary>
-    public interface IContentEditorRepository : IDisposable
+    public interface IContentEditorRepository 
     {
         /// <summary>
         /// Create a <see cref="ContentPrivateEditData"/> record.

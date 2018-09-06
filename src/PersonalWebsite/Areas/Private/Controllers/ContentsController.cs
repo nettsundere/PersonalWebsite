@@ -32,12 +32,7 @@ namespace PersonalWebsite.Areas.Private.Controllers
         /// <returns>All content list representation.</returns>
         public IActionResult Index()
         {
-            ContentPrivateEditListData content;
-            using(_contentEditorRepository)
-            {
-                content = _contentEditorRepository.ReadList();
-            }
-
+            var content = _contentEditorRepository.ReadList();
             var viewModel = new ContentIndexViewModel(content);
 
             return View(viewModel);
@@ -63,10 +58,7 @@ namespace PersonalWebsite.Areas.Private.Controllers
         {
             if (ModelState.IsValid)
             {
-                using (_contentEditorRepository)
-                {
-                    _contentEditorRepository.Create(content.GetContentEditData());
-                }
+                _contentEditorRepository.Create(content.GetContentEditData());
                 return RedirectToAction(nameof(Index));
             }
             return View(content);
@@ -84,12 +76,7 @@ namespace PersonalWebsite.Areas.Private.Controllers
                 return NotFound();
             }
 
-            ContentPrivateEditData content;
-
-            using(_contentEditorRepository)
-            {
-                content = _contentEditorRepository.Read(id.Value);
-            }
+            var content = _contentEditorRepository.Read(id.Value);
 
             if (content == null)
             {
@@ -112,10 +99,7 @@ namespace PersonalWebsite.Areas.Private.Controllers
         {
             if (ModelState.IsValid)
             {
-                using(_contentEditorRepository)
-                {
-                    _contentEditorRepository.Update(content.GetContentEditData());
-                }
+                _contentEditorRepository.Update(content.GetContentEditData());
 
                 return RedirectToAction(nameof(Edit), new { id = content.Id });
             }
@@ -136,12 +120,7 @@ namespace PersonalWebsite.Areas.Private.Controllers
                 return NotFound();
             }
 
-            ContentPrivateEditData content;
-
-            using(_contentEditorRepository)
-            {
-                content = _contentEditorRepository.Read(id.Value);
-            }
+            var content = _contentEditorRepository.Read(id.Value);
             
             if (content == null)
             {
@@ -161,10 +140,7 @@ namespace PersonalWebsite.Areas.Private.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            using(_contentEditorRepository)
-            {
-                _contentEditorRepository.Delete(id);
-            }
+            _contentEditorRepository.Delete(id);
 
             return RedirectToAction(nameof(Index));
         }

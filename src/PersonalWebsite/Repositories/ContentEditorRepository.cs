@@ -3,10 +3,12 @@ using PersonalWebsite.Lib.Extentions;
 using PersonalWebsite.Models;
 using System;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 using WebsiteContent.Lib;
 using WebsiteContent.Models;
 using WebsiteContent.Repositories;
 using WebsiteContent.Repositories.DTO;
+using Microsoft.Extensions.DependencyInjection.Abstractions;
 
 namespace PersonalWebsite.Repositories
 {
@@ -15,25 +17,13 @@ namespace PersonalWebsite.Repositories
     /// </summary>
     public class ContentEditorRepository : IContentEditorRepository
     {
-        /// <summary>
-        /// Disposing status.
-        /// </summary>
-        private bool _isDisposed;
-
-        /// <summary>
-        /// Data context.
-        /// </summary>
-        private readonly DataDbContext _dataDbContext;
-
-        /// <summary>
-        /// Create <see cref="ContentEditorRepository"/>.
-        /// </summary>
-        /// <param name="dataDbContext">Data context.</param>
-        public ContentEditorRepository(DataDbContext dataDbContext)
+        private readonly IServiceProvider _serviceProvider;
+        
+        public ContentEditorRepository(IServiceProvider serviceProvider)
         {
-            _dataDbContext = dataDbContext ?? throw new ArgumentNullException(nameof(dataDbContext));
+            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
-
+        
         /// <summary>
         /// Create <see cref="ContentPrivateEditData"/> representation in DB.
         /// </summary>
@@ -41,18 +31,19 @@ namespace PersonalWebsite.Repositories
         /// <returns>Updated content representation.</returns>
         public ContentPrivateEditData Create(ContentPrivateEditData contentEditViewModel)
         {
-            GuardNotDisposed();
-
-            var content = _dataDbContext.Content.Add(new Content
+            using (var dataDbContext = GetDataDbContext())
             {
-                InternalCaption = contentEditViewModel.InternalCaption
-            });
+                var content = dataDbContext.Content.Add(new Content
+                {
+                    InternalCaption = contentEditViewModel.InternalCaption
+                });
 
-            _dataDbContext.SaveChanges();
+                dataDbContext.SaveChanges();
 
-            var entity = content.Entity;
+                var entity = content.Entity;
 
-            return new ContentPrivateEditData(entity);
+                return new ContentPrivateEditData(entity);
+            }
         }
 
         /// <summary>
@@ -62,26 +53,27 @@ namespace PersonalWebsite.Repositories
         /// <returns>Content representation.</returns>
         public ContentPrivateEditData Read(int contentId)
         {
-            GuardNotDisposed();
-
-            var content = _dataDbContext.Content.Include(c => c.Translations).FirstOrDefault(x => x.Id == contentId);
-            if (content != null)
+            using (var dataDbContext = GetDataDbContext())
             {
-                var data = new ContentPrivateEditData(content);
+                var content = dataDbContext.Content.Include(c => c.Translations).FirstOrDefault(x => x.Id == contentId);
+                if (content != null)
+                {
+                    var data = new ContentPrivateEditData(content);
 
-                // Build missing translations
-                var missingTranslations = from x in Enum.GetValues(typeof(LanguageDefinition)).Cast<LanguageDefinition>()
-                                            where !data.Translations.Select(t => t.Version).Contains(x)
-                                            select new TranslationPrivateEditData(new Translation()) { ContentId = data.Id, Version = x };
+                    // Build missing translations
+                    var missingTranslations = from x in Enum.GetValues(typeof(LanguageDefinition)).Cast<LanguageDefinition>()
+                        where !data.Translations.Select(t => t.Version).Contains(x)
+                        select new TranslationPrivateEditData(new Translation()) { ContentId = data.Id, Version = x };
 
-                data.Translations = data.Translations.Concat(missingTranslations).ToList();
+                    data.Translations = data.Translations.Concat(missingTranslations).ToList();
 
-                return data;
+                    return data;
+                }
+                else
+                {
+                    return null;
+                }       
             }
-            else
-            {
-                return null;
-            }       
         }
 
         /// <summary>
@@ -90,20 +82,21 @@ namespace PersonalWebsite.Repositories
         /// <returns>List of content representations.</returns>
         public ContentPrivateEditListData ReadList()
         {
-            GuardNotDisposed();
-
-            var contentsQuery = from x in _dataDbContext.Content
-                               orderby x.Id
-                               select new ContentPrivateLinksData
-                               {
-                                   Id = x.Id,
-                                   InternalCaption = x.InternalCaption
-                               };
-
-            return new ContentPrivateEditListData
+            using (var dataDbContext = GetDataDbContext())
             {
-                Contents = contentsQuery.ToList()
-            };
+                var contentsQuery = from x in dataDbContext.Content
+                    orderby x.Id
+                    select new ContentPrivateLinksData
+                    {
+                        Id = x.Id,
+                        InternalCaption = x.InternalCaption
+                    };
+
+                return new ContentPrivateEditListData
+                {
+                    Contents = contentsQuery.ToList()
+                };
+            }
         }
 
         /// <summary>
@@ -113,46 +106,47 @@ namespace PersonalWebsite.Repositories
         /// <returns>Updated content.</returns>
         public ContentPrivateEditData Update(ContentPrivateEditData data)
         {
-            GuardNotDisposed();
-
-            var content = _dataDbContext.Content.Include(c => c.Translations)
-                                        .Single(x => x.Id == data.Id);
-
-            var updateTime = DateTime.UtcNow;
-
-            content.InternalCaption = data.InternalCaption;
-
-            var newTranslations = from x in data.Translations
-                                    where x.Id == default(int)
-                                    let translation = (new Translation()).UpdateFromTranslationPrivateEditData(x)
-                                   select translation;
-
-            var updatedOldData = from x in data.Translations
-                                  where x.Id != default(int)
-                                  select x;
-
-            var translationsAndChanges = from translation in content.Translations
-                                         join changes in updatedOldData on translation.Id equals changes.Id
-                                         select new { translation, changes };
-
-            // Update existing translations
-            foreach(var translationAndChange in translationsAndChanges)
+            using (var dataDbContext = GetDataDbContext())
             {
-                translationAndChange.translation.UpdateFromTranslationPrivateEditData(translationAndChange.changes);
-                translationAndChange.translation.UpdatedAt = updateTime;
+                var content = dataDbContext.Content.Include(c => c.Translations)
+                    .Single(x => x.Id == data.Id);
+
+                var updateTime = DateTime.UtcNow;
+
+                content.InternalCaption = data.InternalCaption;
+
+                var newTranslations = from x in data.Translations
+                    where x.Id == default(int)
+                    let translation = (new Translation()).UpdateFromTranslationPrivateEditData(x)
+                    select translation;
+
+                var updatedOldData = from x in data.Translations
+                    where x.Id != default(int)
+                    select x;
+
+                var translationsAndChanges = from translation in content.Translations
+                    join changes in updatedOldData on translation.Id equals changes.Id
+                    select new { translation, changes };
+
+                // Update existing translations
+                foreach(var translationAndChange in translationsAndChanges)
+                {
+                    translationAndChange.translation.UpdateFromTranslationPrivateEditData(translationAndChange.changes);
+                    translationAndChange.translation.UpdatedAt = updateTime;
+                }
+
+                // Add new translations
+                foreach(var newTranslation in newTranslations)
+                {
+                    newTranslation.UpdatedAt = updateTime;
+                    content.Translations.Add(newTranslation);
+                }
+
+                dataDbContext.Content.Update(content);
+                dataDbContext.SaveChanges();
+
+                return data;   
             }
-
-            // Add new translations
-            foreach(var newTranslation in newTranslations)
-            {
-                newTranslation.UpdatedAt = updateTime;
-                content.Translations.Add(newTranslation);
-            }
-
-            _dataDbContext.Content.Update(content);
-            _dataDbContext.SaveChanges();
-
-            return data;
         }
 
         /// <summary>
@@ -161,43 +155,18 @@ namespace PersonalWebsite.Repositories
         /// <param name="contentId">Id of a content to delete.</param>
         public void Delete(int contentId)
         {
-            GuardNotDisposed();
-            var content = _dataDbContext.Content.Single(x => x.Id == contentId);
-
-            _dataDbContext.Content.Remove(content);
-            _dataDbContext.SaveChanges();
-        }
-
-        /// <summary>
-        /// Dispose the object.
-        /// </summary>
-        public void Dispose()
-        {
-            if (!_isDisposed)
+            using (var dataDbContext = GetDataDbContext())
             {
-                _isDisposed = true;
-                _dataDbContext.Dispose();
-                GC.SuppressFinalize(this);
+                var content = dataDbContext.Content.Single(x => x.Id == contentId);
+
+                dataDbContext.Content.Remove(content);
+                dataDbContext.SaveChanges();   
             }
         }
 
-        /// <summary>
-        /// Finalizer.
-        /// </summary>
-        ~ContentEditorRepository()
+        private DataDbContext GetDataDbContext()
         {
-            Dispose();
-        }
-
-        /// <summary>
-        /// Throw if <see cref="ContentEditorRepository"/> is disposed.
-        /// </summary>
-        private void GuardNotDisposed()
-        {
-            if (_isDisposed)
-            {
-                throw new ObjectDisposedException(nameof(ContentEditorRepository));
-            }
+            return _serviceProvider.GetRequiredService<DataDbContext>();
         }
     }
 }
