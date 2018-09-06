@@ -50,7 +50,7 @@ namespace PersonalWebsite.Services
         }
 
         /// <summary>
-        /// Ensure required content is availalble.
+        /// Ensure required content is available.
         /// </summary>
         public void EnsureRequiredContentsAvailable()
         {
