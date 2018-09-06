@@ -15,7 +15,7 @@ namespace WebsiteContent.Models
         /// <summary>
         /// Available content translations.
         /// </summary>
-        public virtual IList<Translation> Translations { get; set; }
+        public IList<Translation> Translations { get; set; }
 
         /// <summary>
         /// Content non-translated caption.

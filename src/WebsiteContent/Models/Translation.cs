@@ -56,6 +56,6 @@ namespace WebsiteContent.Models
         /// <summary>
         /// Content.
         /// </summary>
-        public virtual Content Content { get; set; }
+        public Content Content { get; set; }
     }
 }
