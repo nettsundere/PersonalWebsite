@@ -15,4 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\WebsiteContent\WebsiteContent.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties" />
+  </ItemGroup>
 </Project>
