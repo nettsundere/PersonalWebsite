@@ -6,7 +6,7 @@ namespace WebsiteContent.Repositories
     /// <summary>
     /// Application user repository.
     /// </summary>
-    public interface IApplicationUserRepository : IDisposable
+    public interface IApplicationUserRepository 
     {
         /// <summary>
         /// Deletes a user by its EMail.

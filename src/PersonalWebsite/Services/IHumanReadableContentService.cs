@@ -7,7 +7,7 @@ namespace PersonalWebsite.Services
     /// <summary>
     /// Human-readable content retrieval service.
     /// </summary>
-    public interface IHumanReadableContentRetrievalService : IDisposable
+    public interface IHumanReadableContentRetrievalService 
     {
         PageViewModel GetPageByHumanReadableName(LanguageDefinition languageDefinition, string urlName);
         PageViewModel GetPageByInternalCaption(LanguageDefinition languageDefinition, string internalCaption);

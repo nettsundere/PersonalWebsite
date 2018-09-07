@@ -8,7 +8,7 @@ namespace WebsiteContent.Repositories
     /// <summary>
     /// Content viewer repository.
     /// </summary>
-    public interface IContentViewerRepository : IDisposable
+    public interface IContentViewerRepository 
     {
         /// <summary>
         /// Find translated content by language and url name.

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 using WebsiteContent.Models;
 using WebsiteContent.Repositories;
 
@@ -12,40 +13,19 @@ namespace PersonalWebsite.Repositories
     /// </summary>
     public class InternalContentRepository : IInternalContentRepository
     {
-        private bool _isDisposed = false;
-
-        private readonly DataDbContext _context;
+        /// <summary>
+        /// Service provider.
+        /// </summary>
+        private readonly IServiceProvider _serviceProvider;
 
         /// <summary>
         /// Create <see cref="InternalContentRepository"/>.
         /// </summary>
-        /// <param name="context">Data context.</param>
-        public InternalContentRepository(DataDbContext context)
+        /// <param name="provider">Service provider.</param>
+        public InternalContentRepository(IServiceProvider provider)
         {
-            _context = context;
+            _serviceProvider = provider ?? throw new ArgumentNullException(nameof(provider));
         }
-
-        /// <summary>
-        /// Dispose.
-        /// </summary>
-        public void Dispose()
-        {
-            if (!_isDisposed)
-            {
-                 _context.Dispose();
-                _isDisposed = true;
-                GC.SuppressFinalize(this);
-            }
-        }
-
-        /// <summary>
-        /// <see cref="InternalContentRepository"/> finalizer.
-        /// </summary>
-        ~InternalContentRepository()
-        {
-            Dispose();
-        }
-
 
         /// <summary>
         /// Delete content having name in the list of <paramref name="internalCaptions"/>.
@@ -53,26 +33,42 @@ namespace PersonalWebsite.Repositories
         /// <param name="internalCaptions">List of content captions to delete by.</param>
         public void DeleteContentsByInternalCaptions(IReadOnlyList<string> internalCaptions)
         {
-            var contentsToRemove = from x in _context.Content
-                                   where internalCaptions.Contains(x.InternalCaption)
-                                   select x;
+            using (var dataDbContext = GetDataDbContext())
+            {
+                var contentsToRemove = from x in dataDbContext.Content
+                    where internalCaptions.Contains(x.InternalCaption)
+                    select x;
 
-            _context.Content.RemoveRange(contentsToRemove);
-            _context.SaveChanges();
+                dataDbContext.Content.RemoveRange(contentsToRemove);
+                dataDbContext.SaveChanges();
+            }
         }
 
         /// <summary>
-        /// Ensure that <paramref name="contentList"/> is available in the repository.
+        /// Ensure that <paramref name="contentsRange"/> is available in the repository.
         /// </summary>
-        /// <param name="contentList">Content list.</param>
+        /// <param name="contentsRange">Content range.</param>
         public void EnsureContentListAvailable(IReadOnlyList<Content> contentsRange)
         {
-            var newContents = from x in contentsRange
-                              let presentInternalCaptions = from y in _context.Content select y.InternalCaption
-                              where !presentInternalCaptions.Contains(x.InternalCaption)
-                              select x;
-            _context.Content.AddRange(newContents);
-            _context.SaveChanges();
+            using (var dataDbContext = GetDataDbContext())
+            {
+                var newContents = from x in contentsRange
+                    let presentInternalCaptions = from y in dataDbContext.Content select y.InternalCaption
+                    where !presentInternalCaptions.Contains(x.InternalCaption)
+                    select x;
+                
+                dataDbContext.Content.AddRange(newContents);
+                dataDbContext.SaveChanges();
+            }
+        }
+        
+        /// <summary>
+        /// Get database context <see cref="DataDbContext"/>.
+        /// </summary>
+        /// <returns><see cref="DataDbContext"/></returns>
+        private DataDbContext GetDataDbContext()
+        {
+            return _serviceProvider.GetRequiredService<DataDbContext>();
         }
     }
 }

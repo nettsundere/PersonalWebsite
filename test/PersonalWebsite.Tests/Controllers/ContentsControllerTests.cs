@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PersonalWebsite.Controllers;
@@ -18,14 +19,16 @@ namespace PersonalWebsite.Tests.Controllers
     /// </summary>
     public class ContentsControllerTests
     {
-        private readonly IPageConfiguration _pageConfiguration;
-        private readonly IHumanReadableContentRetrievalService _humanReadableContentService;
-        private readonly ILanguageManipulationService _languageManipulationService;
-
-        private readonly IContentViewerRepository _contentRepository;
+        /// <summary>
+        /// Subject <see cref="ContentsController"/>.
+        /// </summary>
         private readonly ContentsController _contentsController;
-        private readonly DataDbContext _dataDbContext;
 
+        /// <summary>
+        /// Service provider.
+        /// </summary>
+        private readonly IServiceProvider _serviceProvider;
+        
         /// <summary>
         /// Create <see cref="ContentsControllerTests"/>.
         /// </summary>
@@ -37,26 +40,25 @@ namespace PersonalWebsite.Tests.Controllers
             var services = new ServiceCollection();
             services.AddEntityFrameworkInMemoryDatabase()
                     .AddDbContext<DataDbContext>(options =>
-                        options.UseInMemoryDatabase(databaseName)
+                        options.UseInMemoryDatabase(databaseName),
+                        ServiceLifetime.Transient
                     );
 
+            _serviceProvider = services.BuildServiceProvider();
+
             // Dependencies initializations
-            _pageConfiguration = new PageConfiguration();
+            IPageConfiguration pageConfiguration = new PageConfiguration();
 
-            var optionsBuilder = new DbContextOptionsBuilder<DataDbContext>();
-            optionsBuilder.UseInMemoryDatabase(databaseName);
-            _dataDbContext = new DataDbContext(optionsBuilder.Options);
+            var contentRepository = new ContentViewerRepository(_serviceProvider);
+            var humanReadableContentService = new HumanReadableContentRetrievalService(pageConfiguration, contentRepository);
 
-            _contentRepository = new ContentViewerRepository(_dataDbContext);
-            _humanReadableContentService = new HumanReadableContentRetrievalService(_pageConfiguration, _contentRepository);
-
-            _languageManipulationService = new LanguageManipulationService();
+            var languageManipulationService = new LanguageManipulationService();
 
             // Controller initialization
             _contentsController = new ContentsController(
-                _pageConfiguration, 
-                _humanReadableContentService, 
-                _languageManipulationService
+                pageConfiguration, 
+                humanReadableContentService, 
+                languageManipulationService
             );
         }
 
@@ -104,33 +106,36 @@ namespace PersonalWebsite.Tests.Controllers
 
         private void SetupContent()
         {
-            _dataDbContext.Content.Add(
-                new Content
-                {
-                    InternalCaption = "Something",
-                    Translations = new[]
+            using (var dataDbContext = _serviceProvider.GetService<DataDbContext>())
+            {
+                dataDbContext.Content.Add(
+                    new Content
                     {
-                        new Translation {
-                            UrlName = "resume",
-                            Title = "Resume",
-                            ContentMarkup = string.Empty,
-                            Description = string.Empty,
-                            State = DataAvailabilityState.published,
-                            Version = LanguageDefinition.en_us
-                        },
-                        new Translation {
-                            UrlName = "lebenslauf",
-                            Title = "Lebenslauf",
-                            ContentMarkup = string.Empty,
-                            Description = string.Empty,
-                            State = DataAvailabilityState.published,
-                            Version = LanguageDefinition.de_de
+                        InternalCaption = "Something",
+                        Translations = new[]
+                        {
+                            new Translation {
+                                UrlName = "resume",
+                                Title = "Resume",
+                                ContentMarkup = string.Empty,
+                                Description = string.Empty,
+                                State = DataAvailabilityState.published,
+                                Version = LanguageDefinition.en_us
+                            },
+                            new Translation {
+                                UrlName = "lebenslauf",
+                                Title = "Lebenslauf",
+                                ContentMarkup = string.Empty,
+                                Description = string.Empty,
+                                State = DataAvailabilityState.published,
+                                Version = LanguageDefinition.de_de
+                            }
                         }
                     }
-                }
-            );
+                );
 
-            _dataDbContext.SaveChanges();
+                dataDbContext.SaveChanges();
+            }
         }
     }
 }

@@ -17,36 +17,28 @@ namespace PersonalWebsite.Tests.Controllers
     /// <summary>
     /// Test <see cref="HomeController"/>.
     /// </summary>
-    public class HomeControllerTests : IDisposable
+    public class HomeControllerTests 
     {
         private readonly IPageConfiguration _pageConfiguration;
-        private readonly IHumanReadableContentRetrievalService _humanReadableContentService;
-        private readonly ILanguageManipulationService _languageManipulationService;
 
-        private readonly IContentViewerRepository _contentRepository;
+        /// <summary>
+        /// Subject <see cref="HomeController"/>.
+        /// </summary>
         private readonly HomeController _homeController;
-        private readonly DataDbContext _dataDbContext;
 
+        /// <summary>
+        /// Service provider.
+        /// </summary>
+        private readonly IServiceProvider _serviceProvider;
+        
         /// <summary>
         /// Fake page configuration.
         /// </summary>
         private class FakePageConfiguration : IPageConfiguration
         {
-            public LanguageDefinition DefaultLanguage
-            {
-                get
-                {
-                    return LanguageDefinition.de_de;
-                }
-            }
+            public LanguageDefinition DefaultLanguage => LanguageDefinition.de_de;
 
-            public string DefaultPageInternalCaption
-            {
-                get
-                {
-                    return "someCaption";
-                }
-            }
+            public string DefaultPageInternalCaption => "someCaption";
         }
 
         /// <summary>
@@ -60,27 +52,25 @@ namespace PersonalWebsite.Tests.Controllers
             var services = new ServiceCollection();
             services.AddEntityFrameworkInMemoryDatabase()
                     .AddDbContext<DataDbContext>(options =>
-                        options.UseInMemoryDatabase(databaseName)
+                        options.UseInMemoryDatabase(databaseName),
+                        ServiceLifetime.Transient
                     );
+
+            _serviceProvider = services.BuildServiceProvider();
 
             // Dependencies initializations
             _pageConfiguration = new FakePageConfiguration();
 
-            var optionsBuilder = new DbContextOptionsBuilder<DataDbContext>();
-            optionsBuilder.UseInMemoryDatabase(databaseName);
+            var contentRepository = new ContentViewerRepository(_serviceProvider);
+            var humanReadableContentService = new HumanReadableContentRetrievalService(_pageConfiguration, contentRepository);
 
-            _dataDbContext = new DataDbContext(optionsBuilder.Options);
-
-            _contentRepository = new ContentViewerRepository(_dataDbContext);
-            _humanReadableContentService = new HumanReadableContentRetrievalService(_pageConfiguration, _contentRepository);
-
-            _languageManipulationService = new LanguageManipulationService();
+            ILanguageManipulationService languageManipulationService = new LanguageManipulationService();
 
             // Controller initialization
             _homeController = new HomeController(
                 _pageConfiguration,
-                _humanReadableContentService,
-                _languageManipulationService
+                humanReadableContentService,
+                languageManipulationService
             );
         }
 
@@ -127,53 +117,48 @@ namespace PersonalWebsite.Tests.Controllers
         }
 
         /// <summary>
-        /// Global dispose.
-        /// </summary>
-        public void Dispose()
-        {
-            _humanReadableContentService.Dispose();
-        }
-
-        /// <summary>
         /// Setup content.
         /// </summary>
         private void SetupContent()
         {
-            _dataDbContext.Content.Add(
-                new Content
-                {
-                    InternalCaption = _pageConfiguration.DefaultPageInternalCaption,
-                    Translations = new[]
+            using (var dataDbContext = _serviceProvider.GetService<DataDbContext>())
+            {
+                dataDbContext.Content.Add(
+                    new Content
                     {
-                        new Translation {
-                            UrlName = "url1",
-                            Title = "Resume",
-                            ContentMarkup = string.Empty,
-                            Description = string.Empty,
-                            State = DataAvailabilityState.published,
-                            Version = LanguageDefinition.en_us
-                        },
-                        new Translation {
-                            UrlName = "url2",
-                            Title = "Lebenslauf",
-                            ContentMarkup = string.Empty,
-                            Description = string.Empty,
-                            State = DataAvailabilityState.published,
-                            Version = LanguageDefinition.de_de
-                        },
-                        new Translation {
-                            UrlName = "url3",
-                            Title = "Lebenslauf",
-                            ContentMarkup = string.Empty,
-                            Description = string.Empty,
-                            State = DataAvailabilityState.published,
-                            Version = LanguageDefinition.ru_ru
+                        InternalCaption = _pageConfiguration.DefaultPageInternalCaption,
+                        Translations = new[]
+                        {
+                            new Translation {
+                                UrlName = "url1",
+                                Title = "Resume",
+                                ContentMarkup = string.Empty,
+                                Description = string.Empty,
+                                State = DataAvailabilityState.published,
+                                Version = LanguageDefinition.en_us
+                            },
+                            new Translation {
+                                UrlName = "url2",
+                                Title = "Lebenslauf",
+                                ContentMarkup = string.Empty,
+                                Description = string.Empty,
+                                State = DataAvailabilityState.published,
+                                Version = LanguageDefinition.de_de
+                            },
+                            new Translation {
+                                UrlName = "url3",
+                                Title = "Lebenslauf",
+                                ContentMarkup = string.Empty,
+                                Description = string.Empty,
+                                State = DataAvailabilityState.published,
+                                Version = LanguageDefinition.ru_ru
+                            }
                         }
                     }
-                }
-            );
+                );
 
-            _dataDbContext.SaveChanges();
+                dataDbContext.SaveChanges();
+            }
         }
     }
 }

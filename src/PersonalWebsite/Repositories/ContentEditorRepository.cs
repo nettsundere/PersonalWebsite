@@ -8,7 +8,6 @@ using WebsiteContent.Lib;
 using WebsiteContent.Models;
 using WebsiteContent.Repositories;
 using WebsiteContent.Repositories.DTO;
-using Microsoft.Extensions.DependencyInjection.Abstractions;
 
 namespace PersonalWebsite.Repositories
 {
@@ -171,6 +170,10 @@ namespace PersonalWebsite.Repositories
             }
         }
 
+        /// <summary>
+        /// Get database context <see cref="DataDbContext"/>.
+        /// </summary>
+        /// <returns><see cref="DataDbContext"/></returns>
         private DataDbContext GetDataDbContext()
         {
             return _serviceProvider.GetRequiredService<DataDbContext>();

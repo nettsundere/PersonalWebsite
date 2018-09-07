@@ -33,8 +33,8 @@ namespace PersonalWebsite
         {
             var sqlContextConfigurator = new DbContextConfigurator(Configuration);
             services.AddEntityFrameworkSqlServer()
-                .AddDbContext<AuthDbContext>(sqlContextConfigurator.Configure)
-                .AddDbContext<DataDbContext>(sqlContextConfigurator.Configure);
+                .AddDbContext<AuthDbContext>(sqlContextConfigurator.Configure, ServiceLifetime.Transient)
+                .AddDbContext<DataDbContext>(sqlContextConfigurator.Configure, ServiceLifetime.Transient);
 
             // Add Identity services to the services container.
             services.AddIdentity<ApplicationUser, IdentityRole>()

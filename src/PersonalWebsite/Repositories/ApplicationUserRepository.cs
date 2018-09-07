@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using PersonalWebsite.Models;
 using System;
-using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 using WebsiteContent.Lib;
 using WebsiteContent.Repositories;
+using System.Linq;
 
 namespace PersonalWebsite.Repositories
 {
@@ -13,42 +14,24 @@ namespace PersonalWebsite.Repositories
     public class ApplicationUserRepository : IApplicationUserRepository
     {
         /// <summary>
-        /// Auth DB context.
-        /// </summary>
-        private readonly AuthDbContext _authDbContext;
-
-        /// <summary>
-        /// Disposing status.
-        /// </summary>
-        private bool _isDisposed;
-
-        /// <summary>
         /// User manager.
         /// </summary>
         private readonly UserManager<ApplicationUser> _userManager;
 
         /// <summary>
+        /// Service provider.
+        /// </summary>
+        private readonly IServiceProvider _serviceProvider;
+        
+        /// <summary>
         /// Create <see cref="ApplicationUserRepository"/>.
         /// </summary>
         /// <param name="userManager">User manager.</param>
-        /// <param name="authDbContext">Auth DB context.</param>
-        public ApplicationUserRepository(UserManager<ApplicationUser> userManager, AuthDbContext authDbContext)
+        /// <param name="serviceProvider">Service provider.</param>
+        public ApplicationUserRepository(UserManager<ApplicationUser> userManager, IServiceProvider serviceProvider)
         {
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
-            _authDbContext = authDbContext ?? throw new ArgumentNullException(nameof(authDbContext));
-        }
-
-        /// <summary>
-        /// Dispose the object.
-        /// </summary>
-        public void Dispose()
-        {
-            if (!_isDisposed)
-            {
-                _authDbContext.Dispose();
-                _isDisposed = true;
-                GC.SuppressFinalize(this);
-            }
+            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
         /// <summary>
@@ -57,15 +40,16 @@ namespace PersonalWebsite.Repositories
         /// <param name="email">EMail of a user to be deleted.</param>
         public void DeleteUserByEMail(string email)
         {
-            GuardNotDisposed();
+            using (var authDbContext = GetAuthDbContext())
+            {
+                var usersToDelete =
+                    from x in authDbContext.Users
+                    where x.Email == email
+                    select x;
 
-            var usersToDelete =
-                 from x in _authDbContext.Users
-                 where x.Email == email
-                 select x;
-
-            _authDbContext.Users.RemoveRange(usersToDelete);
-            _authDbContext.SaveChanges();
+                authDbContext.Users.RemoveRange(usersToDelete);
+                authDbContext.SaveChanges();  
+            }
         }
 
         /// <summary>
@@ -74,40 +58,30 @@ namespace PersonalWebsite.Repositories
         /// <param name="user">Required user.</param>
         public void EnsureUserAvailable(ApplicationUserData user)
         {
-            GuardNotDisposed();
-
-            var sameEmailUsers = from x in _authDbContext.Users
-                                 where x.Email.Equals(user.EMail, StringComparison.OrdinalIgnoreCase)
-                                 select x;
-
-            if (sameEmailUsers.Count() == 0)
+            using (var authDbContext = GetAuthDbContext())
             {
-                var result = _userManager.CreateAsync(new ApplicationUser { Email = user.EMail, UserName = user.Name }, user.Password).Result;
-                if (!result.Succeeded)
+                var sameEmailUsers = from x in authDbContext.Users
+                    where x.Email.Equals(user.EMail, StringComparison.OrdinalIgnoreCase)
+                    select x;
+
+                if (!sameEmailUsers.Any())
                 {
-                    throw new InvalidOperationException($"Failed to ensure user {user.Name} is available");
+                    var result = _userManager.CreateAsync(new ApplicationUser { Email = user.EMail, UserName = user.Name }, user.Password).Result;
+                    if (!result.Succeeded)
+                    {
+                        throw new InvalidOperationException($"Failed to ensure user {user.Name} is available");
+                    }
                 }
             }
-
         }
-
+        
         /// <summary>
-        /// Finalizer.
+        /// Get database context <see cref="AuthDbContext"/>.
         /// </summary>
-        ~ApplicationUserRepository()
+        /// <returns><see cref="AuthDbContext"/>.</returns>
+        private AuthDbContext GetAuthDbContext()
         {
-            Dispose();
-        }
-
-        /// <summary>
-        /// Throw if <see cref="ApplicationUserRepository"/> is disposed.
-        /// </summary>
-        private void GuardNotDisposed()
-        {
-            if (_isDisposed)
-            {
-                throw new ObjectDisposedException(nameof(ApplicationUserRepository));
-            }
+            return _serviceProvider.GetRequiredService<AuthDbContext>();
         }
     }
 }

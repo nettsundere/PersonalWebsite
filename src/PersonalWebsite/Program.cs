@@ -15,11 +15,11 @@ namespace PersonalWebsite
         {
             var host = BuildWebHost(args);
 
-            using (var scope = host.Services.CreateScope())
-            using (var dataInitializer = new DataInitializer(scope.ServiceProvider))
+            using (var scope = host.Services.CreateScope()) 
             {
+                var dataInitializer = new DataInitializer(scope.ServiceProvider);
                 dataInitializer.EnsureRequiredContentsAvailable();
-                dataInitializer.EnsureInitialUserAvaialble();
+                dataInitializer.EnsureInitialUserAvailable();
             }
             
             host.Run();

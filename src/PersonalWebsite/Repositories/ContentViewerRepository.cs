@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 using WebsiteContent.Lib;
 using WebsiteContent.Models;
 using WebsiteContent.Repositories;
@@ -15,24 +16,19 @@ namespace PersonalWebsite.Repositories
     public class ContentViewerRepository : IContentViewerRepository
     {
         /// <summary>
-        /// Data context.
+        /// Service provider.
         /// </summary>
-        private readonly DataDbContext _dataDbContext;
-
-        /// <summary>
-        /// Disposing status.
-        /// </summary>
-        private bool _isDisposed = false;
+        private readonly IServiceProvider _serviceProvider;
 
         /// <summary>
         /// Create <see cref="ContentViewerRepository"/>.
         /// </summary>
-        /// <param name="context">Data context.</param>
-        public ContentViewerRepository(DataDbContext context)
+        /// <param name="serviceProvider">Service provider.</param>
+        public ContentViewerRepository(IServiceProvider serviceProvider)
         {
-            _dataDbContext = context ?? throw new ArgumentNullException(nameof(context));
+            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
-
+        
         /// <summary>
         /// Find translated content by language and internal caption.
         /// </summary>
@@ -41,17 +37,18 @@ namespace PersonalWebsite.Repositories
         /// <returns>Translated content representation.</returns>
         public ContentPublicViewData FindTranslatedContentByInternalCaption(LanguageDefinition langDefinition, string internalCaption)
         {
-            GuardNotDisposed();
-
-            var contentAndTranslation = (from translation in _dataDbContext.Translation
-                                         join content in _dataDbContext.Content
-                                            on new { Id = translation.ContentId, Caption = internalCaption }
-                                            equals new { Id = content.Id, Caption = content.InternalCaption }
-                                         where translation.Version == langDefinition
-                                               && translation.State == DataAvailabilityState.published
-                                         select new ContentAndTranslation(content, translation)).FirstOrDefault();
-
-            return BuildContentPublicViewData(contentAndTranslation);
+            using (var dataDbContext = GetDataDbContext())
+            {
+                var contentAndTranslation = (from translation in dataDbContext.Translation
+                    join content in dataDbContext.Content
+                        on new { Id = translation.ContentId, Caption = internalCaption }
+                        equals new { Id = content.Id, Caption = content.InternalCaption }
+                    where translation.Version == langDefinition
+                          && translation.State == DataAvailabilityState.published
+                    select new ContentAndTranslation(content, translation)).FirstOrDefault();
+                
+                return BuildContentPublicViewData(contentAndTranslation);
+            }
         }
 
         /// <summary>
@@ -62,18 +59,19 @@ namespace PersonalWebsite.Repositories
         /// <returns>Translated content representation.</returns>
         public ContentPublicViewData FindTranslatedContentByUrlName(LanguageDefinition langDefinition, string urlName)
         {
-            GuardNotDisposed();
-
             var lowerCaseUrlName = urlName.ToLowerInvariant();
 
-            var contentAndTranslation = (from translation in _dataDbContext.Translation
-                                         where translation.Version == langDefinition
-                                              && translation.UrlName == lowerCaseUrlName
-                                              && translation.State == DataAvailabilityState.published
-                                         let content = translation.Content
-                                         select new ContentAndTranslation(content, translation)).FirstOrDefault();
+            using (var dataDbContext = GetDataDbContext())
+            {
+                var contentAndTranslation = (from translation in dataDbContext.Translation
+                    where translation.Version == langDefinition
+                          && translation.UrlName == lowerCaseUrlName
+                          && translation.State == DataAvailabilityState.published
+                    let content = translation.Content
+                    select new ContentAndTranslation(content, translation)).FirstOrDefault();
 
-            return BuildContentPublicViewData(contentAndTranslation);
+                return BuildContentPublicViewData(contentAndTranslation);
+            }
         }
 
         /// <summary>
@@ -84,56 +82,27 @@ namespace PersonalWebsite.Repositories
         /// <returns>Data required to display all human-readable links to content pages depending on current language.</returns>
         public ContentPublicLinksData GetContentLinksPresentationData(LanguageDefinition languageDefinition, IList<string> internalContentNames)
         {
-            GuardNotDisposed();
-
-            var internalNamesToLinks = (from t in _dataDbContext.Translation
-                                        where
-                                          internalContentNames.Contains(t.Content.InternalCaption)
-                                          && t.State == DataAvailabilityState.published
-                                          && t.Version == languageDefinition
-                                        select new
-                                        {
-                                            LinkUI = new ContentPublicLinkUI
-                                            {
-                                                LinkTitle = t.Title,
-                                                UrlName = t.UrlName
-                                            },
-                                            InternalCaption = t.Content.InternalCaption
-                                        }).ToDictionary(x => x.InternalCaption, x => x.LinkUI);
-
-            return new ContentPublicLinksData()
+            using (var dataDbContext = GetDataDbContext())
             {
-                InternalNamesToLinks = internalNamesToLinks
-            };
-
-        }
-
-        /// <summary>
-        /// Finalizer.
-        /// </summary>
-        ~ContentViewerRepository()
-        {
-            Dispose();
-        }
-
-        /// <summary>
-        /// Dispose the object.
-        /// </summary>
-        public void Dispose()
-        {
-            if (!_isDisposed)
-            {
-                _dataDbContext.Dispose();
-                _isDisposed = true;
-                GC.SuppressFinalize(this);
-            }
-        }
-
-        private void GuardNotDisposed()
-        {
-            if (_isDisposed)
-            {
-                throw new ObjectDisposedException(nameof(ContentViewerRepository));
+                var internalNamesToLinks = (from t in dataDbContext.Translation
+                    where
+                        internalContentNames.Contains(t.Content.InternalCaption)
+                        && t.State == DataAvailabilityState.published
+                        && t.Version == languageDefinition
+                    select new
+                    {
+                        LinkUI = new ContentPublicLinkUI
+                        {
+                            LinkTitle = t.Title,
+                            UrlName = t.UrlName
+                        },
+                        InternalCaption = t.Content.InternalCaption
+                    }).ToDictionary(x => x.InternalCaption, x => x.LinkUI);
+                
+                return new ContentPublicLinksData()
+                {
+                    InternalNamesToLinks = internalNamesToLinks
+                };
             }
         }
 
@@ -163,15 +132,18 @@ namespace PersonalWebsite.Repositories
         /// <returns>All url names for a particular content.</returns>
         private Dictionary<LanguageDefinition, string> FindUrlNames(int contentId)
         {
-            var urlNames = (
-                from translations in _dataDbContext.Translation
-                where
-                    translations.ContentId == contentId
-                    && translations.State == DataAvailabilityState.published
-                select new { translations.Version, translations.UrlName }
-            ).ToDictionary(z => z.Version, z => z.UrlName);
+            using (var dataDbContext = GetDataDbContext())
+            {
+                var urlNames = (
+                    from translations in dataDbContext.Translation
+                    where
+                        translations.ContentId == contentId
+                        && translations.State == DataAvailabilityState.published
+                    select new { translations.Version, translations.UrlName }
+                ).ToDictionary(z => z.Version, z => z.UrlName);
 
-            return urlNames;
+                return urlNames;
+            }
         }
         
         /// <summary>
@@ -190,6 +162,15 @@ namespace PersonalWebsite.Repositories
             var translation = contentAndTranslation.Translation;
                 
             return FillContentPublicViewData(content.InternalCaption, translation, FindUrlNames(content.Id));
+        }
+        
+        /// <summary>
+        /// Get database context <see cref="DataDbContext"/>.
+        /// </summary>
+        /// <returns><see cref="DataDbContext"/></returns>
+        private DataDbContext GetDataDbContext()
+        {
+            return _serviceProvider.GetRequiredService<DataDbContext>();
         }
     }
 }

@@ -49,31 +49,26 @@ namespace PersonalWebsite.Controllers
         /// <returns>Content representation.</returns>
         public IActionResult Show(string language, string urlName)
         {
-            PageViewModel pageVM;
-            using (_humanReadableContentService)
+            LanguageDefinition languageDefinition;
+            if (string.IsNullOrWhiteSpace(language))
             {
-                LanguageDefinition languageDefinition;
-                if (string.IsNullOrWhiteSpace(language))
+                languageDefinition = _pageConfiguration.DefaultLanguage;
+            }
+            else
+            {
+                try
                 {
-                    languageDefinition = _pageConfiguration.DefaultLanguage;
+                    languageDefinition = _languageManipulationService.LanguageRepresentationToLanguageDefinition(language);
                 }
-                else
-                {
-                    try
-                    {
-                        languageDefinition = _languageManipulationService.LanguageRepresentationToLanguageDefinition(language);
-                    }
-                    catch
-                    {
-                        return NotFound();
-                    }
-                }
-
-                pageVM = _humanReadableContentService.GetPageByHumanReadableName(languageDefinition, urlName);
-                if (pageVM == null)
+                catch
                 {
                     return NotFound();
                 }
+            }
+            var pageVM = _humanReadableContentService.GetPageByHumanReadableName(languageDefinition, urlName);
+            if (pageVM == null)
+            {
+                return NotFound();
             }
 
             return View(pageVM);

@@ -7,7 +7,7 @@ namespace WebsiteContent.Repositories
     /// <summary>
     /// Internal content repository.
     /// </summary>
-    public interface IInternalContentRepository : IDisposable
+    public interface IInternalContentRepository 
     {
         /// <summary>
         /// Ensure that <paramref name="contentList"/> is available in the repository.

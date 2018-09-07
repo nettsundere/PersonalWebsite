@@ -9,7 +9,7 @@ namespace PersonalWebsite.Services
     /// <summary>
     /// Data initializer - data migration replacement.
     /// </summary>
-    public class DataInitializer : IDisposable
+    public class DataInitializer 
     {
         /// <summary>
         /// Service provider.
@@ -32,11 +32,6 @@ namespace PersonalWebsite.Services
         private readonly IApplicationUserRepository _applicationUserRepository;
         
         /// <summary>
-        /// Disposing status.
-        /// </summary>
-        private bool _isDisposed = false;
-
-        /// <summary>
         /// Create <see cref="DataInitializer"/>.
         /// </summary>
         /// <param name="serviceProvider">Service provider.</param>
@@ -54,8 +49,6 @@ namespace PersonalWebsite.Services
         /// </summary>
         public void EnsureRequiredContentsAvailable()
         {
-            GuardNotDisposed();
-
             var contents = _requiredDataRepository.GetCriticalContent();
             _internalContentRepository.EnsureContentListAvailable(contents);
         }
@@ -63,10 +56,8 @@ namespace PersonalWebsite.Services
         /// <summary>
         /// Ensure first user exists.
         /// </summary>
-        public void EnsureInitialUserAvaialble()
+        public void EnsureInitialUserAvailable()
         {
-            GuardNotDisposed();
-
             var user = _requiredDataRepository.GetDefaultUserData();
             _applicationUserRepository.EnsureUserAvailable(user);
         }
@@ -76,8 +67,6 @@ namespace PersonalWebsite.Services
         /// </summary>
         public void ClearInitialUser()
         {
-            GuardNotDisposed();
-
             var user = _requiredDataRepository.GetDefaultUserData();
             _applicationUserRepository.DeleteUserByEMail(user.EMail);
         }
@@ -87,43 +76,8 @@ namespace PersonalWebsite.Services
         /// </summary>
         public void ClearRequiredContents()
         {
-            GuardNotDisposed();
-
             var requiredContentsNames = _requiredDataRepository.GetCriticalContent().Select(x => x.InternalCaption).ToList();
             _internalContentRepository.DeleteContentsByInternalCaptions(requiredContentsNames);
-        }
-
-        /// <summary>
-        /// Dispose the object.
-        /// </summary>
-        public void Dispose()
-        {
-            if (!_isDisposed)
-            {
-                _internalContentRepository.Dispose();
-                _applicationUserRepository.Dispose();
-                _isDisposed = true;
-            }
-
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Finalizer.
-        /// </summary>
-        ~DataInitializer() {
-            Dispose();
-        }
-
-        /// <summary>
-        /// Throw if <see cref="DataInitializer"/> is disposed.
-        /// </summary>
-        private void GuardNotDisposed()
-        {
-            if (_isDisposed)
-            {
-                throw new ObjectDisposedException(nameof(ContentEditorRepository));
-            }
         }
     }
 }
