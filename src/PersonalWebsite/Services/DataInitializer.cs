@@ -72,7 +72,7 @@ namespace PersonalWebsite.Services
         }
 
         /// <summary>
-        /// Remove all required contnet.
+        /// Remove all required content.
         /// </summary>
         public void ClearRequiredContents()
         {
