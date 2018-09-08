@@ -35,7 +35,7 @@ namespace PersonalWebsite.Repositories
         /// <returns>The list of exceptionally important content records.</returns>
         public IReadOnlyList<Content> GetCriticalContent()
         {
-            var placeholderContentMarkup = "<h1>Test</h1>";
+            var placeholderContentMarkup = "<h1>Header</h1>";
             var placeholderDescription = "Description";
             
             var contents = new [] {
