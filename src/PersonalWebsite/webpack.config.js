@@ -1,10 +1,11 @@
 ﻿const Path = require('path');
-var Webpack = require('webpack');
+const Webpack = require('webpack');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 /**
  * Css type locator - used with MiniCssExtractPlugin.
@@ -33,7 +34,8 @@ module.exports = {
     },
     output: {
         path: Path.resolve(__dirname, "wwwroot/js/Build"),
-        filename: "[name].bundle.js"
+        filename: "[name].bundle.js",
+        publicPath: "/js/Build/"
     },
     optimization: {
         minimizer: [
@@ -95,6 +97,7 @@ module.exports = {
             jQuery: 'jquery',
             'window.jQuery': 'jquery',
             Popper: ['popper.js', 'default']
-        })
+        }),
+        new MonacoWebpackPlugin({ languages: ['html', 'css'] })
     ]
 };

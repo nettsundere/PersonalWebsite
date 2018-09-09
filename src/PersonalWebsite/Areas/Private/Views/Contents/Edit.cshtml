@@ -88,7 +88,8 @@
                         <div class="form-group row">
                             <label class="col-md-2">Content</label>
                             <div class="col-md-10">
-                                <textarea asp-for=@Model.Translations[i].ContentMarkup class="form-control" data-role="content-editor" rows="1"></textarea>
+                                <div data-role="content-editor" class="content-editor"></div>
+                                <input type="hidden" asp-for=@Model.Translations[i].ContentMarkup />
                                 <span asp-validation-for=@Model.Translations[i].ContentMarkup class="text-danger"></span>
                             </div>
                         </div>

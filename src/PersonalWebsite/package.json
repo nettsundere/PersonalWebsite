@@ -18,10 +18,12 @@
   },
   "dependencies": {
     "bootstrap": "4.1.1",
-    "popper.js": "1.14.3",
     "jquery": "3.3.1",
     "jquery-validation": "1.14.0",
-    "jquery-validation-unobtrusive": "3.2.8"
+    "jquery-validation-unobtrusive": "3.2.8",
+    "monaco-editor": "0.14.3",
+    "monaco-editor-webpack-plugin": "1.5.1",
+    "popper.js": "1.14.3"
   },
   "scripts": {
     "build": "webpack"
