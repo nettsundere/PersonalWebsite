@@ -4,11 +4,11 @@ export default class EditorInitializer {
     static Initialize(editorSelector)
     {
         document.querySelectorAll(editorSelector).forEach((item) => {
-
+            const fieldValueAttribute = "value";
             const field = item.nextElementSibling;
             
             const editor = monaco.editor.create(item, {
-                value: field.getAttribute("value"),
+                value: field.getAttribute(fieldValueAttribute),
                 language: "html",
                 theme: "vs-dark",
                 contextmenu: true,
@@ -17,7 +17,7 @@ export default class EditorInitializer {
             });
 
             editor.onDidChangeModelContent(() => {
-                field.setAttribute("value", editor.getValue());
+                field.setAttribute(fieldValueAttribute, editor.getValue());
             });
         });
     }
