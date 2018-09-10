@@ -8,4 +8,4 @@ export default (function () {
 
     ga('create', 'UA-27515313-1', 'auto');
     ga('send', 'pageview');
-})();
+});

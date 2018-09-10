@@ -7,4 +7,4 @@
 
     window.appInsights = appInsights;
     appInsights.trackPageView();
-})();
+});
