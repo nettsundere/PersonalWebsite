@@ -18,4 +18,9 @@
   <ItemGroup>
     <Folder Include="Properties" />
   </ItemGroup>
+  
+  <Target Name="BuildUICode" BeforeTargets="CopyFilesToOutputDirectory">
+    <Exec Command="npm install" />
+    <Exec Command="npm run build" />
+  </Target>
 </Project>
