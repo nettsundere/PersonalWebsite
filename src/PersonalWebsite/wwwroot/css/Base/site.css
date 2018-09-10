@@ -1,5 +1,5 @@
 ﻿body {
-    background: #ddd;
+    background: #efefef;
     color: #222;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     margin: 0;
@@ -32,27 +32,28 @@ a {
 }
 
 header {
-    text-align: center;
-    width: 80%;
-    margin: 3em auto;
-    font-size: 1.5em;
-    color: #444;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 10vh;
+    margin-bottom: 3vh;
+}
+
+header h1 {
+    margin: 0px;
+    padding: 1em;
 }
 
 header .whatido {
-    padding: 0em 0.5em;
-    background: #524f4f;
-    color: #fff;
+    display: inline-block;
     font-size: 0.5em;
-    display: inline;
     white-space: nowrap;
-    font-weight: normal;
 }
 
 .links {
     width: 100%;
-    min-height: 3em;
     float: left;
+    min-height: 10vh;
     padding: 1em 20%;
     box-sizing: border-box;
 }
@@ -73,7 +74,6 @@ header .whatido {
     width: 80%;
     min-height: 300px;
     float: left;
-    padding: 1em 0em;
 }
 
 @media (max-width: 600px) {
