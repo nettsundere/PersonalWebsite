@@ -35,13 +35,13 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 10vh;
+    min-height: 13vh;
     margin-bottom: 3vh;
 }
 
 header h1 {
     margin: 0px;
-    padding: 1em;
+    padding: 0px;
 }
 
 header .whatido {
