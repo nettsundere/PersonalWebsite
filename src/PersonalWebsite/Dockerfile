@@ -3,7 +3,7 @@ FROM microsoft/dotnet:2.1-sdk AS build
 WORKDIR /app
 COPY ./ ./build
 WORKDIR /app/build/PersonalWebsite
-RUN dotnet publish -c Release -o ../out
+RUN SKIP_UI_BUILD=true dotnet publish -c Release -o ../out
 
 # Build client code
 FROM node:8.11.3 as clientBuild
