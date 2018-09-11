@@ -1,15 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 using PersonalWebsite.Areas.Private.Controllers;
 using PersonalWebsite.ViewModels.Content;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using WebsiteContent.Repositories;
 using WebsiteContent.Repositories.DTO;
 using Xunit;
 
-namespace PersonalWebsite.Tests.Areas.Private.Controllers
+namespace PersonalWebsite.Tests.Unit.Areas.Private.Controllers
 {
     /// <summary>
     /// Tests for <see cref="ContentsController"/>
