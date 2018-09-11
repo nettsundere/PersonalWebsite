@@ -60,8 +60,6 @@ RUN apt-get update \
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 	&& ln -sf /dev/stderr /var/log/nginx/error.log
 
-RUN openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
-
 EXPOSE 80
 
 ENV ASPNETCORE_URLS=http://+:5000
