@@ -8,27 +8,23 @@
 
 a {
     color: #0026ff;
+    text-decoration: none;
+    border-bottom: 2px solid #0026ff;
+    padding-bottom: 0.2em;
 }
 
 .languages {
-    margin-left: 20%;
-    margin-bottom: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 5vh;
+    margin-bottom: 1vh;
+    flex-flow: row wrap;
 }
 
-.languages a, .active {
-    margin-right: 1em;
+.languages * {
     white-space: nowrap;
-}
-
-.languages .active
-{
-    color: #1a6213;
-    font-weight: bold;
-}
-
-.languages .active:before
-{
-    content: "//";
+    margin: 1em;
 }
 
 header {
@@ -51,22 +47,22 @@ header .whatido {
 }
 
 .links {
-    width: 100%;
-    float: left;
-    min-height: 10vh;
-    padding: 1em 20%;
-    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    align-content: center;
+    font-size: 1.3em;
+    min-height: 13vh;
+    flex-flow: row wrap;
 }
 
 .links .link {
-    width: 20%;
-    min-width: 10em;
-    height: 2em;
-    float: left;
+    padding: 1em;
+    background: #eee;
 }
 
 .links .link .active {
-    font-weight: bold;
+    font-size: 3em;
 }
 
 .content {
