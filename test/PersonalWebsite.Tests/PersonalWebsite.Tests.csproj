@@ -19,6 +19,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Integration" />
+    <Folder Include="Properties" />
     <Folder Include="Unit" />
   </ItemGroup>
 </Project>
