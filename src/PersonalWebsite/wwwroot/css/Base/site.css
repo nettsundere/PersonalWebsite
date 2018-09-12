@@ -8,9 +8,6 @@
 
 a {
     color: #0026ff;
-    text-decoration: none;
-    border-bottom: 2px solid #0026ff;
-    padding-bottom: 0.2em;
 }
 
 .languages {
@@ -60,6 +57,13 @@ header .whatido {
     padding: 1em;
     background: #eee;
 }
+
+.links a, .languages a {
+    text-decoration: none;
+    border-bottom: 2px solid #0026ff;
+    padding-bottom: 0.2em;
+}
+
 
 .links .link .active {
     font-size: 2.5em;
