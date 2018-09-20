@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -45,6 +46,7 @@ namespace PersonalWebsite
 
             // Add MVC services to the services container.
             services.AddMvc()
+                    .SetCompatibilityVersion(CompatibilityVersion.Latest)
                     .AddViewLocalization();
 
             services.AddTransient<IContentViewerRepository, ContentViewerRepository>();
