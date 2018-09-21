@@ -1,0 +1,17 @@
+.error-code {
+    width: 50vw;
+    height: 50vh;
+    background: #000;
+    color: #fff;
+    text-align: center;
+    margin: 0 auto;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.error-code h1 {
+    font-size: 1.5em;
+}
+

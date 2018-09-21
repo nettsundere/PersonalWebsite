@@ -72,16 +72,14 @@ namespace PersonalWebsite
             ILanguageManipulationService languageManipulationService,
             IRoutesBuilder routesBuilder)
         {
-            loggerFactory.AddConsole();
-
-            // Configure the HTTP request pipeline.
-
-            // Add the following to the request pipeline only in development environment.
+            app.UseStatusCodePagesWithReExecute("/errors/{0}");
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
 
+                loggerFactory.AddConsole();
                 loggerFactory.AddDebug(LogLevel.Debug);
             }
             else

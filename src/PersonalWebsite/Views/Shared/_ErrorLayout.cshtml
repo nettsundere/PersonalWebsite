@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    @model ErrorViewModel
+
+    <meta charset="utf-8"/>
+    <title>@RenderSection("Title") | @await Html.PartialAsync("_Title.en-US") </title>
+
+    <link rel="stylesheet" href="~/css/Build/app.css" asp-append-version="true"/>
+    <script type="text/javascript" src="~/js/Build/app.bundle.js" asp-append-version="true"></script>
+</head>
+<body>
+    <div class="error-code">
+        @RenderBody() 
+    </div>
+</body>
+</html>
