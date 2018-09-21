@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using PersonalWebsite.ViewModels.Content;
 using System;
 using WebsiteContent.Repositories;
-using WebsiteContent.Repositories.DTO;
 
 namespace PersonalWebsite.Areas.Private.Controllers
 {

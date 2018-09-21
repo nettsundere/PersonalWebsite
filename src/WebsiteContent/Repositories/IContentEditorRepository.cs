@@ -1,5 +1,4 @@
-﻿using System;
-using WebsiteContent.Repositories.DTO;
+﻿using WebsiteContent.Repositories.DTO;
 
 namespace WebsiteContent.Repositories
 {
