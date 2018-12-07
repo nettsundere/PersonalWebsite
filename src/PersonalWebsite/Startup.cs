@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using PersonalWebsite.Models;
 using PersonalWebsite.Providers;
 using PersonalWebsite.Repositories;
@@ -37,14 +36,12 @@ namespace PersonalWebsite
                 .AddDbContext<AuthDbContext>(sqlContextConfigurator.Configure, ServiceLifetime.Transient)
                 .AddDbContext<DataDbContext>(sqlContextConfigurator.Configure, ServiceLifetime.Transient);
 
-            // Add Identity services to the services container.
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AuthDbContext>()
                 .AddDefaultTokenProviders();
 
             services.ConfigureApplicationCookie(options => options.LoginPath = "/Private/Account/Login");
 
-            // Add MVC services to the services container.
             services.AddMvc()
                     .SetCompatibilityVersion(CompatibilityVersion.Latest)
                     .AddViewLocalization();
@@ -63,11 +60,9 @@ namespace PersonalWebsite
             services.AddSingleton<IConfiguration>(Configuration);
         }
 
-        // Configure is called after ConfigureServices is called.
         public void Configure(
             IApplicationBuilder app,
             IHostingEnvironment env,
-            ILoggerFactory loggerFactory,
             IPageConfiguration pageConfiguration,
             ILanguageManipulationService languageManipulationService,
             IRoutesBuilder routesBuilder)
@@ -78,19 +73,11 @@ namespace PersonalWebsite
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-
-                loggerFactory.AddConsole();
-                loggerFactory.AddDebug(LogLevel.Debug);
-            }
-            else
-            {
-                loggerFactory.AddDebug(LogLevel.Critical);
             }
 
-            // Add static files to the request pipeline.
+
             app.UseStaticFiles();
 
-            // Add cookie-based authentication to the request pipeline.
             app.UseAuthentication();
 
             var defaultCulture = languageManipulationService
@@ -102,7 +89,7 @@ namespace PersonalWebsite
                 {
                     SupportedCultures = languageManipulationService.SupportedCultures,
                     SupportedUICultures = languageManipulationService.SupportedCultures,
-                    RequestCultureProviders = new[] { new CustomUrlStringCultureProvider(languageManipulationService) },
+                    RequestCultureProviders = new IRequestCultureProvider[] { new CustomUrlStringCultureProvider(languageManipulationService) },
                     DefaultRequestCulture = new RequestCulture(defaultCulture, defaultCulture)
                 }
             );

@@ -1,5 +1,5 @@
 # Build .NET code
-FROM microsoft/dotnet:2.1-sdk AS build
+FROM microsoft/dotnet:2.2-sdk AS build
 WORKDIR /app
 COPY ./ ./build
 WORKDIR /app/build/PersonalWebsite
@@ -14,7 +14,7 @@ RUN npm install --production
 RUN npm run-script build
 
 # Setup runtime
-FROM microsoft/dotnet:2.1.6-aspnetcore-runtime AS runtime
+FROM microsoft/dotnet:2.2.0-aspnetcore-runtime AS runtime
 WORKDIR /app
 
 # copy build

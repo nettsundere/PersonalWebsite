@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using PersonalWebsite.Services;
 
 namespace PersonalWebsite
@@ -38,6 +39,17 @@ namespace PersonalWebsite
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()
                 .UseApplicationInsights()
+                .ConfigureLogging((context, logging) =>
+                {
+                    logging.AddConfiguration(context.Configuration.GetSection("Logging"));
+                    
+                    if (context.HostingEnvironment.IsDevelopment())
+                    {
+                        logging.AddDebug();
+                    }
+
+                    logging.AddConsole();
+                })
                 .Build();
         }
     }
