@@ -1,5 +1,6 @@
 .vs
 .idea
+*.user
 src/PersonalWebsite/wwwroot/bin
 src/PersonalWebsite/node_modules
 src/PersonalWebsite/Properties/PublishProfiles/*
@@ -14,7 +15,4 @@ src/WebsiteContent/bin
 src/WebsiteContent/obj
 test/PersonalWebsite.tests/bin
 test/PersonalWebsite.tests/obj
-
-src/PersonalWebsite/*.user
-src/WebsiteContent/*.user
 obj
