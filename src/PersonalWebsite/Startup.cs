@@ -43,7 +43,7 @@ namespace PersonalWebsite
             services.ConfigureApplicationCookie(options => options.LoginPath = "/Private/Account/Login");
 
             services.AddMvc()
-                    .SetCompatibilityVersion(CompatibilityVersion.Latest)
+                    .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                     .AddViewLocalization();
 
             services.AddTransient<IContentViewerRepository, ContentViewerRepository>();
