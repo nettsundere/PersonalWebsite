@@ -1,28 +1,12 @@
 version: "3"
 services:
-  # Website instance
-  website:
-    depends_on:
-      - "migration"
-    build:
-      context: "../src"
-      dockerfile: "PersonalWebsite/Dockerfile"
+  # Development-only database (DB is in cloud in production)
+  database:
     environment:
-      ASPNETCORE_ENVIRONMENT: "Production"
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "DevelopmentPassword0_2"
+    image: "microsoft/mssql-server-linux:latest"
     ports:
-      - "80:80"
-      - "443:443"
+      - 1433:1433
     expose:
-      - "80"
-      - "443"
-    network_mode: "bridge"
-    restart: "always"
-  # Migrations
-  migration:
-    build:
-      context: "../src"
-      dockerfile: "PersonalWebsite/Migrations/Dockerfile"
-    environment:
-      DOTNET_CLI_TELEMETRY_OPTOUT: 1
-      ASPNETCORE_ENVIRONMENT: "Production"
-    network_mode: "bridge"
+      - 1433

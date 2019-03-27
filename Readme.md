@@ -11,8 +11,27 @@ https://vladimir-kiselev.me
 - [.NET Core sdk](https://www.microsoft.com/net/download)
 
 # Running it locally
+
+- Bash
 ```sh
-$ docker-compose -f development/docker-compose.yaml -f development/docker-compose-development.yaml up --build
+$ docker-compose -f development/docker-compose.yaml up --build
+$ cd src/PersonalWebsite
+$ npm install
+$ npm run build
+$ ASPNETCORE_ENVIRONMENT=Development dotnet ef database update --context DataDbContext
+$ ASPNETCORE_ENVIRONMENT=Development dotnet ef database update --context AuthDbContext
+$ ASPNETCORE_ENVIRONMENT=Development dotnet run 
+```
+
+- PowerShell on Windows
+```powershell
+PS docker-compose -f development/docker-compose.yaml up --build
+PS cd src/PersonalWebsite
+PS npm install
+PS npm run build
+PS $Env:ASPNETCORE_ENVIRONMENT = "Development"; dotnet ef database update --context DataDbContext
+PS $Env:ASPNETCORE_ENVIRONMENT = "Development"; dotnet ef database update --context AuthDbContext
+PS $Env:ASPNETCORE_ENVIRONMENT = "Development"; dotnet run 
 ```
 
 # PersonalWebsite/Tests
