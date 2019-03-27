@@ -35,7 +35,10 @@ PS $Env:ASPNETCORE_ENVIRONMENT = "Development"; dotnet run
 ```
 
 # PersonalWebsite/Tests
-XUnit tests - you can run them using your favorite IDE
+XUnit tests
+```
+$ dotnet test
+```
 
 # License
 License - [MIT](https://github.com/nettsundere/PersonalWebsite/blob/develop/License.md)
