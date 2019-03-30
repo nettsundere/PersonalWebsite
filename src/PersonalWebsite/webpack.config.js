@@ -1,10 +1,6 @@
 ﻿const Path = require('path');
 const Webpack = require('webpack');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 /**
