@@ -18,8 +18,6 @@ $ docker-compose -f development/docker-compose.yaml up --build
 $ cd src/PersonalWebsite
 $ npm ci
 $ npm run build
-$ ASPNETCORE_ENVIRONMENT=Development dotnet ef database update --context DataDbContext
-$ ASPNETCORE_ENVIRONMENT=Development dotnet ef database update --context AuthDbContext
 $ ASPNETCORE_ENVIRONMENT=Development dotnet run 
 ```
 
@@ -29,10 +27,10 @@ PS docker-compose -f development/docker-compose.yaml up --build
 PS cd src/PersonalWebsite
 PS npm ci 
 PS npm run build
-PS $Env:ASPNETCORE_ENVIRONMENT = "Development"; dotnet ef database update --context DataDbContext
-PS $Env:ASPNETCORE_ENVIRONMENT = "Development"; dotnet ef database update --context AuthDbContext
 PS $Env:ASPNETCORE_ENVIRONMENT = "Development"; dotnet run 
 ```
+---
+NB: Migrations will run automatically during the startup. 
 
 # PersonalWebsite/Tests
 XUnit tests

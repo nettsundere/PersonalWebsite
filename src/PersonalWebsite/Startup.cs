@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PersonalWebsite.Migrations;
 using PersonalWebsite.Models;
 using PersonalWebsite.Providers;
 using PersonalWebsite.Repositories;
@@ -58,6 +59,7 @@ namespace PersonalWebsite
             services.AddSingleton<ILanguageManipulationService, LanguageManipulationService>();
             services.AddSingleton<IPageConfiguration, PageConfiguration>();
             services.AddSingleton<IConfiguration>(Configuration);
+            services.AddSingleton<IDatabaseMigrationsRunner, DatabaseMigrationsRunner>();
         }
 
         public void Configure(
@@ -68,13 +70,16 @@ namespace PersonalWebsite
             IRoutesBuilder routesBuilder)
         {
             app.UseStatusCodePagesWithReExecute("/errors/{0}");
-            
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
 
+            var migrationsRunner = app.ApplicationServices.GetService<IDatabaseMigrationsRunner>();
+            migrationsRunner.RunMigrations();
+            
             app.UseStaticFiles();
 
             app.UseAuthentication();
