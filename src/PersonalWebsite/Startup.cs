@@ -75,7 +75,6 @@ namespace PersonalWebsite
                 app.UseDatabaseErrorPage();
             }
 
-
             app.UseStaticFiles();
 
             app.UseAuthentication();

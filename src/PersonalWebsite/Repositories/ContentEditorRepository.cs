@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PersonalWebsite.Lib.Extentions;
 using PersonalWebsite.Models;
 using System;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
+using PersonalWebsite.Lib.Extensions;
 using WebsiteContent.Lib;
 using WebsiteContent.Models;
 using WebsiteContent.Repositories;

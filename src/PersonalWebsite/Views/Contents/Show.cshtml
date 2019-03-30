@@ -2,4 +2,8 @@
     @Model.ContentViewModel.Title
 }
 
+@section CustomHeader {
+    @Html.Raw(@Model.ContentViewModel.CustomHeaderMarkup)
+}
+
 @Html.Raw(@Model.ContentViewModel.Markup)

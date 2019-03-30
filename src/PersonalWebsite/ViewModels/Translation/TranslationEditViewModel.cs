@@ -20,6 +20,12 @@ namespace PersonalWebsite.ViewModels.Translation
         [DisplayFormat(ConvertEmptyStringToNull = false)]
         public override string Description { get; set; }
 
+        /// <summary>
+        /// Custom Header markup.
+        /// </summary>
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
+        public override string CustomHeaderMarkup { get; set; }
+
         [Required]
         [DisplayFormat(ConvertEmptyStringToNull = false)]
         public override string ContentMarkup { get; set; }
@@ -55,6 +61,7 @@ namespace PersonalWebsite.ViewModels.Translation
             }
 
             ContentId = data.ContentId;
+            CustomHeaderMarkup = data.CustomHeaderMarkup;
             ContentMarkup = data.ContentMarkup;
             Description = data.Description;
             Title = data.Title;

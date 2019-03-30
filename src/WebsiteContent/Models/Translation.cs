@@ -34,6 +34,11 @@ namespace WebsiteContent.Models
         public string ContentMarkup { get; set; }
 
         /// <summary>
+        /// Custom Header markup.
+        /// </summary>
+        public string CustomHeaderMarkup { get; set; }
+        
+        /// <summary>
         /// Content title.
         /// </summary>
         public string Title { get; set; }

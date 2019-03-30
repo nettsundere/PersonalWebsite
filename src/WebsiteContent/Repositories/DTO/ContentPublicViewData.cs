@@ -11,6 +11,11 @@ namespace WebsiteContent.Repositories.DTO
         public string Title { get; set; }
 
         /// <summary>
+        /// Custom Header Markup.
+        /// </summary>
+        public string CustomHeaderMarkup { get; set; }
+        
+        /// <summary>
         /// Html markup.
         /// </summary>
         public string Markup { get; set; }

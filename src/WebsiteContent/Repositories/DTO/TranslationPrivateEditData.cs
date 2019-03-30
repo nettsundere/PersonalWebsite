@@ -14,6 +14,11 @@ namespace WebsiteContent.Repositories.DTO
 
         public virtual string Description { get; set; }
 
+        /// <summary>
+        /// Custom Header Markup.
+        /// </summary>
+        public virtual string CustomHeaderMarkup { get; set; }
+        
         public virtual string ContentMarkup { get; set; }
 
         public virtual DataAvailabilityState State { get; set; }
@@ -39,6 +44,7 @@ namespace WebsiteContent.Repositories.DTO
             Title = translation.Title;
             Version = translation.Version;
             Description = translation.Description;
+            CustomHeaderMarkup = translation.CustomHeaderMarkup;
             ContentMarkup = translation.ContentMarkup;
             State = translation.State;
             UrlName = translation.UrlName;

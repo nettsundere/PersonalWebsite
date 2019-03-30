@@ -28,6 +28,7 @@ namespace PersonalWebsite.ViewModels.Content
 
             Description = contentPublicViewData.Description;
             InternalCaption = contentPublicViewData.InternalCaption;
+            CustomHeaderMarkup = contentPublicViewData.CustomHeaderMarkup;
             Markup = contentPublicViewData.Markup;
             Title = contentPublicViewData.Title;
             UrlNames = contentPublicViewData.UrlNames;

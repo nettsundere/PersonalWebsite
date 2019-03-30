@@ -119,6 +119,7 @@ namespace PersonalWebsite.Repositories
             {
                 Title = translation.Title,
                 Description = translation.Description,
+                CustomHeaderMarkup = translation.CustomHeaderMarkup,
                 Markup = translation.ContentMarkup,
                 UrlNames = urlNames,
                 InternalCaption = contentInternalCaption
