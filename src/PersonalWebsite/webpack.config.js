@@ -38,14 +38,7 @@ module.exports = {
         publicPath: "/js/Build/"
     },
     optimization: {
-        minimizer: [
-            new UglifyJsPlugin({
-                cache: true,
-                parallel: true,
-                sourceMap: true
-            }),
-            new OptimizeCSSAssetsPlugin({})
-        ],
+        minimize: true,
         splitChunks: {
             cacheGroups: {
                 appStyles: {

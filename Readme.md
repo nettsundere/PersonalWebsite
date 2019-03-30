@@ -16,7 +16,7 @@ https://vladimir-kiselev.me
 ```sh
 $ docker-compose -f development/docker-compose.yaml up --build
 $ cd src/PersonalWebsite
-$ npm install
+$ npm ci
 $ npm run build
 $ ASPNETCORE_ENVIRONMENT=Development dotnet ef database update --context DataDbContext
 $ ASPNETCORE_ENVIRONMENT=Development dotnet ef database update --context AuthDbContext
@@ -27,7 +27,7 @@ $ ASPNETCORE_ENVIRONMENT=Development dotnet run
 ```powershell
 PS docker-compose -f development/docker-compose.yaml up --build
 PS cd src/PersonalWebsite
-PS npm install
+PS npm ci 
 PS npm run build
 PS $Env:ASPNETCORE_ENVIRONMENT = "Development"; dotnet ef database update --context DataDbContext
 PS $Env:ASPNETCORE_ENVIRONMENT = "Development"; dotnet ef database update --context AuthDbContext
