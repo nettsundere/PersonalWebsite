@@ -19,7 +19,7 @@
     <Folder Include="Properties" />
   </ItemGroup>
   <Target Name="BuildUICode" BeforeTargets="CopyFilesToOutputDirectory" Condition="'$(SKIP_UI_BUILD)'==''">
-    <Exec Command="npm ci" />
+    <Exec Command="npm install" />
     <Exec Command="npm run build" />
   </Target>
 </Project>

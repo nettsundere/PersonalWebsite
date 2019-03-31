@@ -17,7 +17,7 @@ https://vladimir-kiselev.me
 ```sh
 $ docker-compose -f development/docker-compose.yaml up --build
 $ cd src/PersonalWebsite
-$ npm ci
+$ npm install
 $ npm run build
 $ ASPNETCORE_ENVIRONMENT=Development dotnet run 
 ```
@@ -26,7 +26,7 @@ $ ASPNETCORE_ENVIRONMENT=Development dotnet run
 ```powershell
 PS docker-compose -f development/docker-compose.yaml up --build
 PS cd src/PersonalWebsite
-PS npm ci 
+PS npm install
 PS npm run build
 PS $Env:ASPNETCORE_ENVIRONMENT = "Development"; dotnet run 
 ```
