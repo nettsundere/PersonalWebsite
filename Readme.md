@@ -8,6 +8,7 @@ https://vladimir-kiselev.me
 
 # Dependencies
 - [Docker](https://www.docker.com)
+- [Node.js](https://nodejs.org/en/)
 - [.NET Core sdk](https://www.microsoft.com/net/download)
 
 # Running it locally
