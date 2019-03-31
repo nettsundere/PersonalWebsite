@@ -30,7 +30,7 @@ namespace PersonalWebsite.Migrations
                 MigrateDatabase(authDbContext.Database);   
             }
             
-            using (var dataDbContext = _serviceProvider.GetRequiredService<AuthDbContext>())
+            using (var dataDbContext = _serviceProvider.GetRequiredService<DataDbContext>())
             {
                 MigrateDatabase(dataDbContext.Database);   
             }
