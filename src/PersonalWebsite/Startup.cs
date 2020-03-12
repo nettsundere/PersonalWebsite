@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using PersonalWebsite.Migrations;
 using PersonalWebsite.Models;
 using PersonalWebsite.Providers;
@@ -16,7 +16,7 @@ namespace PersonalWebsite
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup(IHostEnvironment env)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -29,13 +29,13 @@ namespace PersonalWebsite
 
         public IConfigurationRoot Configuration { get; set; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             var sqlContextConfigurator = new DbContextConfigurator(Configuration);
             services.AddEntityFrameworkSqlServer()
-                .AddDbContext<AuthDbContext>(sqlContextConfigurator.Configure, ServiceLifetime.Transient)
-                .AddDbContext<DataDbContext>(sqlContextConfigurator.Configure, ServiceLifetime.Transient);
+                .AddDbContextPool<AuthDbContext>(sqlContextConfigurator.Configure)
+                .AddDbContextPool<DataDbContext>(sqlContextConfigurator.Configure);
+            services.AddTransient<IDatabaseMigrationsRunner, DatabaseMigrationsRunner>();
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AuthDbContext>()
@@ -44,7 +44,7 @@ namespace PersonalWebsite
             services.ConfigureApplicationCookie(options => options.LoginPath = "/Private/Account/Login");
 
             services.AddMvc()
-                    .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                    .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                     .AddViewLocalization();
 
             services.AddTransient<IContentViewerRepository, ContentViewerRepository>();
@@ -55,35 +55,30 @@ namespace PersonalWebsite
 
             services.AddTransient<IContentEditorRepository, ContentEditorRepository>();
 
-            services.AddSingleton<IRoutesBuilder, RoutesBuilder>();
+            services.AddSingleton<IEndpointsBuilder, EndpointsBuilder>();
             services.AddSingleton<ILanguageManipulationService, LanguageManipulationService>();
             services.AddSingleton<IPageConfiguration, PageConfiguration>();
             services.AddSingleton<IConfiguration>(Configuration);
-            services.AddSingleton<IDatabaseMigrationsRunner, DatabaseMigrationsRunner>();
+
+            services.AddApplicationInsightsTelemetry();
         }
 
         public void Configure(
             IApplicationBuilder app,
-            IHostingEnvironment env,
+            IHostEnvironment  env,
             IPageConfiguration pageConfiguration,
             ILanguageManipulationService languageManipulationService,
-            IRoutesBuilder routesBuilder)
+            IEndpointsBuilder endpointsBuilder)
         {
             app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
             }
 
-            var migrationsRunner = app.ApplicationServices.GetService<IDatabaseMigrationsRunner>();
-            migrationsRunner.RunMigrations();
-            
             app.UseStaticFiles();
-
-            app.UseAuthentication();
-
+            
             var defaultCulture = languageManipulationService
                                    .LanguageDefinitionToCultureInfo(
                                       pageConfiguration.DefaultLanguage
@@ -98,7 +93,10 @@ namespace PersonalWebsite
                 }
             );
 
-            app.UseMvc(routesBuilder.Build);
+            app.UseRouting(); 
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.UseEndpoints(endpointsBuilder.Build);
         }
     }
 }

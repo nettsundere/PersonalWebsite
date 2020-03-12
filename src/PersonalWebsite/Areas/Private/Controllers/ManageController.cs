@@ -82,11 +82,9 @@ namespace PersonalWebsite.Areas.Private.Controllers
                 : "";
 
             var user = await GetCurrentUserAsync();
-            var model = new IndexViewModel
-            {
-                HasPassword = true,
-                Logins = await _userManager.GetLoginsAsync(user)
-            };
+
+            var logins = await _userManager.GetLoginsAsync(user); 
+            var model = new IndexViewModel(logins, true);
             return View(model);
         }
 

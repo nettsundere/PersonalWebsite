@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 using WebsiteContent.Models;
 using WebsiteContent.Repositories;
 
@@ -14,61 +14,46 @@ namespace PersonalWebsite.Repositories
     public class InternalContentRepository : IInternalContentRepository
     {
         /// <summary>
-        /// Service provider.
+        /// Data context.
         /// </summary>
-        private readonly IServiceProvider _serviceProvider;
+        private readonly DataDbContext _context;
 
         /// <summary>
         /// Create <see cref="InternalContentRepository"/>.
         /// </summary>
-        /// <param name="provider">Service provider.</param>
-        public InternalContentRepository(IServiceProvider provider)
+        /// <param name="dataDbContext">Data context.</param>
+        public InternalContentRepository(DataDbContext dataDbContext)
         {
-            _serviceProvider = provider ?? throw new ArgumentNullException(nameof(provider));
+            _context = dataDbContext ?? throw new ArgumentNullException(nameof(dataDbContext));
         }
 
         /// <summary>
         /// Delete content having name in the list of <paramref name="internalCaptions"/>.
         /// </summary>
         /// <param name="internalCaptions">List of content captions to delete by.</param>
-        public void DeleteContentsByInternalCaptions(IReadOnlyList<string> internalCaptions)
+        public async Task DeleteContentsByInternalCaptionsAsync(IReadOnlyList<string> internalCaptions)
         {
-            using (var dataDbContext = GetDataDbContext())
-            {
-                var contentsToRemove = from x in dataDbContext.Content
-                    where internalCaptions.Contains(x.InternalCaption)
-                    select x;
+            var contentsToRemove = from x in _context.Content
+                where internalCaptions.Contains(x.InternalCaption)
+                select x;
 
-                dataDbContext.Content.RemoveRange(contentsToRemove);
-                dataDbContext.SaveChanges();
-            }
+            _context.Content.RemoveRange(contentsToRemove);
+            await _context.SaveChangesAsync();
         }
 
         /// <summary>
         /// Ensure that <paramref name="contentsRange"/> is available in the repository.
         /// </summary>
         /// <param name="contentsRange">Content range.</param>
-        public void EnsureContentListAvailable(IReadOnlyList<Content> contentsRange)
+        public async Task EnsureContentListAvailableAsync(IReadOnlyList<Content> contentsRange)
         {
-            using (var dataDbContext = GetDataDbContext())
-            {
-                var newContents = from x in contentsRange
-                    let presentInternalCaptions = from y in dataDbContext.Content select y.InternalCaption
-                    where !presentInternalCaptions.Contains(x.InternalCaption)
-                    select x;
+            var newContents = from x in contentsRange
+                let presentInternalCaptions = from y in _context.Content select y.InternalCaption
+                where !presentInternalCaptions.Contains(x.InternalCaption)
+                select x;
                 
-                dataDbContext.Content.AddRange(newContents);
-                dataDbContext.SaveChanges();
-            }
-        }
-        
-        /// <summary>
-        /// Get database context <see cref="DataDbContext"/>.
-        /// </summary>
-        /// <returns><see cref="DataDbContext"/></returns>
-        private DataDbContext GetDataDbContext()
-        {
-            return _serviceProvider.GetRequiredService<DataDbContext>();
+            _context.Content.AddRange(newContents);
+            await _context.SaveChangesAsync();
         }
     }
 }

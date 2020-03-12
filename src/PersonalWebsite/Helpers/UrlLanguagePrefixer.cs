@@ -47,7 +47,12 @@ namespace PersonalWebsite.Helpers
         /// <param name="output">Tag output.</param>
         private void ProcessLanguagePrefix(TagHelperOutput output)
         {
-            var currentHref = output.Attributes[HrefAttribute].Value.ToString();
+            var currentHref = output.Attributes[HrefAttribute]?.Value?.ToString();
+
+            if (currentHref is null)
+            {
+                throw new InvalidOperationException("The href attribute is not defined");
+            }
 
             var languageToPrefix = LanguageToPrefix;
 

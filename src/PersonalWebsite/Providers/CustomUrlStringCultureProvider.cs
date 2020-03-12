@@ -13,17 +13,12 @@ namespace PersonalWebsite.Providers
 
         public CustomUrlStringCultureProvider(ILanguageManipulationService languageManipulationService)
         {
-            if(languageManipulationService == null)
-            {
-                throw new ArgumentNullException(nameof(languageManipulationService));
-            }
-
-            _languageManipulationService = languageManipulationService;
+            _languageManipulationService = languageManipulationService ?? throw new ArgumentNullException(nameof(languageManipulationService));
         }
 
         public override Task<ProviderCultureResult> DetermineProviderCultureResult(HttpContext httpContext)
         {
-            if(httpContext == null)
+            if(httpContext is null)
             {
                 throw new ArgumentNullException(nameof(httpContext));
             }
@@ -49,7 +44,7 @@ namespace PersonalWebsite.Providers
             }
 
             // No result determined
-            return Task.FromResult((ProviderCultureResult) null);
+            return NullProviderCultureResult;
         }
     }
 }

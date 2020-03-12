@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Linq;
+using System.Threading.Tasks;
 using WebsiteContent.Repositories;
 
 namespace PersonalWebsite.Services
@@ -46,37 +46,19 @@ namespace PersonalWebsite.Services
         /// <summary>
         /// Ensure required content is available.
         /// </summary>
-        public void EnsureRequiredContentsAvailable()
+        public async Task EnsureRequiredContentsAvailableAsync()
         {
             var contents = _requiredDataRepository.GetCriticalContent();
-            _internalContentRepository.EnsureContentListAvailable(contents);
+            await _internalContentRepository.EnsureContentListAvailableAsync(contents);
         }
 
         /// <summary>
         /// Ensure first user exists.
         /// </summary>
-        public void EnsureInitialUserAvailable()
+        public async Task EnsureInitialUserAvailableAsync()
         {
             var user = _requiredDataRepository.GetDefaultUserData();
-            _applicationUserRepository.EnsureUserAvailable(user);
-        }
-
-        /// <summary>
-        /// Remove initial user.
-        /// </summary>
-        public void ClearInitialUser()
-        {
-            var user = _requiredDataRepository.GetDefaultUserData();
-            _applicationUserRepository.DeleteUserByEMail(user.EMail);
-        }
-
-        /// <summary>
-        /// Remove all required content.
-        /// </summary>
-        public void ClearRequiredContents()
-        {
-            var requiredContentsNames = _requiredDataRepository.GetCriticalContent().Select(x => x.InternalCaption).ToList();
-            _internalContentRepository.DeleteContentsByInternalCaptions(requiredContentsNames);
+            await _applicationUserRepository.EnsureUserAvailableAsync(user);
         }
     }
 }

@@ -12,14 +12,8 @@ namespace PersonalWebsite.ViewModels.Content
         /// Create <see cref="ContentLinksViewModel"/>.
         /// </summary>
         /// <param name="data">Public content links data.</param>
-        public ContentLinksViewModel(ContentPublicLinksData data)
+        public ContentLinksViewModel(ContentPublicLinksData data) : base(data.InternalNamesToLinks)
         {
-            if (data == null)
-            {
-                throw new ArgumentNullException(nameof(data));
-            }
-
-            InternalNamesToLinks = data.InternalNamesToLinks;
         }
 
         /// <summary>

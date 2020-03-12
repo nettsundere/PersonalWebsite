@@ -1,4 +1,5 @@
-﻿using PersonalWebsite.ViewModels.Content;
+﻿using System.Threading.Tasks;
+using PersonalWebsite.ViewModels.Content;
 using WebsiteContent.Lib;
 
 namespace PersonalWebsite.Services
@@ -8,7 +9,7 @@ namespace PersonalWebsite.Services
     /// </summary>
     public interface IHumanReadableContentRetrievalService 
     {
-        PageViewModel GetPageByHumanReadableName(LanguageDefinition languageDefinition, string urlName);
-        PageViewModel GetPageByInternalCaption(LanguageDefinition languageDefinition, string internalCaption);
+        Task<PageViewModel> GetPageByHumanReadableNameAsync(LanguageDefinition languageDefinition, string urlName);
+        Task<PageViewModel> GetPageByInternalCaptionAsync(LanguageDefinition languageDefinition, string internalCaption);
     }
 }

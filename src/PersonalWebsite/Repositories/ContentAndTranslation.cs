@@ -5,8 +5,8 @@ namespace PersonalWebsite.Repositories
 {
     internal class ContentAndTranslation
     {
-        public Content Content { get; private set; }
-        public Translation Translation { get; private set; }
+        public Content Content { get; }
+        public Translation Translation { get; }
 
         public ContentAndTranslation(Content content, Translation translation)
         {

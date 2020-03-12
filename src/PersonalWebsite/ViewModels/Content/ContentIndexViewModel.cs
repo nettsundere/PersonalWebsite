@@ -1,5 +1,4 @@
-﻿using System;
-using WebsiteContent.Repositories.DTO;
+﻿using WebsiteContent.Repositories.DTO;
 
 namespace PersonalWebsite.ViewModels.Content
 {
@@ -12,14 +11,8 @@ namespace PersonalWebsite.ViewModels.Content
         /// Create <see cref="ContentIndexViewModel"/>.
         /// </summary>
         /// <param name="content">Content list private data.</param>
-        public ContentIndexViewModel(ContentPrivateEditListData content)
+        public ContentIndexViewModel(ContentPrivateEditListData content): base(content.Contents)
         {
-            if (content == null)
-            {
-                throw new ArgumentNullException(nameof(content));
-            }
-
-            Contents = content.Contents;
         }
     }
 }

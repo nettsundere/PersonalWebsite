@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PersonalWebsite.ViewModels.Content;
 using System;
+using System.Threading.Tasks;
 using WebsiteContent.Repositories;
 
 namespace PersonalWebsite.Areas.Private.Controllers
@@ -29,9 +30,9 @@ namespace PersonalWebsite.Areas.Private.Controllers
         /// Get Index, list all content.
         /// </summary>
         /// <returns>All content list representation.</returns>
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var content = _contentEditorRepository.ReadList();
+            var content = await _contentEditorRepository.ReadListAsync();
             var viewModel = new ContentIndexViewModel(content);
 
             return View(viewModel);
@@ -53,11 +54,11 @@ namespace PersonalWebsite.Areas.Private.Controllers
         /// <returns>Redirect to a list or error.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(ContentAndTranslationsEditViewModel content)
+        public async Task<IActionResult> Create(ContentAndTranslationsEditViewModel content)
         {
             if (ModelState.IsValid)
             {
-                _contentEditorRepository.Create(content.GetContentEditData());
+                await _contentEditorRepository.CreateAsync(content.GetContentEditData());
                 return RedirectToAction(nameof(Index));
             }
             return View(content);
@@ -68,23 +69,25 @@ namespace PersonalWebsite.Areas.Private.Controllers
         /// </summary>
         /// <param name="id">Content id</param>
         /// <returns>Interface to edit a content.</returns>
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+            if (id is null)
             {
                 return NotFound();
             }
 
-            var content = _contentEditorRepository.Read(id.Value);
+            try
+            {
+                var content = await _contentEditorRepository.ReadAsync(id.Value);
+                
+                var viewModel = new ContentAndTranslationsEditViewModel(content);
 
-            if (content == null)
+                return View(viewModel);
+            }
+            catch 
             {
                 return NotFound();
             }
-
-            var viewModel = new ContentAndTranslationsEditViewModel(content);
-
-            return View(viewModel);
         }
 
         /// <summary>
@@ -94,11 +97,11 @@ namespace PersonalWebsite.Areas.Private.Controllers
         /// <returns>Content editor interface.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(ContentAndTranslationsEditViewModel content)
+        public async Task<IActionResult> Edit(ContentAndTranslationsEditViewModel content)
         {
             if (ModelState.IsValid)
             {
-                _contentEditorRepository.Update(content.GetContentEditData());
+                await _contentEditorRepository.UpdateAsync(content.GetContentEditData());
 
                 return RedirectToAction(nameof(Edit), new { id = content.Id });
             }
@@ -112,22 +115,23 @@ namespace PersonalWebsite.Areas.Private.Controllers
         /// <param name="id">Content id to remove.</param>
         /// <returns>Interface to confirm a removal.</returns>
         [ActionName(nameof(Delete))]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+            if (id is null)
             {
                 return NotFound();
             }
 
-            var content = _contentEditorRepository.Read(id.Value);
-            
-            if (content == null)
+            try
+            {
+                var content = await _contentEditorRepository.ReadAsync(id.Value);
+                var viewModel = new ContentAndTranslationsEditViewModel(content);
+                return View(viewModel);
+            }
+            catch 
             {
                 return NotFound();
             }
-
-            var viewModel = new ContentAndTranslationsEditViewModel(content);
-            return View(viewModel);
         }
 
         /// <summary>
@@ -137,10 +141,9 @@ namespace PersonalWebsite.Areas.Private.Controllers
         /// <returns>Redirect to content list.</returns>
         [HttpPost, ActionName(nameof(Delete))]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            _contentEditorRepository.Delete(id);
-
+            await _contentEditorRepository.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
     }

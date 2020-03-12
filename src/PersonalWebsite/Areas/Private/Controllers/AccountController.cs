@@ -17,29 +17,20 @@ namespace PersonalWebsite.Areas.Private.Controllers
     [Area(nameof(Private))]
     public class AccountController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger _logger;
 
         /// <summary>
         /// Create <see cref="AccountController"/>.
         /// </summary>
-        /// <param name="userManager">User manager.</param>
         /// <param name="signInManager">SignIn manager.</param>
-        /// <param name="loggerFactory">Logger factory.</param>
+        /// <param name="logger">Logger.</param>
         public AccountController(
-            UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            ILoggerFactory loggerFactory)
+            ILogger<AccountController> logger)
         {
-            if (loggerFactory == null)
-            {
-                throw new ArgumentNullException(nameof(loggerFactory));
-            }
-
-            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
-            _logger = loggerFactory.CreateLogger<AccountController>();
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         /// <summary>
@@ -102,50 +93,12 @@ namespace PersonalWebsite.Areas.Private.Controllers
         }
 
         /// <summary>
-        /// Add errors.
-        /// </summary>
-        /// <param name="result">Identity result.</param>
-        private void AddErrors(IdentityResult result)
-        {
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
-        }
-
-        /// <summary>
-        /// Get current user.
-        /// </summary>
-        /// <returns>Current user.</returns>
-        private Task<ApplicationUser> GetCurrentUserAsync()
-        {
-            return _userManager.GetUserAsync(HttpContext.User);
-        }
-
-        /// <summary>
         /// Redirect to the dashboard.
         /// </summary>
         /// <returns>Redirect.</returns>
         private IActionResult RedirectToDashboard()
         {
             return RedirectToAction(nameof(DashboardController.Index), "Dashboard");
-        }
-
-        /// <summary>
-        /// Redirect to local url or dashboard.
-        /// </summary>
-        /// <param name="returnUrl">Local url.</param>
-        /// <returns>Redirect to <paramref name="returnUrl"/> or dashboard.</returns>
-        private IActionResult RedirectToLocal(string returnUrl)
-        {
-            if (Url.IsLocalUrl(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-            else
-            {
-                return RedirectToDashboard();
-            }
         }
     }
 }

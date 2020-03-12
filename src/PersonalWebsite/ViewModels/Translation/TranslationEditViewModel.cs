@@ -11,30 +11,30 @@ namespace PersonalWebsite.ViewModels.Translation
     public class TranslationEditViewModel : TranslationPrivateEditData
     {
         [Required]
-        public override string Title { get; set; }
+        public override string? Title { get; set; }
 
         [Required]
         public override LanguageDefinition Version { get; set; }
 
         [Required]
         [DisplayFormat(ConvertEmptyStringToNull = false)]
-        public override string Description { get; set; }
+        public override string? Description { get; set; }
 
         /// <summary>
         /// Custom Header markup.
         /// </summary>
         [DisplayFormat(ConvertEmptyStringToNull = false)]
-        public override string CustomHeaderMarkup { get; set; }
+        public override string? CustomHeaderMarkup { get; set; }
 
         [Required]
         [DisplayFormat(ConvertEmptyStringToNull = false)]
-        public override string ContentMarkup { get; set; }
+        public override string? ContentMarkup { get; set; }
 
         [Required]
         public override DataAvailabilityState State { get; set; }
 
         [Required]
-        public override string UrlName { get; set; }
+        public override string? UrlName { get; set; }
 
         [Required]
         public override DateTime UpdatedAt { get; set; }

@@ -6,55 +6,55 @@ using System;
 namespace PersonalWebsite
 {
     /// <summary>
-    /// Website routes builder.
+    /// Website endpoints builder.
     /// </summary>
-    internal class RoutesBuilder : IRoutesBuilder
+    internal class EndpointsBuilder : IEndpointsBuilder
     {
         private readonly ILanguageManipulationService _languageManipulationService;
 
-        public RoutesBuilder(ILanguageManipulationService languageManipulationService)
+        public EndpointsBuilder(ILanguageManipulationService languageManipulationService)
         {
             _languageManipulationService = languageManipulationService ?? throw new ArgumentNullException(nameof(languageManipulationService));
         }
 
         /// <summary>
-        /// Build routes.
+        /// Build endpoints.
         /// </summary>
-        /// <param name="routes">Routes target.</param>
-        public void Build(IRouteBuilder routes)
+        /// <param name="endpoints">Endpoints builder.</param>
+        public void Build(IEndpointRouteBuilder endpoints)
         {
-            routes.MapRoute(
+            endpoints.MapControllerRoute(
                 name: nameof(PersonalWebsite.Areas.Private),
-                template: "{area:exists}/{controller}/{action}/{id?}",
+                pattern: "{area:exists}/{controller}/{action}/{id?}",
                 defaults: new { },
                 constraints: new { area = nameof(PersonalWebsite.Areas.Private) }
             );
 
             var langRegex = _languageManipulationService.LanguageValidationRegexp;
 
-            routes.MapRoute(
+            endpoints.MapControllerRoute(
                 name: "defaultWithLanguage",
-                template: "{language}/{controller=Home}/{action=Index}",
+                pattern: "{language}/{controller=Home}/{action=Index}",
                 defaults: new { },
                 constraints: new { language = langRegex }
             );
 
-            routes.MapRoute(
+            endpoints.MapControllerRoute(
                 name: "defaultWithoutLanguage",
-                template: "{controller=Home}/{action=Index}",
+                pattern: "{controller=Home}/{action=Index}",
                 defaults: new { language = string.Empty }
             );
 
-            routes.MapRoute(
+            endpoints.MapControllerRoute(
                 name: "contentsWithLanguage",
-                template: "{language}/{urlName}/{controller=Contents}/{action=Show}",
+                pattern: "{language}/{urlName}/{controller=Contents}/{action=Show}",
                 defaults: new { },
                 constraints: new { language = langRegex }
             );
 
-            routes.MapRoute(
+            endpoints.MapControllerRoute(
                 name: "contentsWithoutLanguage",
-                template: "{urlName}/{controller=Contents}/{action=Show}"
+                pattern: "{urlName}/{controller=Contents}/{action=Show}"
             );
         }
     }

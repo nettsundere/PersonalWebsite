@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PersonalWebsite.Services;
 using System;
+using System.Threading.Tasks;
 using WebsiteContent.Lib;
 
 namespace PersonalWebsite.Controllers
@@ -46,7 +47,7 @@ namespace PersonalWebsite.Controllers
         /// <param name="language">Language version of a content.</param>
         /// <param name="urlName">Human-readable content url path representation.</param>
         /// <returns>Content representation.</returns>
-        public IActionResult Show(string language, string urlName)
+        public async Task<IActionResult> Show(string language, string urlName)
         {
             LanguageDefinition languageDefinition;
             if (string.IsNullOrWhiteSpace(language))
@@ -64,13 +65,17 @@ namespace PersonalWebsite.Controllers
                     return NotFound();
                 }
             }
-            var pageVM = _humanReadableContentService.GetPageByHumanReadableName(languageDefinition, urlName);
-            if (pageVM == null)
+
+            try
+            {
+                var pageVm = await _humanReadableContentService.GetPageByHumanReadableNameAsync(languageDefinition, urlName);
+                return View(pageVm);
+            }
+            catch(InvalidOperationException)
             {
                 return NotFound();
             }
 
-            return View(pageVM);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using PersonalWebsite.ViewModels.Content;
 using System;
+using System.Threading.Tasks;
 using WebsiteContent.Lib;
 using WebsiteContent.Repositories;
 using WebsiteContent.Repositories.DTO;
@@ -40,9 +41,10 @@ namespace PersonalWebsite.Services
         /// <param name="languageDefinition">Required language definition.</param>
         /// <param name="internalCaption">Internal caption of a content.</param>
         /// <returns><typeparamref name="PageViewModel"/> instance</returns>
-        public PageViewModel GetPageByInternalCaption(LanguageDefinition languageDefinition, string internalCaption)
+        public async Task<PageViewModel> GetPageByInternalCaptionAsync(LanguageDefinition languageDefinition, string internalCaption)
         {
-            return GetPageViewModelBy(languageDefinition, () => _contentRepository.FindTranslatedContentByInternalCaption(languageDefinition, internalCaption));
+            return await GetPageViewModelByAsync(languageDefinition, 
+                () => _contentRepository.FindTranslatedContentByInternalCaptionAsync(languageDefinition, internalCaption));
         }
 
         /// <summary>
@@ -51,9 +53,10 @@ namespace PersonalWebsite.Services
         /// <param name="languageDefinition">Required language definition.</param>
         /// <param name="urlName">Human-readable name of a content.</param>
         /// <returns><typeparamref name="PageViewModel"/> instance</returns>
-        public PageViewModel GetPageByHumanReadableName(LanguageDefinition languageDefinition, string urlName)
+        public async Task<PageViewModel> GetPageByHumanReadableNameAsync(LanguageDefinition languageDefinition, string urlName)
         {
-            return GetPageViewModelBy(languageDefinition, () => _contentRepository.FindTranslatedContentByUrlName(languageDefinition, urlName));
+            return await GetPageViewModelByAsync(languageDefinition, 
+                () => _contentRepository.FindTranslatedContentByUrlNameAsync(languageDefinition, urlName));
         }
 
         /// <summary>
@@ -61,17 +64,12 @@ namespace PersonalWebsite.Services
         /// </summary>
         /// <param name="languageDefinition">Language.</param>
         /// <param name="contentViewModelMethod">Localized content retrieval method.</param>
-        /// <returns></returns>
-        private PageViewModel GetPageViewModelBy(LanguageDefinition languageDefinition, Func<ContentPublicViewData> contentViewModelMethod)
+        /// <returns>Page view model.</returns>
+        private async Task<PageViewModel> GetPageViewModelByAsync(LanguageDefinition languageDefinition, Func<Task<ContentPublicViewData>> contentViewModelMethod)
         {
-            var contentViewData = contentViewModelMethod();
-
-            if (contentViewData == null)
-            {
-                return null; // No content available.
-            }
-
-            var linksData = _contentRepository.GetContentLinksPresentationData(languageDefinition,
+            var contentViewData = await contentViewModelMethod();
+            
+            var linksData = await _contentRepository.GetContentLinksPresentationDataAsync(languageDefinition,
                 Enum.GetNames(typeof(PredefinedPages))
             );
 

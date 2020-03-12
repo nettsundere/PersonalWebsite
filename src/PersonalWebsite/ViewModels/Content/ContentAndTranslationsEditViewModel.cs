@@ -21,46 +21,42 @@ namespace PersonalWebsite.ViewModels.Content
         /// An internal caption of a content.
         /// </summary>
         [Required]
-        public string InternalCaption { get; set; }
+        public string InternalCaption { get; set; } = null!;
 
         /// <summary>
         /// Available translations of a content.
         /// </summary>
-        public IList<TranslationEditViewModel> Translations { get; set; }
+        [Required]
+        public IList<TranslationEditViewModel> Translations { get; set; } = null!;
 
         /// <summary>
         /// Create <see cref="ContentAndTranslationsEditViewModel"/>.
         /// </summary>
-        public ContentAndTranslationsEditViewModel() : this(new ContentPrivateEditData())
+        public ContentAndTranslationsEditViewModel()
         {
         }
-
+        
         /// <summary>
         /// Create <see cref="ContentAndTranslationsEditViewModel"/>.
         /// </summary>
         /// <param name="contentPrivateEditData">The data required to edit a content.</param>
         public ContentAndTranslationsEditViewModel(ContentPrivateEditData contentPrivateEditData)
         {
-            if (contentPrivateEditData == null)
+            if (contentPrivateEditData is null)
             {
                 throw new ArgumentNullException(nameof(contentPrivateEditData));
             }
 
             Id = contentPrivateEditData.Id;
             InternalCaption = contentPrivateEditData.InternalCaption;
-            Translations = contentPrivateEditData.Translations?.Select(x => new TranslationEditViewModel(x)).ToList();
+            Translations = contentPrivateEditData.Translations.Select(x => new TranslationEditViewModel(x)).ToList();
         }
 
         /// <summary>
         /// Get the data from this view model.
         /// </summary>
         /// <returns>The data from this view model.</returns>
-        public ContentPrivateEditData GetContentEditData() => new ContentPrivateEditData()
-        {
-            Id = Id,
-            InternalCaption = InternalCaption,
-            Translations = Translations?.ToList<TranslationPrivateEditData>()
-        };
-
+        public ContentPrivateEditData GetContentEditData() => new ContentPrivateEditData(Id, InternalCaption,
+            Translations.ToList<TranslationPrivateEditData>());
     }
 }

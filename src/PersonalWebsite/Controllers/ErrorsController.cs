@@ -21,7 +21,7 @@ namespace PersonalWebsite.Controllers
         /// </summary>
         /// <param name="code">Error code.</param>
         [Route("{code:int}")]
-        public  ActionResult<ErrorViewModel> Show([Range(400, 599)] int code)
+        public ActionResult<ErrorViewModel> Show([Range(400, 599)] int code)
         {
             if (ModelState.IsValid)
             {

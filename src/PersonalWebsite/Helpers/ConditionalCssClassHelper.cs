@@ -16,16 +16,17 @@ namespace PersonalWebsite.Helpers
         private const string AspThisContextAttribute = "asp-this-context";
 
         [HtmlAttributeName(ConditionalCssClassAttribute)]
-        public string ConditionalCssClass { get; set; }
+        public string ConditionalCssClass { get; set; } = null!;
 
         [HtmlAttributeName(AspControllerAttribute)]
-        public string AspController { get; set; }
+
+        public string AspController { get; set; } = null!;
 
         [HtmlAttributeName(AspActionAttribute)]
-        public string AspAction { get; set; }
+        public string AspAction { get; set; } = null!;
 
         [HtmlAttributeName(AspThisContextAttribute)]
-        public ViewContext ThisContext { get; set; }
+        public ViewContext ThisContext { get; set; } = null!;
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {

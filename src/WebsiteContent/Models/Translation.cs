@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using WebsiteContent.Lib;
 
 namespace WebsiteContent.Models
@@ -26,27 +27,31 @@ namespace WebsiteContent.Models
         /// <summary>
         /// Name for the url string.
         /// </summary>
-        public string UrlName { get; set; }
+        [Required]
+        public string UrlName { get; set; } = null!;
 
         /// <summary>
         /// Content markup.
         /// </summary>
-        public string ContentMarkup { get; set; }
+        [Required]
+        public string ContentMarkup { get; set; } = null!;
 
         /// <summary>
         /// Custom Header markup.
         /// </summary>
-        public string CustomHeaderMarkup { get; set; }
-        
+        public string? CustomHeaderMarkup { get; set; }
+
         /// <summary>
         /// Content title.
         /// </summary>
-        public string Title { get; set; }
+        [Required]
+        public string Title { get; set; } = null!;
 
         /// <summary>
         /// Content description.
         /// </summary>
-        public string Description { get; set; }
+        [Required]
+        public string Description { get; set; } = null!;
 
         /// <summary>
         /// Update timestamp.
@@ -61,6 +66,7 @@ namespace WebsiteContent.Models
         /// <summary>
         /// Content.
         /// </summary>
-        public Content Content { get; set; }
+        [Required]
+        public virtual Content Content { get; set; } = null!;
     }
 }

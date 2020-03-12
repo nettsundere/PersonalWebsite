@@ -1,5 +1,4 @@
-﻿using System;
-using WebsiteContent.Repositories.DTO;
+﻿using WebsiteContent.Repositories.DTO;
 
 namespace PersonalWebsite.ViewModels.Content
 {
@@ -11,27 +10,11 @@ namespace PersonalWebsite.ViewModels.Content
         /// <summary>
         /// Create <see cref="ContentViewModel"/>.
         /// </summary>
-        public ContentViewModel() : this(new ContentPublicViewData())
-        {
-        }
-
-        /// <summary>
-        /// Create <see cref="ContentViewModel"/>.
-        /// </summary>
         /// <param name="contentPublicViewData">Public content data.</param>
-        public ContentViewModel(ContentPublicViewData contentPublicViewData)
+        public ContentViewModel(ContentPublicViewData contentPublicViewData): 
+            base(contentPublicViewData.Title, contentPublicViewData.CustomHeaderMarkup, contentPublicViewData.Markup, 
+                contentPublicViewData.Description, contentPublicViewData.InternalCaption, contentPublicViewData.UrlNames)
         {
-            if (contentPublicViewData == null)
-            {
-                throw new ArgumentNullException(nameof(contentPublicViewData));
-            }
-
-            Description = contentPublicViewData.Description;
-            InternalCaption = contentPublicViewData.InternalCaption;
-            CustomHeaderMarkup = contentPublicViewData.CustomHeaderMarkup;
-            Markup = contentPublicViewData.Markup;
-            Title = contentPublicViewData.Title;
-            UrlNames = contentPublicViewData.UrlNames;
         }
     }
 }

@@ -1,7 +1,9 @@
-﻿using System.IO;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using PersonalWebsite.Migrations;
 using PersonalWebsite.Services;
 
 namespace PersonalWebsite
@@ -12,45 +14,38 @@ namespace PersonalWebsite
         /// Website startup point.
         /// </summary>
         /// <param name="args">Arguments.</param>
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            var host = BuildWebHost(args);
-
+            var host = CreateHostBuilder(args).Build();
             using (var scope = host.Services.CreateScope()) 
             {
+                var migrationsRunner = scope.ServiceProvider.GetService<IDatabaseMigrationsRunner>();
+                migrationsRunner.RunMigrations();
+                
                 var dataInitializer = new DataInitializer(scope.ServiceProvider);
-                dataInitializer.EnsureRequiredContentsAvailable();
-                dataInitializer.EnsureInitialUserAvailable();
+                await dataInitializer.EnsureRequiredContentsAvailableAsync();
+                await dataInitializer.EnsureInitialUserAvailableAsync();
             }
             
             host.Run();
         }
 
-        /// <summary>
-        /// Enable DbContext discovery 
-        /// (allows dotnet ef database update to build DB Contexts properly)
-        /// </summary>
-        /// <param name="args">Startup arguments.</param>
-        /// <returns></returns>
-        private static IWebHost BuildWebHost(string[] args)
-        {
-            return new WebHostBuilder()
-                .UseKestrel()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseStartup<Startup>()
-                .UseApplicationInsights()
-                .ConfigureLogging((context, logging) =>
+         private static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    logging.AddConfiguration(context.Configuration.GetSection("Logging"));
-                    
-                    if (context.HostingEnvironment.IsDevelopment())
+                    webBuilder.UseStartup<Startup>();
+                    webBuilder.ConfigureLogging((context, logging) =>
                     {
-                        logging.AddDebug();
-                    }
+                        logging.AddConfiguration(context.Configuration.GetSection("Logging"));
+                    
+                        if (context.HostingEnvironment.IsDevelopment())
+                        {
+                            logging.AddDebug();
+                        }
 
-                    logging.AddConsole();
-                })
-                .Build();
-        }
+                        logging.AddConsole();
+                    });
+                });
     }
 }

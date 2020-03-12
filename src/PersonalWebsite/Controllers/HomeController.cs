@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PersonalWebsite.Services;
 using System;
+using System.Threading.Tasks;
 using WebsiteContent.Lib;
 
 namespace PersonalWebsite.Controllers
@@ -46,7 +47,7 @@ namespace PersonalWebsite.Controllers
         /// </summary>
         /// <param name="language">language</param>
         /// <returns>Index page.</returns>
-        public IActionResult Index(string language)
+        public async Task<IActionResult> Index(string language)
         {
             LanguageDefinition languageDefinition;
             if (string.IsNullOrWhiteSpace(language))
@@ -64,15 +65,19 @@ namespace PersonalWebsite.Controllers
                     return NotFound();
                 }
             }
-            var pageVM = _humanReadableContentService.GetPageByInternalCaption(
-                languageDefinition, 
-                _pageConfiguration.DefaultPageInternalCaption);
-            if (pageVM == null)
+
+            try
+            {
+                var pageVm = await _humanReadableContentService.GetPageByInternalCaptionAsync(
+                    languageDefinition,
+                    _pageConfiguration.DefaultPageInternalCaption);
+
+                return View(pageVm);
+            }
+            catch(InvalidOperationException)
             {
                 return NotFound();
             }
-
-            return View(pageVM);
         }
     }
 }

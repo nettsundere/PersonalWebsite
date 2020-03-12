@@ -1,20 +1,19 @@
 using System;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PersonalWebsite.Models;
 
 namespace PersonalWebsite.Migrations
 {
     public class DatabaseMigrationsRunner : IDatabaseMigrationsRunner
-    {   
-        private readonly IServiceProvider _serviceProvider;
+    {
+        private readonly AuthDbContext _authDbContext;
+        private readonly DataDbContext _dataDbContext; 
         private readonly ILogger<DatabaseMigrationsRunner> _runnerLogger;
-
-        public DatabaseMigrationsRunner(IServiceProvider serviceProvider, ILogger<DatabaseMigrationsRunner> runnerLogger)
+        public DatabaseMigrationsRunner(AuthDbContext authDbContext, DataDbContext dataDbContext, ILogger<DatabaseMigrationsRunner> runnerLogger)
         {
-            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            _authDbContext = authDbContext ?? throw new ArgumentNullException(nameof(authDbContext));
+            _dataDbContext = dataDbContext ?? throw new ArgumentNullException(nameof(dataDbContext));
             _runnerLogger = runnerLogger ?? throw new ArgumentNullException(nameof(runnerLogger));
         }
         
@@ -24,25 +23,8 @@ namespace PersonalWebsite.Migrations
         public void RunMigrations()
         {
             _runnerLogger.LogInformation("Running migrations");
-
-            using (var authDbContext = _serviceProvider.GetRequiredService<AuthDbContext>())
-            {
-                MigrateDatabase(authDbContext.Database);   
-            }
-            
-            using (var dataDbContext = _serviceProvider.GetRequiredService<DataDbContext>())
-            {
-                MigrateDatabase(dataDbContext.Database);   
-            }
-        }
-
-        /// <summary>
-        /// Migrate the database.
-        /// </summary>
-        /// <param name="databaseFacade">Database facade.</param>
-        private void MigrateDatabase(DatabaseFacade databaseFacade)
-        {
-            databaseFacade.Migrate();
+            _authDbContext.Database.Migrate();   
+            _dataDbContext.Database.Migrate();
         }
     }
 }

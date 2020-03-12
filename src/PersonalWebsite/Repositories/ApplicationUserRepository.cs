@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using PersonalWebsite.Models;
 using System;
-using Microsoft.Extensions.DependencyInjection;
 using WebsiteContent.Lib;
 using WebsiteContent.Repositories;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace PersonalWebsite.Repositories
 {
@@ -14,74 +14,58 @@ namespace PersonalWebsite.Repositories
     public class ApplicationUserRepository : IApplicationUserRepository
     {
         /// <summary>
+        /// Auth context.
+        /// </summary>
+        private readonly AuthDbContext _context;
+
+        /// <summary>
         /// User manager.
         /// </summary>
         private readonly UserManager<ApplicationUser> _userManager;
 
         /// <summary>
-        /// Service provider.
-        /// </summary>
-        private readonly IServiceProvider _serviceProvider;
-        
-        /// <summary>
         /// Create <see cref="ApplicationUserRepository"/>.
         /// </summary>
         /// <param name="userManager">User manager.</param>
-        /// <param name="serviceProvider">Service provider.</param>
-        public ApplicationUserRepository(UserManager<ApplicationUser> userManager, IServiceProvider serviceProvider)
+        /// <param name="authDbContext">Auth db context.</param>
+        public ApplicationUserRepository(UserManager<ApplicationUser> userManager, AuthDbContext authDbContext)
         {
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
-            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            _context = authDbContext ?? throw new ArgumentNullException(nameof(authDbContext));
         }
 
         /// <summary>
         /// Deletes a user by its EMail.
         /// </summary>
         /// <param name="email">EMail of a user to be deleted.</param>
-        public void DeleteUserByEMail(string email)
+        public async Task DeleteUserByEMailAsync(string email)
         {
-            using (var authDbContext = GetAuthDbContext())
-            {
-                var usersToDelete =
-                    from x in authDbContext.Users
-                    where x.Email == email
-                    select x;
+            var usersToDelete =
+                from x in _context.Users
+                where x.Email == email
+                select x;
 
-                authDbContext.Users.RemoveRange(usersToDelete);
-                authDbContext.SaveChanges();  
-            }
+            _context.Users.RemoveRange(usersToDelete);
+            await _context.SaveChangesAsync();
         }
 
         /// <summary>
         /// Ensure <paramref name="user"/> exists.
         /// </summary>
         /// <param name="user">Required user.</param>
-        public void EnsureUserAvailable(ApplicationUserData user)
+        public async Task EnsureUserAvailableAsync(ApplicationUserData user)
         {
-            using (var authDbContext = GetAuthDbContext())
-            {
-                var sameEmailUsers = from x in authDbContext.Users
-                    where x.Email.Equals(user.EMail, StringComparison.OrdinalIgnoreCase)
-                    select x;
+            var sameEmailUsers = from x in _context.Users
+                where x.Email == user.EMail
+                select x;
 
-                if (!sameEmailUsers.Any())
-                {
-                    var result = _userManager.CreateAsync(new ApplicationUser { Email = user.EMail, UserName = user.Name }, user.Password).Result;
-                    if (!result.Succeeded)
-                    {
-                        throw new InvalidOperationException($"Failed to ensure user {user.Name} is available");
-                    }
-                }
+            if (sameEmailUsers.Any()) return;
+            
+            var result = await _userManager.CreateAsync(new ApplicationUser { Email = user.EMail, UserName = user.Name }, user.Password);
+            if (!result.Succeeded)
+            {
+                throw new InvalidOperationException($"Failed to ensure user {user.Name} is available");
             }
-        }
-        
-        /// <summary>
-        /// Get database context <see cref="AuthDbContext"/>.
-        /// </summary>
-        /// <returns><see cref="AuthDbContext"/>.</returns>
-        private AuthDbContext GetAuthDbContext()
-        {
-            return _serviceProvider.GetRequiredService<AuthDbContext>();
         }
     }
 }

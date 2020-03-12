@@ -2,7 +2,8 @@
 using PersonalWebsite.Models;
 using System;
 using System.Linq;
-using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Server.IIS.Core;
 using PersonalWebsite.Lib.Extensions;
 using WebsiteContent.Lib;
 using WebsiteContent.Models;
@@ -17,17 +18,17 @@ namespace PersonalWebsite.Repositories
     public class ContentEditorRepository : IContentEditorRepository
     {
         /// <summary>
-        /// Service provider for controlling dependencies.
+        /// Data context.
         /// </summary>
-        private readonly IServiceProvider _serviceProvider;
+        private readonly DataDbContext _context;
         
         /// <summary>
         /// Create <see cref="ContentEditorRepository"/>.
         /// </summary>
-        /// <param name="serviceProvider">Service provider</param>
-        public ContentEditorRepository(IServiceProvider serviceProvider)
+        /// <param name="dataDbContext">Data context.</param>
+        public ContentEditorRepository(DataDbContext dataDbContext)
         {
-            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            _context = dataDbContext ?? throw new ArgumentNullException(nameof(dataDbContext));
         }
         
         /// <summary>
@@ -35,21 +36,23 @@ namespace PersonalWebsite.Repositories
         /// </summary>
         /// <param name="contentEditViewModel">Content representation to store in DB.</param>
         /// <returns>Updated content representation.</returns>
-        public ContentPrivateEditData Create(ContentPrivateEditData contentEditViewModel)
+        public async Task<ContentPrivateEditData> CreateAsync(ContentPrivateEditData contentEditViewModel)
         {
-            using (var dataDbContext = GetDataDbContext())
+            if (contentEditViewModel is null)
             {
-                var content = dataDbContext.Content.Add(new Content
-                {
-                    InternalCaption = contentEditViewModel.InternalCaption
-                });
-
-                dataDbContext.SaveChanges();
-
-                var entity = content.Entity;
-
-                return new ContentPrivateEditData(entity);
+                throw new ArgumentNullException(nameof(contentEditViewModel));
             }
+
+            var content = _context.Content.Add(new Content
+            {
+                InternalCaption = contentEditViewModel.InternalCaption
+            });
+
+            await _context.SaveChangesAsync();
+
+            var entity = content.Entity;
+
+            return new ContentPrivateEditData(entity);
         }
 
         /// <summary>
@@ -57,52 +60,32 @@ namespace PersonalWebsite.Repositories
         /// </summary>
         /// <param name="contentId">Id of a content to read.</param>
         /// <returns>Content representation.</returns>
-        public ContentPrivateEditData Read(int contentId)
+        public async Task<ContentPrivateEditData> ReadAsync(int contentId)
         {
-            using (var dataDbContext = GetDataDbContext())
-            {
-                var content = dataDbContext.Content.Include(c => c.Translations).FirstOrDefault(x => x.Id == contentId);
-                if (content != null)
-                {
-                    var data = new ContentPrivateEditData(content);
+            var content = await _context.Content.Include(c => c.Translations).FirstAsync(x => x.Id == contentId);
+            var data = new ContentPrivateEditData(content);
 
-                    // Build missing translations
-                    var missingTranslations = from x in Enum.GetValues(typeof(LanguageDefinition)).Cast<LanguageDefinition>()
-                        where !data.Translations.Select(t => t.Version).Contains(x)
-                        select new TranslationPrivateEditData(new Translation()) { ContentId = data.Id, Version = x };
+            // Build missing translations
+            var missingTranslations = from x in Enum.GetValues(typeof(LanguageDefinition)).Cast<LanguageDefinition>()
+                where !data.Translations.Select(t => t.Version).Contains(x)
+                select new TranslationPrivateEditData(new Translation()) { ContentId = data.Id, Version = x };
 
-                    data.Translations = data.Translations.Concat(missingTranslations).ToList();
+            data.Translations = data.Translations.Concat(missingTranslations).ToList();
 
-                    return data;
-                }
-                else
-                {
-                    return null;
-                }       
-            }
+            return data;
         }
 
         /// <summary>
         /// Read content list.
         /// </summary>
         /// <returns>List of content representations.</returns>
-        public ContentPrivateEditListData ReadList()
+        public async Task<ContentPrivateEditListData> ReadListAsync()
         {
-            using (var dataDbContext = GetDataDbContext())
-            {
-                var contentsQuery = from x in dataDbContext.Content
-                    orderby x.Id
-                    select new ContentPrivateLinksData
-                    {
-                        Id = x.Id,
-                        InternalCaption = x.InternalCaption
-                    };
+            var contentsQuery = from x in _context.Content
+                orderby x.Id
+                select new ContentPrivateLinksData(x.Id, x.InternalCaption);
 
-                return new ContentPrivateEditListData
-                {
-                    Contents = contentsQuery.ToList()
-                };
-            }
+            return new ContentPrivateEditListData(await contentsQuery.ToListAsync());
         }
 
         /// <summary>
@@ -110,73 +93,63 @@ namespace PersonalWebsite.Repositories
         /// </summary>
         /// <param name="data">Data to update with.</param>
         /// <returns>Updated content.</returns>
-        public ContentPrivateEditData Update(ContentPrivateEditData data)
+        public async Task<ContentPrivateEditData> UpdateAsync(ContentPrivateEditData data)
         {
-            using (var dataDbContext = GetDataDbContext())
+            if (data is null)
             {
-                var content = dataDbContext.Content.Include(c => c.Translations)
-                    .Single(x => x.Id == data.Id);
-
-                var updateTime = DateTime.UtcNow;
-
-                content.InternalCaption = data.InternalCaption;
-
-                var newTranslations = from x in data.Translations
-                    where x.Id == default(int)
-                    let translation = (new Translation()).UpdateFromTranslationPrivateEditData(x)
-                    select translation;
-
-                var updatedOldData = from x in data.Translations
-                    where x.Id != default(int)
-                    select x;
-
-                var translationsAndChanges = from translation in content.Translations
-                    join changes in updatedOldData on translation.Id equals changes.Id
-                    select new { translation, changes };
-
-                // Update existing translations
-                foreach(var translationAndChange in translationsAndChanges)
-                {
-                    translationAndChange.translation.UpdateFromTranslationPrivateEditData(translationAndChange.changes);
-                    translationAndChange.translation.UpdatedAt = updateTime;
-                }
-
-                // Add new translations
-                foreach(var newTranslation in newTranslations)
-                {
-                    newTranslation.UpdatedAt = updateTime;
-                    content.Translations.Add(newTranslation);
-                }
-
-                dataDbContext.Content.Update(content);
-                dataDbContext.SaveChanges();
-
-                return data;   
+                throw new ArgumentNullException(nameof(data));
             }
+            
+            var content = await _context.Content.Include(c => c.Translations)
+                .SingleAsync(x => x.Id == data.Id);
+
+            var updateTime = DateTime.UtcNow;
+
+            content.InternalCaption = data.InternalCaption;
+
+            var newTranslations = from x in data.Translations
+                where x.Id == default(int)
+                let translation = (new Translation()).UpdateFromTranslationPrivateEditData(x)
+                select translation;
+
+            var updatedOldData = from x in data.Translations
+                where x.Id != default(int)
+                select x;
+
+            var translationsAndChanges = from translation in content.Translations
+                join changes in updatedOldData on translation.Id equals changes.Id
+                select new { translation, changes };
+
+            // Update existing translations
+            foreach(var translationAndChange in translationsAndChanges)
+            {
+                translationAndChange.translation.UpdateFromTranslationPrivateEditData(translationAndChange.changes);
+                translationAndChange.translation.UpdatedAt = updateTime;
+            }
+
+            // Add new translations
+            foreach(var newTranslation in newTranslations)
+            {
+                newTranslation.UpdatedAt = updateTime;
+                content.Translations.Add(newTranslation);
+            }
+
+            _context.Content.Update(content);
+            await _context.SaveChangesAsync();
+
+            return data;
         }
 
         /// <summary>
         /// Delete a content by id.
         /// </summary>
         /// <param name="contentId">Id of a content to delete.</param>
-        public void Delete(int contentId)
+        public async Task DeleteAsync(int contentId)
         {
-            using (var dataDbContext = GetDataDbContext())
-            {
-                var content = dataDbContext.Content.Single(x => x.Id == contentId);
+            var content = await _context.Content.SingleAsync(x => x.Id == contentId);
 
-                dataDbContext.Content.Remove(content);
-                dataDbContext.SaveChanges();   
-            }
-        }
-
-        /// <summary>
-        /// Get database context <see cref="DataDbContext"/>.
-        /// </summary>
-        /// <returns><see cref="DataDbContext"/></returns>
-        private DataDbContext GetDataDbContext()
-        {
-            return _serviceProvider.GetRequiredService<DataDbContext>();
+            _context.Content.Remove(content);
+            await _context.SaveChangesAsync();
         }
     }
 }

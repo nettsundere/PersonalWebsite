@@ -9,9 +9,9 @@ namespace PersonalWebsite.Models
         {
         }
 
-        public DbSet<Content> Content { get; set; }
+        public DbSet<Content> Content { get; set; } = null!;
 
-        public DbSet<Translation> Translation { get; set; }
+        public DbSet<Translation> Translation { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebsiteContent.Models
 {
@@ -11,15 +12,16 @@ namespace WebsiteContent.Models
         /// Content unique id.
         /// </summary>
         public int Id { get; set; }
-
+        
         /// <summary>
         /// Available content translations.
         /// </summary>
-        public IList<Translation> Translations { get; set; }
+        public IList<Translation> Translations { get; set; } = null!;
 
         /// <summary>
         /// Content non-translated caption.
         /// </summary>
-        public string InternalCaption { get; set; }
+        [Required]
+        public string InternalCaption { get; set; } = null!;
     }
 }

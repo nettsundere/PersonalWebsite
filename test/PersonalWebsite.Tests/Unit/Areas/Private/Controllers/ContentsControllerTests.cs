@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using PersonalWebsite.Areas.Private.Controllers;
@@ -26,35 +27,28 @@ namespace PersonalWebsite.Tests.Unit.Areas.Private.Controllers
                 yield return new[]
                 {
                     new ContentIndexViewModel(
-                        new ContentPrivateEditListData()
-                        {
-                           Contents = Enumerable.Empty<ContentPrivateLinksData>()
-                        }
+                        new ContentPrivateEditListData(Enumerable.Empty<ContentPrivateLinksData>())
+                        )
+                };
+                yield return new[]
+                {
+                    new ContentIndexViewModel(
+                        new ContentPrivateEditListData(new []
+                            {
+                                new ContentPrivateLinksData(-1, "fake1")
+                            }
+                        )
                     )
                 };
                 yield return new[]
                 {
                     new ContentIndexViewModel(
-                        new ContentPrivateEditListData()
-                        {
-                            Contents = new []
+                        new ContentPrivateEditListData(new []
                             {
-                                new ContentPrivateLinksData { Id = -1, InternalCaption = "fake1" }
+                                new ContentPrivateLinksData(-1,"fake1"),
+                                new ContentPrivateLinksData(3, "fake3")
                             }
-                        }
-                    )
-                };
-                yield return new[]
-                {
-                    new ContentIndexViewModel(
-                        new ContentPrivateEditListData()
-                        {
-                            Contents = new []
-                            {
-                                new ContentPrivateLinksData { Id = -1, InternalCaption = "fake1" },
-                                new ContentPrivateLinksData { Id = 3, InternalCaption = "fake3" }
-                            }
-                        }
+                        )
                     )
                 };
             }
@@ -67,17 +61,11 @@ namespace PersonalWebsite.Tests.Unit.Areas.Private.Controllers
         {
             get
             {
-                yield return new object[] { null, typeof(NotFoundResult) };
+                yield return new object[] { null!, typeof(NotFoundResult) };
 
                 yield return new object[]
                 {
-                    new ContentPrivateEditData()
-                    {
-                        Id = -2,
-                        InternalCaption = "Test",
-                        Translations = null
-                    },
-                    typeof(ViewResult)
+                    new ContentPrivateEditData(-2, "Test", new List<TranslationPrivateEditData>(0)), typeof(ViewResult)
                 };
             }
         }
@@ -88,16 +76,16 @@ namespace PersonalWebsite.Tests.Unit.Areas.Private.Controllers
         /// <param name="contentList">Content List view model stub.</param>
         [Theory]
         [MemberData(nameof(ContentListExamples))]
-        public void ReturnsListOfContents(ContentIndexViewModel contentList)
+        public async Task ReturnsListOfContents(ContentIndexViewModel contentList)
         {
             var fakeContentRepository = new Mock<IContentEditorRepository>();
-            fakeContentRepository.Setup(x => x.ReadList()).Returns(contentList);
+            fakeContentRepository.Setup(x => x.ReadListAsync()).ReturnsAsync(contentList);
             var subject = new ContentsController(fakeContentRepository.Object);
 
-            var actionResult = subject.Index();
-            var resultModel = ((actionResult as ViewResult).Model as ContentIndexViewModel);
+            var actionResult = await subject.Index();
+            var resultModel = ((actionResult as ViewResult)?.Model as ContentIndexViewModel);
 
-            Assert.Equal(contentList.Contents.Count(), resultModel.Contents.Count());
+            Assert.Equal(contentList.Contents.Count(), resultModel?.Contents.Count());
         }
 
         /// <summary>
@@ -107,15 +95,15 @@ namespace PersonalWebsite.Tests.Unit.Areas.Private.Controllers
         /// <param name="expectedResultType">Expected result type.</param>
         [Theory]
         [MemberData(nameof(ContentDataExamples))]
-        public void ReturnsContentEditor(ContentPrivateEditData privateEditData, Type expectedResultType)
+        public async Task ReturnsContentEditor(ContentPrivateEditData privateEditData, Type expectedResultType)
         {
             var fakeId = -1;
             var fakeContentRepository = new Mock<IContentEditorRepository>();
 
-            fakeContentRepository.Setup(x => x.Read(fakeId)).Returns(privateEditData);
+            fakeContentRepository.Setup(x => x.ReadAsync(fakeId)).ReturnsAsync(privateEditData);
             var subject = new ContentsController(fakeContentRepository.Object);
 
-            var actionResult = subject.Edit(fakeId);
+            var actionResult = await subject.Edit(fakeId);
 
             Assert.IsType(expectedResultType, actionResult);
         }
@@ -124,16 +112,16 @@ namespace PersonalWebsite.Tests.Unit.Areas.Private.Controllers
         /// Test Post edit changes a content.
         /// </summary>
         [Fact]
-        public void ChangesContent()
+        public async Task ChangesContent()
         {
-            var fakeContent = new ContentPrivateEditData() { Id = 100 };
+            var fakeContent = new ContentPrivateEditData(100, "fake", new List<TranslationPrivateEditData>(0));
             var fakeContentRepository = new Mock<IContentEditorRepository>();
-            fakeContentRepository.Setup(x => x.Update(fakeContent)).Returns(fakeContent);
+            fakeContentRepository.Setup(x => x.UpdateAsync(fakeContent)).ReturnsAsync(fakeContent);
             var subject = new ContentsController(fakeContentRepository.Object);
 
-            var actionResult = subject.Edit(new ContentAndTranslationsEditViewModel(fakeContent));
+            var actionResult = await subject.Edit(new ContentAndTranslationsEditViewModel(fakeContent));
 
-            fakeContentRepository.Verify(x => x.Update(It.IsAny<ContentPrivateEditData>()));
+            fakeContentRepository.Verify(x => x.UpdateAsync(It.IsAny<ContentPrivateEditData>()));
             Assert.IsType<RedirectToActionResult>(actionResult);
         }
 
@@ -141,16 +129,16 @@ namespace PersonalWebsite.Tests.Unit.Areas.Private.Controllers
         /// Test Post create creates a content.
         /// </summary>
         [Fact]
-        public void CreatesContent()
+        public async Task CreatesContent()
         {
-            var fakeContent = new ContentPrivateEditData();
+            var fakeContent = new ContentPrivateEditData(0, "fake", new List<TranslationPrivateEditData>(0));
             var fakeContentRepository = new Mock<IContentEditorRepository>();
-            fakeContentRepository.Setup(x => x.Create(fakeContent)).Returns(fakeContent);
+            fakeContentRepository.Setup(x => x.CreateAsync(fakeContent)).ReturnsAsync(fakeContent);
             var subject = new ContentsController(fakeContentRepository.Object);
 
-            var actionResult = subject.Create(new ContentAndTranslationsEditViewModel(fakeContent));
+            var actionResult = await subject.Create(new ContentAndTranslationsEditViewModel(fakeContent));
 
-            fakeContentRepository.Verify(x => x.Create(It.IsAny<ContentPrivateEditData>()));
+            fakeContentRepository.Verify(x => x.CreateAsync(It.IsAny<ContentPrivateEditData>()));
             Assert.IsType<RedirectToActionResult>(actionResult);
         }
 
@@ -159,14 +147,14 @@ namespace PersonalWebsite.Tests.Unit.Areas.Private.Controllers
         /// Test Get Delete returns removal confirmation.
         /// </summary>
         [Fact]
-        public void ConfirmsContentRemoval()
+        public async Task ConfirmsContentRemoval()
         {
-            var fakeContent = new ContentPrivateEditData { Id = -1 };
+            var fakeContent = new ContentPrivateEditData(-1, "fake", new List<TranslationPrivateEditData>(0));
             var fakeContentRepository = new Mock<IContentEditorRepository>();
-            fakeContentRepository.Setup(x => x.Read(fakeContent.Id)).Returns(fakeContent);
+            fakeContentRepository.Setup(x => x.ReadAsync(fakeContent.Id)).ReturnsAsync(fakeContent);
             var subject = new ContentsController(fakeContentRepository.Object);
 
-            var actionResult = subject.Delete(fakeContent.Id);
+            var actionResult = await subject.Delete(fakeContent.Id);
    
             Assert.IsType<ViewResult>(actionResult);
         }
@@ -175,14 +163,14 @@ namespace PersonalWebsite.Tests.Unit.Areas.Private.Controllers
         /// Test Post Delete deletes a content.
         /// </summary>
         [Fact]
-        public void DeletesContent()
+        public async Task DeletesContent()
         {
-            var fakeContent = new ContentPrivateEditData { Id = -1 };
+            var fakeContent = new ContentPrivateEditData(-1, "fake", new List<TranslationPrivateEditData>(0));
             var fakeContentRepository = new Mock<IContentEditorRepository>();
-            fakeContentRepository.Setup(x => x.Delete(fakeContent.Id));
+            fakeContentRepository.Setup(x => x.DeleteAsync(fakeContent.Id)).Returns(Task.CompletedTask);
             var subject = new ContentsController(fakeContentRepository.Object);
 
-            var actionResult = subject.DeleteConfirmed(fakeContent.Id);
+            var actionResult = await subject.DeleteConfirmed(fakeContent.Id);
 
             Assert.IsType<RedirectToActionResult>(actionResult);
         }

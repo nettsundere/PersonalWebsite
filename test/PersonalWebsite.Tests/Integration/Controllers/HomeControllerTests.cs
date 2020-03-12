@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,8 +18,11 @@ namespace PersonalWebsite.Tests.Integration.Controllers
     /// <summary>
     /// Test <see cref="HomeController"/>.
     /// </summary>
-    public class HomeControllerTests 
+    public class HomeControllerTests: IDisposable
     {
+        /// <summary>
+        /// Page configuration.
+        /// </summary>
         private readonly IPageConfiguration _pageConfiguration;
 
         /// <summary>
@@ -26,10 +31,10 @@ namespace PersonalWebsite.Tests.Integration.Controllers
         private readonly HomeController _homeController;
 
         /// <summary>
-        /// Service provider.
+        /// Data DB context.
         /// </summary>
-        private readonly IServiceProvider _serviceProvider;
-        
+        private readonly DataDbContext _dataDbContext;
+
         /// <summary>
         /// Fake page configuration.
         /// </summary>
@@ -45,22 +50,24 @@ namespace PersonalWebsite.Tests.Integration.Controllers
         /// </summary>
         public HomeControllerTests()
         {
-            const string databaseName = "HomeTest";
-
-            // Database setup
-            var services = new ServiceCollection();
-            services.AddEntityFrameworkInMemoryDatabase()
-                    .AddDbContext<DataDbContext>(options =>
-                        options.UseInMemoryDatabase(databaseName),
-                        ServiceLifetime.Transient
-                    );
-
-            _serviceProvider = services.BuildServiceProvider();
-
             // Dependencies initializations
+            var connection = InMemoryConnectionHelper.SetupConnection();
+ 
+            var services = new ServiceCollection();
+            services.AddEntityFrameworkSqlite()
+                .AddDbContext<DataDbContext>(options =>
+                        options.UseSqlite(connection),
+                    ServiceLifetime.Transient
+                );
+
+            var serviceProvider = services.BuildServiceProvider();
+
             _pageConfiguration = new FakePageConfiguration();
 
-            var contentRepository = new ContentViewerRepository(_serviceProvider);
+            _dataDbContext = serviceProvider.GetService<DataDbContext>();
+            _dataDbContext.Database.EnsureCreated();
+            
+            var contentRepository = new ContentViewerRepository(_dataDbContext);
             var humanReadableContentService = new HumanReadableContentRetrievalService(_pageConfiguration, contentRepository);
 
             ILanguageManipulationService languageManipulationService = new LanguageManipulationService();
@@ -77,11 +84,11 @@ namespace PersonalWebsite.Tests.Integration.Controllers
         [InlineData("en-ENZ")]
         [InlineData("ru-RU-EN")]
         [InlineData("SOMETHING")]
-        public void ReturnsContentNotFound(string language)
+        public async Task ReturnsContentNotFound(string language)
         {
             SetupContent();
 
-            var actionResult = _homeController.Index(language);
+            var actionResult = await _homeController.Index(language);
 
             Assert.IsType<NotFoundResult>(actionResult);
         }
@@ -91,11 +98,11 @@ namespace PersonalWebsite.Tests.Integration.Controllers
         [InlineData("de-DE")]
         [InlineData("RU-ru")]
         [InlineData("")] // Default language value case
-        public void ReturnsSuccess(string language)
+        public async Task ReturnsSuccess(string language)
         {
             SetupContent();
 
-            var actionResult = _homeController.Index(language);
+            var actionResult = await _homeController.Index(language);
 
             Assert.IsType<ViewResult>(actionResult);
         }
@@ -103,16 +110,16 @@ namespace PersonalWebsite.Tests.Integration.Controllers
         [Theory]
         [InlineData("En-US", LanguageDefinition.en_us)]
         [InlineData("de-DE", LanguageDefinition.de_de)]
-        public void SetsProperLanguage(
+        public async Task SetsProperLanguage(
             string language,
             LanguageDefinition expectedModelLanguage)
         {
             SetupContent();
 
-            var result = _homeController.Index(language) as ViewResult;
+            var result = await _homeController.Index(language) as ViewResult;
 
-            var resultModel = result.ViewData.Model as PageViewModel;
-            Assert.Equal(expectedModelLanguage, resultModel.Language);
+            var resultModel = result?.ViewData.Model as PageViewModel;
+            Assert.Equal(expectedModelLanguage, resultModel?.Language);
         }
 
         /// <summary>
@@ -120,44 +127,49 @@ namespace PersonalWebsite.Tests.Integration.Controllers
         /// </summary>
         private void SetupContent()
         {
-            using (var dataDbContext = _serviceProvider.GetService<DataDbContext>())
-            {
-                dataDbContext.Content.Add(
-                    new Content
+            _dataDbContext.Content.Add(
+                new Content
+                {
+                    InternalCaption = _pageConfiguration.DefaultPageInternalCaption,
+                    Translations = new[]
                     {
-                        InternalCaption = _pageConfiguration.DefaultPageInternalCaption,
-                        Translations = new[]
-                        {
-                            new Translation {
-                                UrlName = "url1",
-                                Title = "Resume",
-                                ContentMarkup = string.Empty,
-                                Description = string.Empty,
-                                State = DataAvailabilityState.published,
-                                Version = LanguageDefinition.en_us
-                            },
-                            new Translation {
-                                UrlName = "url2",
-                                Title = "Lebenslauf",
-                                ContentMarkup = string.Empty,
-                                Description = string.Empty,
-                                State = DataAvailabilityState.published,
-                                Version = LanguageDefinition.de_de
-                            },
-                            new Translation {
-                                UrlName = "url3",
-                                Title = "Lebenslauf",
-                                ContentMarkup = string.Empty,
-                                Description = string.Empty,
-                                State = DataAvailabilityState.published,
-                                Version = LanguageDefinition.ru_ru
-                            }
+                        new Translation {
+                            UrlName = "url1",
+                            Title = "Resume",
+                            CustomHeaderMarkup = string.Empty,
+                            ContentMarkup = string.Empty,
+                            Description = string.Empty,
+                            State = DataAvailabilityState.published,
+                            Version = LanguageDefinition.en_us
+                        },
+                        new Translation {
+                            UrlName = "url2",
+                            Title = "Lebenslauf",
+                            CustomHeaderMarkup = string.Empty,
+                            ContentMarkup = string.Empty,
+                            Description = string.Empty,
+                            State = DataAvailabilityState.published,
+                            Version = LanguageDefinition.de_de
+                        },
+                        new Translation {
+                            UrlName = "url3",
+                            Title = "Lebenslauf",
+                            CustomHeaderMarkup = string.Empty,
+                            ContentMarkup = string.Empty,
+                            Description = string.Empty,
+                            State = DataAvailabilityState.published,
+                            Version = LanguageDefinition.ru_ru
                         }
                     }
-                );
+                }
+            );
 
-                dataDbContext.SaveChanges();
-            }
+            _dataDbContext.SaveChanges();
+        }
+
+        public void Dispose()
+        {
+            _dataDbContext.Dispose();
         }
     }
 }
