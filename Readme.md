@@ -1,6 +1,8 @@
 # PersonalWebsite
 This is a full source code of my multilingual website implemented in ASP.NET Core
 
+![Tests are](https://github.com/nettsundere/PersonalWebsite/workflows/Test%20the%20app/badge.svg)
+
 Hosting: Azure, App Service, West US 2
 
 # See it in action
