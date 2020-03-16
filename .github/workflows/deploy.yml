@@ -4,7 +4,7 @@ name: Deploy the app
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ master ]
 
 env:
   APP_PATH: 'src/PersonalWebsite'
