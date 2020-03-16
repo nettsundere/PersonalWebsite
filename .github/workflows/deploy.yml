@@ -1,0 +1,43 @@
+# This action performs the deploy of net core / node application to the Azure App service
+
+name: Deploy the app
+
+on:
+  push:
+    branches: [ master ]
+
+env:
+  APP_PATH: 'src/PersonalWebsite'
+  AZURE_PROFILE: 'vkpersonal' # Application name
+  NODE_VERSION: '10.x'
+  DOTNET_VERSION: '3.1.101'
+  
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: [ubuntu-18.04]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ env.NODE_VERSION }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+    - name: Use .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }} 
+    - name: Build and publish the app
+      run: |
+        cd ${{ env.APP_PATH }} # go to the source code folder
+        npm install
+        npm run build --if-present
+        npm run test --if-present
+        dotnet test
+        dotnet build --configuration Release
+        dotnet publish -c Release -o ../../ReleasedVersion # move back to the root
+    - name: Deploy 🚢 to the Azure
+      uses: azure/webapps-deploy@v1
+      with:
+        app-name: ${{ env.AZURE_PROFILE }}
+        publish-profile: ${{ secrets.AZURE_APP_PUBLISH_PROFILE }}
+        package: './ReleasedVersion'
