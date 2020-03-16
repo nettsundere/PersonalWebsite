@@ -14,7 +14,7 @@ env:
   DOTNET_VERSION: '3.1.101'
   
 jobs:
-  build:
+  run-tests:
     runs-on: [ubuntu-18.04]
     steps:
     - uses: actions/checkout@v2
