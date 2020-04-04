@@ -2,7 +2,7 @@
 using PersonalWebsite.Areas.Private.Controllers;
 using Xunit;
 
-namespace PersonalWebsite.Tests.Unit.Areas.Private.Controllers
+namespace PersonalWebsite.Tests.Areas.Private.Controllers
 {
     /// <summary>
     /// Tests for <see cref="DashboardController"/>.

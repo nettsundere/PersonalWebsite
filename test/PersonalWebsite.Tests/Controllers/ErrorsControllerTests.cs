@@ -3,7 +3,7 @@ using PersonalWebsite.Controllers;
 using PersonalWebsite.ViewModels.Error;
 using Xunit;
 
-namespace PersonalWebsite.Tests.Unit.Controllers
+namespace PersonalWebsite.Tests.Controllers
 {
     public class ErrorsControllerTests
     {

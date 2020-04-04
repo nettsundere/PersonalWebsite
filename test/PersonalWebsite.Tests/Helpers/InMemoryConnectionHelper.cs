@@ -1,6 +1,6 @@
 using Microsoft.Data.Sqlite;
 
-namespace PersonalWebsite.Tests.Integration
+namespace PersonalWebsite.Tests.Helpers
 {
     /// <summary>
     /// In-memory db (testing) connection helper.

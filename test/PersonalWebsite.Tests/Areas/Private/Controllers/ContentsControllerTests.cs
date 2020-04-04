@@ -10,7 +10,7 @@ using WebsiteContent.Repositories;
 using WebsiteContent.Repositories.DTO;
 using Xunit;
 
-namespace PersonalWebsite.Tests.Unit.Areas.Private.Controllers
+namespace PersonalWebsite.Tests.Areas.Private.Controllers
 {
     /// <summary>
     /// Tests for <see cref="ContentsController"/>

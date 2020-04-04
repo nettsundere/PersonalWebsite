@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,157 +7,131 @@ using PersonalWebsite.Controllers;
 using PersonalWebsite.Models;
 using PersonalWebsite.Repositories;
 using PersonalWebsite.Services;
+using PersonalWebsite.Tests.Helpers;
 using PersonalWebsite.ViewModels.Content;
 using WebsiteContent.Lib;
 using WebsiteContent.Models;
 using Xunit;
 
-namespace PersonalWebsite.Tests.Integration.Controllers
+namespace PersonalWebsite.Tests.Controllers
 {
     /// <summary>
-    /// Test <see cref="HomeController"/>.
+    /// Tests for <see cref="ContentsController"/>.
     /// </summary>
-    public class HomeControllerTests: IDisposable
+    public class ContentsControllerTests: IDisposable
     {
         /// <summary>
-        /// Page configuration.
+        /// Subject <see cref="ContentsController"/>.
         /// </summary>
-        private readonly IPageConfiguration _pageConfiguration;
-
-        /// <summary>
-        /// Subject <see cref="HomeController"/>.
-        /// </summary>
-        private readonly HomeController _homeController;
+        private readonly ContentsController _contentsController;
 
         /// <summary>
         /// Data DB context.
         /// </summary>
         private readonly DataDbContext _dataDbContext;
-
+        
         /// <summary>
-        /// Fake page configuration.
+        /// Create <see cref="ContentsControllerTests"/>.
         /// </summary>
-        private class FakePageConfiguration : IPageConfiguration
-        {
-            public LanguageDefinition DefaultLanguage => LanguageDefinition.de_de;
-
-            public string DefaultPageInternalCaption => "someCaption";
-        }
-
-        /// <summary>
-        /// Create <see cref="HomeControllerTests"/>.
-        /// </summary>
-        public HomeControllerTests()
+        public ContentsControllerTests()
         {
             // Dependencies initializations
             var connection = InMemoryConnectionHelper.SetupConnection();
  
             var services = new ServiceCollection();
             services.AddEntityFrameworkSqlite()
-                .AddDbContext<DataDbContext>(options =>
+                    .AddDbContext<DataDbContext>(options =>
                         options.UseSqlite(connection),
-                    ServiceLifetime.Transient
-                );
-
+                        ServiceLifetime.Transient
+                    );
+            
             var serviceProvider = services.BuildServiceProvider();
-
-            _pageConfiguration = new FakePageConfiguration();
+            
+            var pageConfiguration = new PageConfiguration();
 
             _dataDbContext = serviceProvider.GetService<DataDbContext>();
             _dataDbContext.Database.EnsureCreated();
             
             var contentRepository = new ContentViewerRepository(_dataDbContext);
-            var humanReadableContentService = new HumanReadableContentRetrievalService(_pageConfiguration, contentRepository);
+            var humanReadableContentService = new HumanReadableContentRetrievalService(pageConfiguration, contentRepository);
 
-            ILanguageManipulationService languageManipulationService = new LanguageManipulationService();
+            var languageManipulationService = new LanguageManipulationService();
 
             // Controller initialization
-            _homeController = new HomeController(
-                _pageConfiguration,
-                humanReadableContentService,
+            _contentsController = new ContentsController(
+                pageConfiguration, 
+                humanReadableContentService, 
                 languageManipulationService
             );
         }
 
         [Theory]
-        [InlineData("en-ENZ")]
-        [InlineData("ru-RU-EN")]
-        [InlineData("SOMETHING")]
-        public async Task ReturnsContentNotFound(string language)
+        [InlineData("fake", "fake")]
+        [InlineData("ru-RU", "fake")]
+        [InlineData("", "fake")]
+        public async Task ReturnsContentNotFound(string language, string urlName)
         {
             SetupContent();
 
-            var actionResult = await _homeController.Index(language);
+            var actionResult = await _contentsController.Show(language, urlName);
 
             Assert.IsType<NotFoundResult>(actionResult);
         }
 
         [Theory]
-        [InlineData("En-US")]
-        [InlineData("de-DE")]
-        [InlineData("RU-ru")]
-        [InlineData("")] // Default language value case
-        public async Task ReturnsSuccess(string language)
+        [InlineData("En-US", "ReSuMe")]
+        [InlineData("de-DE", "Lebenslauf")]
+        [InlineData("", "ReSUME")] // Default language value case
+        public async Task ReturnsSuccess(string language, string urlName)
         {
             SetupContent();
 
-            var actionResult = await _homeController.Index(language);
+            var actionResult = await _contentsController.Show(language, urlName);
 
             Assert.IsType<ViewResult>(actionResult);
         }
 
         [Theory]
-        [InlineData("En-US", LanguageDefinition.en_us)]
-        [InlineData("de-DE", LanguageDefinition.de_de)]
+        [InlineData("En-US", "ReSuMe", LanguageDefinition.en_us)]
+        [InlineData("de-DE", "Lebenslauf", LanguageDefinition.de_de)]
         public async Task SetsProperLanguage(
             string language,
+            string urlName,
             LanguageDefinition expectedModelLanguage)
         {
             SetupContent();
 
-            var result = await _homeController.Index(language) as ViewResult;
+            var result = await _contentsController.Show(language, urlName) as ViewResult;
 
             var resultModel = result?.ViewData.Model as PageViewModel;
             Assert.Equal(expectedModelLanguage, resultModel?.Language);
         }
 
-        /// <summary>
-        /// Setup content.
-        /// </summary>
         private void SetupContent()
         {
             _dataDbContext.Content.Add(
                 new Content
                 {
-                    InternalCaption = _pageConfiguration.DefaultPageInternalCaption,
+                    InternalCaption = "Something",
                     Translations = new[]
                     {
                         new Translation {
-                            UrlName = "url1",
+                            UrlName = "resume",
                             Title = "Resume",
-                            CustomHeaderMarkup = string.Empty,
                             ContentMarkup = string.Empty,
+                            CustomHeaderMarkup = string.Empty,
                             Description = string.Empty,
                             State = DataAvailabilityState.published,
                             Version = LanguageDefinition.en_us
                         },
                         new Translation {
-                            UrlName = "url2",
+                            UrlName = "lebenslauf",
                             Title = "Lebenslauf",
-                            CustomHeaderMarkup = string.Empty,
                             ContentMarkup = string.Empty,
+                            CustomHeaderMarkup = string.Empty,
                             Description = string.Empty,
                             State = DataAvailabilityState.published,
                             Version = LanguageDefinition.de_de
-                        },
-                        new Translation {
-                            UrlName = "url3",
-                            Title = "Lebenslauf",
-                            CustomHeaderMarkup = string.Empty,
-                            ContentMarkup = string.Empty,
-                            Description = string.Empty,
-                            State = DataAvailabilityState.published,
-                            Version = LanguageDefinition.ru_ru
                         }
                     }
                 }

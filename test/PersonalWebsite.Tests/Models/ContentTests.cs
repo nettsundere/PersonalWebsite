@@ -3,11 +3,12 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PersonalWebsite.Models;
+using PersonalWebsite.Tests.Helpers;
 using WebsiteContent.Lib;
 using WebsiteContent.Models;
 using Xunit;
 
-namespace PersonalWebsite.Tests.Integration.Models
+namespace PersonalWebsite.Tests.Models
 {
     public class ContentTests: IDisposable
     {

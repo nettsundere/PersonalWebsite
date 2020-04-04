@@ -4,7 +4,7 @@ using PersonalWebsite.Providers;
 using PersonalWebsite.Services;
 using Xunit;
 
-namespace PersonalWebsite.Tests.Unit.Providers
+namespace PersonalWebsite.Tests.Providers
 {
     /// <summary>
     /// Tests for <see cref="CustomUrlStringCultureProvider"/>.
