@@ -36,7 +36,7 @@ jobs:
         dotnet build --configuration Release
         dotnet publish -c Release -o ../../ReleasedVersion # move back to the root
     - name: Deploy 🚢 to the Azure
-      uses: azure/webapps-deploy@v2
+      uses: azure/webapps-deploy@v1
       with:
         app-name: ${{ env.AZURE_PROFILE }}
         publish-profile: ${{ secrets.AZURE_APP_PUBLISH_PROFILE }}
