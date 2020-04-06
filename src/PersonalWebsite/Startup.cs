@@ -23,7 +23,7 @@ namespace PersonalWebsite
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
-            builder.AddEnvironmentVariables("Website");
+            builder.AddEnvironmentVariables("Website_");
             Configuration = builder.Build();
         }
 
