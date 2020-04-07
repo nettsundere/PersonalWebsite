@@ -34,7 +34,7 @@ namespace PersonalWebsite
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseStartup<Startup>().UseUrls("http://*:8080");
                     webBuilder.ConfigureLogging((context, logging) =>
                     {
                         logging.AddConfiguration(context.Configuration.GetSection("Logging"));
