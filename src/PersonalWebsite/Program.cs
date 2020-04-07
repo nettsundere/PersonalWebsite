@@ -34,6 +34,7 @@ namespace PersonalWebsite
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.ConfigureKestrel(o => o.ListenAnyIP(8080));
                     webBuilder.UseStartup<Startup>();
                     webBuilder.ConfigureLogging((context, logging) =>
                     {
