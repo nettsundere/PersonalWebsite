@@ -15,22 +15,12 @@ https://vladimir-kiselev.me
 
 # Running it locally
 
-- Bash
 ```sh
 $ docker-compose -f development/docker-compose.yaml up --build
 $ cd src/PersonalWebsite
 $ npm install
 $ npm run build
-$ ASPNETCORE_ENVIRONMENT=Development dotnet run 
-```
-
-- PowerShell on Windows
-```powershell
-PS docker-compose -f development/docker-compose.yaml up --build
-PS cd src/PersonalWebsite
-PS npm install
-PS npm run build
-PS $Env:ASPNETCORE_ENVIRONMENT = "Development"; dotnet run 
+$ dotnet run 
 ```
 ---
 NB: Migrations will run automatically during the startup. 
