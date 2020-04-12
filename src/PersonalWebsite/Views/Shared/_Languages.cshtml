@@ -1,6 +1,6 @@
 ﻿@model PageViewModel
-@foreach (var item in new[] { new LanguageUIDefinition(LanguageDefinition.en_us, "English"),
-                              new LanguageUIDefinition(LanguageDefinition.de_de, "Deutsch"),
+@foreach (var item in new[] { new LanguageUIDefinition(LanguageDefinition.en_us, "In English"),
+                              new LanguageUIDefinition(LanguageDefinition.de_de, "Auf Deutsch"),
                               new LanguageUIDefinition(LanguageDefinition.ru_ru, "Русская версия") })
 {
     if (Model.ContentViewModel.UrlNames.ContainsKey(item.Language))
