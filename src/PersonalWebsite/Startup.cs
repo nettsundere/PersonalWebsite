@@ -59,8 +59,6 @@ namespace PersonalWebsite
             services.AddSingleton<ILanguageManipulationService, LanguageManipulationService>();
             services.AddSingleton<IPageConfiguration, PageConfiguration>();
             services.AddSingleton<IConfiguration>(Configuration);
-
-            services.AddApplicationInsightsTelemetry();
         }
 
         public void Configure(
