@@ -1,9 +1,7 @@
 ﻿.logout--button {
-    margin: 0px;
-    margin-top: -3px;
-    margin-right: 1em;
+    margin: -3px 1em 0 0;
     display: inline-block;
-    padding: 0px;
+    padding: 0;
 }
 
 .content-editor {

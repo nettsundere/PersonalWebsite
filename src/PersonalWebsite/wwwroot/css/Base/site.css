@@ -1,5 +1,5 @@
 ﻿body {
-    background: #efefef;
+    background: #fefefe;
     color: #222;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     margin: 0;
@@ -55,7 +55,6 @@ header .whatido {
 
 .links .link {
     padding: 1em;
-    background: #eee;
 }
 
 .links a, .languages a {
@@ -74,6 +73,7 @@ header .whatido {
     width: 80%;
     min-height: 300px;
     float: left;
+    line-height: 1.3em;
 }
 
 @media (max-width: 600px) {
