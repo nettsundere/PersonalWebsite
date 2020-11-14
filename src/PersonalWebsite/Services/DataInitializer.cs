@@ -37,10 +37,10 @@ namespace PersonalWebsite.Services
         public DataInitializer(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-            _requiredDataRepository = serviceProvider.GetService<IRequiredDataRepository>();
+            _requiredDataRepository = serviceProvider.GetRequiredService<IRequiredDataRepository>();
 
-            _internalContentRepository = _serviceProvider.GetService<IInternalContentRepository>();
-            _applicationUserRepository = _serviceProvider.GetService<IApplicationUserRepository>();
+            _internalContentRepository = _serviceProvider.GetRequiredService<IInternalContentRepository>();
+            _applicationUserRepository = _serviceProvider.GetRequiredService<IApplicationUserRepository>();
         }
 
         /// <summary>

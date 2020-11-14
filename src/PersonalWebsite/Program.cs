@@ -19,7 +19,7 @@ namespace PersonalWebsite
             var host = CreateHostBuilder(args).Build();
             using (var scope = host.Services.CreateScope()) 
             {
-                var migrationsRunner = scope.ServiceProvider.GetService<IDatabaseMigrationsRunner>();
+                var migrationsRunner = scope.ServiceProvider.GetRequiredService<IDatabaseMigrationsRunner>();
                 migrationsRunner.RunMigrations();
                 
                 var dataInitializer = new DataInitializer(scope.ServiceProvider);
@@ -27,7 +27,7 @@ namespace PersonalWebsite
                 await dataInitializer.EnsureInitialUserAvailableAsync();
             }
             
-            host.Run();
+            await host.RunAsync();
         }
 
          private static IHostBuilder CreateHostBuilder(string[] args) =>

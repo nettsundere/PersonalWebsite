@@ -49,7 +49,7 @@ namespace PersonalWebsite.Tests.Controllers
             
             var pageConfiguration = new PageConfiguration();
 
-            _dataDbContext = serviceProvider.GetService<DataDbContext>();
+            _dataDbContext = serviceProvider.GetRequiredService<DataDbContext>();
             _dataDbContext.Database.EnsureCreated();
             
             var contentRepository = new ContentViewerRepository(_dataDbContext);

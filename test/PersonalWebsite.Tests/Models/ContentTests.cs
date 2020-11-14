@@ -34,7 +34,7 @@ namespace PersonalWebsite.Tests.Models
 
             var serviceProvider = services.BuildServiceProvider();
 
-            _dataDbContext = serviceProvider.GetService<DataDbContext>();
+            _dataDbContext = serviceProvider.GetRequiredService<DataDbContext>();
             _dataDbContext.Database.EnsureCreated();
         }
 
