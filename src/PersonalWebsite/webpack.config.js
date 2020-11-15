@@ -55,23 +55,16 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: "babel-loader",
-                    options: {
-                        cacheDirectory: true,
-                        presets: ["@babel/preset-env"]
-                    }
-                }
-            },
-            {
                 test: /\.css$/,
                 use: [
                     MiniCssExtractPlugin.loader,
                     "css-loader",
                     "postcss-loader"
                 ]
+            },
+            {
+                test: /\.ttf$/,
+                use: ['file-loader']
             }
         ]
     },
@@ -79,14 +72,13 @@ module.exports = {
     plugins: [
         new MiniCssExtractPlugin({
             filename: "../../css/Build/[name].css",
-        })
-        ,
+        }),
         new Webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery',
             'window.jQuery': 'jquery',
             Popper: ['popper.js', 'default']
         }),
-        new MonacoWebpackPlugin({ languages: ['html', 'css'] })
+        new MonacoWebpackPlugin({ languages: ['html', 'css', 'javascript'] })
     ]
 };

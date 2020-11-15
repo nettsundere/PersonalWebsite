@@ -19,7 +19,7 @@ https://vladimir-kiselev.me
 $ docker-compose -f development/docker-compose.yaml up --build
 $ cd src/PersonalWebsite
 $ npm install
-$ npm run build
+$ npm run serve
 $ dotnet run 
 ```
 ---

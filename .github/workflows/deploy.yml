@@ -9,7 +9,7 @@ on:
 env:
   APP_PATH: 'src/PersonalWebsite'
   AZURE_PROFILE: 'vkpersonalapp' # Application name
-  NODE_VERSION: '10.x'
+  NODE_VERSION: '14.x'
   DOTNET_VERSION: '5.0.100'
   
 jobs:
