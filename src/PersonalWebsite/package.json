@@ -17,7 +17,7 @@
   "dependencies": {
     "bootstrap": "4.5.3",
     "jquery": "3.5.1",
-    "jquery-validation": "1.19.2",
+    "jquery-validation": "1.19.3",
     "jquery-validation-unobtrusive": "3.2.11",
     "lodash": "4.17.20",
     "monaco-editor": "0.21.2",
