@@ -19,7 +19,7 @@
     "jquery": "3.5.1",
     "jquery-validation": "1.19.3",
     "jquery-validation-unobtrusive": "3.2.11",
-    "lodash": "4.17.20",
+    "lodash": "4.17.21",
     "monaco-editor": "0.21.2",
     "monaco-editor-webpack-plugin": "2.0.0",
     "popper.js": "1.16.1"
