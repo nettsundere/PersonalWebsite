@@ -1,32 +1,13 @@
 ﻿const Path = require('path');
-const Webpack = require('webpack');
+const webpack = require('webpack');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
-
-/**
- * Css type locator - used with MiniCssExtractPlugin.
- */
-class CssTypeLocator {
-    static getCssTypeLocator(m, entry) {
-       return m.constructor.name === "CssModule" && CssTypeLocator.getIssuer(m) === entry; 
-    } 
-    
-    static getIssuer(m) {
-        if (m.issuer) {
-            return CssTypeLocator.getIssuer(m.issuer);
-        } else if (m.name) {
-            return m.name;
-        } else {
-            return false;
-        }
-    }
-}
 
 module.exports = {
     mode: "production",
     entry: {
         app: "./wwwroot/js/Base/App.js",
-        pritvateApp: "./wwwroot/js/PrivateBase/App.js"
+        privateApp: "./wwwroot/js/PrivateBase/App.js"
     },
     output: {
         path: Path.resolve(__dirname, "wwwroot/js/Build"),
@@ -34,36 +15,19 @@ module.exports = {
         publicPath: "/js/Build/"
     },
     optimization: {
-        minimize: true,
-        splitChunks: {
-            cacheGroups: {
-                appStyles: {
-                    name: "appStyles",
-                    test: (m, c, entry = "appStyles") => CssTypeLocator.getCssTypeLocator(m, entry),
-                    chunks: "all",
-                    enforce: true
-                },
-                privateAppStyles: {
-                    name: "privateAppStyles",
-                    test: (m, c, entry = "privateAppStyles") => CssTypeLocator.getCssTypeLocator(m, entry),
-                    chunks: "all",
-                    enforce: true
-                }
-            }
-        }
+        minimize: true
     },
     module: {
         rules: [
             {
-                test: /\.css$/,
+                test: /\.css$/i,
                 use: [
                     MiniCssExtractPlugin.loader,
-                    "css-loader",
-                    "postcss-loader"
+                    "css-loader"
                 ]
             },
             {
-                test: /\.ttf$/,
+                test: /\.ttf$/i,
                 use: ['file-loader']
             }
         ]
@@ -73,7 +37,7 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: "../../css/Build/[name].css",
         }),
-        new Webpack.ProvidePlugin({
+        new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery',
             'window.jQuery': 'jquery',

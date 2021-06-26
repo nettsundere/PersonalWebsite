@@ -20,7 +20,7 @@ $ docker-compose -f development/docker-compose.yaml up --build
 $ cd src/PersonalWebsite
 $ npm install
 $ npm run serve
-$ dotnet run 
+$ ASPNETCORE_ENVIRONMENT=Development dotnet run 
 ```
 ---
 NB: Migrations will run automatically during the startup. 
