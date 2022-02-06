@@ -10,7 +10,7 @@ env:
   APP_PATH: 'src/PersonalWebsite'
   AZURE_PROFILE: 'vkpersonalapp' # Application name
   NODE_VERSION: '14.x'
-  DOTNET_VERSION: '5.0.100'
+  DOTNET_VERSION: '6.0.101'
   
 jobs:
   build-test-and-deploy:
