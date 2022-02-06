@@ -19,7 +19,7 @@ $ npm install
 $ npm run build
 $ ASPNETCORE_ENVIRONMENT=Development dotnet run 
 ```
-Then navigate to localhost:8080
+Then navigate to http://localhost:8080
 
 ---
 NB: Migrations will run automatically during the startup. 
