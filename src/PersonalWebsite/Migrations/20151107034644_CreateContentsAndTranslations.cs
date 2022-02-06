@@ -44,9 +44,9 @@ namespace PersonalWebsite.Migrations
                     table.PrimaryKey("PK_Translation", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Translation_Content_ContentId",
-                        column: x => x.Id,
+                        column: x => x.ContentId,
                         principalTable: "Content",
-                        principalColumn: "ContentId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
             migrationBuilder.CreateIndex(
