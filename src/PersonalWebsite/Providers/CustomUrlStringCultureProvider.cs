@@ -16,7 +16,7 @@ namespace PersonalWebsite.Providers
             _languageManipulationService = languageManipulationService ?? throw new ArgumentNullException(nameof(languageManipulationService));
         }
 
-        public override Task<ProviderCultureResult> DetermineProviderCultureResult(HttpContext httpContext)
+        public override Task<ProviderCultureResult?> DetermineProviderCultureResult(HttpContext httpContext)
         {
             if(httpContext is null)
             {
@@ -38,7 +38,8 @@ namespace PersonalWebsite.Providers
                         var languageDefinition = _languageManipulationService.LanguageRepresentationToLanguageDefinition(maybeLanguage);
                         var cultureInfo = _languageManipulationService.LanguageDefinitionToCultureInfo(languageDefinition);
 
-                        return Task.FromResult(new ProviderCultureResult(cultureInfo.Name));
+                        var result = new ProviderCultureResult(cultureInfo.Name);
+                        return Task.FromResult(result)!;
                     }
                 }
             }

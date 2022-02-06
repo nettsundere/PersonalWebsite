@@ -131,7 +131,7 @@ namespace PersonalWebsite.Repositories
         /// </summary>
         /// <param name="contentAndTranslation">Content and translation data.</param>
         /// <returns><see cref="ContentPublicViewData"/> data.</returns>
-        private ContentPublicViewData TryBuildContentPublicViewData(ContentAndTranslation contentAndTranslation)
+        private ContentPublicViewData TryBuildContentPublicViewData(ContentAndTranslation? contentAndTranslation)
         {
             if (contentAndTranslation is null)
             {
