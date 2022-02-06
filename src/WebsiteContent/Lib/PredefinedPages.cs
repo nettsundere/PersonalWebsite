@@ -1,12 +1,11 @@
-﻿namespace WebsiteContent.Lib
+﻿namespace WebsiteContent.Lib;
+
+/// <summary>
+/// Internal captions for predefined pages set.
+/// </summary>
+public enum PredefinedPages
 {
-    /// <summary>
-    /// Internal captions for predefined pages set.
-    /// </summary>
-    public enum PredefinedPages
-    {
-        Welcome,
-        Contact,
-        Resume
-    }
+    Welcome,
+    Contact,
+    Resume
 }

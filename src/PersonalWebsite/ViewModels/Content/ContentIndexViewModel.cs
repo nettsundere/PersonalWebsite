@@ -1,18 +1,17 @@
 ﻿using WebsiteContent.Repositories.DTO;
 
-namespace PersonalWebsite.ViewModels.Content
+namespace PersonalWebsite.ViewModels.Content;
+
+/// <summary>
+/// View model for private content list displaying.
+/// </summary>
+public class ContentIndexViewModel : ContentPrivateEditListData
 {
     /// <summary>
-    /// View model for private content list displaying.
+    /// Create <see cref="ContentIndexViewModel"/>.
     /// </summary>
-    public class ContentIndexViewModel : ContentPrivateEditListData
+    /// <param name="content">Content list private data.</param>
+    public ContentIndexViewModel(ContentPrivateEditListData content): base(content.Contents)
     {
-        /// <summary>
-        /// Create <see cref="ContentIndexViewModel"/>.
-        /// </summary>
-        /// <param name="content">Content list private data.</param>
-        public ContentIndexViewModel(ContentPrivateEditListData content): base(content.Contents)
-        {
-        }
     }
 }

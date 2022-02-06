@@ -6,46 +6,45 @@ using Microsoft.Extensions.Logging;
 using PersonalWebsite.Migrations;
 using PersonalWebsite.Services;
 
-namespace PersonalWebsite
+namespace PersonalWebsite;
+
+public class Program
 {
-    public class Program
+    /// <summary>
+    /// Website startup point.
+    /// </summary>
+    /// <param name="args">Arguments.</param>
+    public static async Task Main(string[] args)
     {
-        /// <summary>
-        /// Website startup point.
-        /// </summary>
-        /// <param name="args">Arguments.</param>
-        public static async Task Main(string[] args)
+        var host = CreateHostBuilder(args).Build();
+        using (var scope = host.Services.CreateScope()) 
         {
-            var host = CreateHostBuilder(args).Build();
-            using (var scope = host.Services.CreateScope()) 
-            {
-                var migrationsRunner = scope.ServiceProvider.GetRequiredService<IDatabaseMigrationsRunner>();
-                migrationsRunner.RunMigrations();
+            var migrationsRunner = scope.ServiceProvider.GetRequiredService<IDatabaseMigrationsRunner>();
+            migrationsRunner.RunMigrations();
                 
-                var dataInitializer = new DataInitializer(scope.ServiceProvider);
-                await dataInitializer.EnsureRequiredContentsAvailableAsync();
-                await dataInitializer.EnsureInitialUserAvailableAsync();
-            }
-            
-            await host.RunAsync();
+            var dataInitializer = new DataInitializer(scope.ServiceProvider);
+            await dataInitializer.EnsureRequiredContentsAvailableAsync();
+            await dataInitializer.EnsureInitialUserAvailableAsync();
         }
-
-         private static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                    webBuilder.ConfigureLogging((context, logging) =>
-                    {
-                        logging.AddConfiguration(context.Configuration.GetSection("Logging"));
-                    
-                        if (context.HostingEnvironment.IsDevelopment())
-                        {
-                            logging.AddDebug();
-                        }
-
-                        logging.AddConsole();
-                    });
-                });
+            
+        await host.RunAsync();
     }
+
+    private static IHostBuilder CreateHostBuilder(string[] args) =>
+        Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>();
+                webBuilder.ConfigureLogging((context, logging) =>
+                {
+                    logging.AddConfiguration(context.Configuration.GetSection("Logging"));
+                    
+                    if (context.HostingEnvironment.IsDevelopment())
+                    {
+                        logging.AddDebug();
+                    }
+
+                    logging.AddConsole();
+                });
+            });
 }

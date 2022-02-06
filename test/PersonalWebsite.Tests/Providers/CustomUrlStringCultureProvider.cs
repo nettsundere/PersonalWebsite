@@ -4,40 +4,39 @@ using PersonalWebsite.Providers;
 using PersonalWebsite.Services;
 using Xunit;
 
-namespace PersonalWebsite.Tests.Providers
+namespace PersonalWebsite.Tests.Providers;
+
+/// <summary>
+/// Tests for <see cref="CustomUrlStringCultureProvider"/>.
+/// </summary>
+public class CustomUrlStringCultureProviderTest
 {
+    private readonly RequestCultureProvider _cultureProvider;
+
     /// <summary>
-    /// Tests for <see cref="CustomUrlStringCultureProvider"/>.
+    /// Create <see cref="CustomUrlStringCultureProviderTest"/>.
     /// </summary>
-    public class CustomUrlStringCultureProviderTest
+    public CustomUrlStringCultureProviderTest()
     {
-        private readonly RequestCultureProvider _cultureProvider;
+        var languageManipulationService = new LanguageManipulationService();
+        _cultureProvider = new CustomUrlStringCultureProvider(
+            languageManipulationService);
 
-        /// <summary>
-        /// Create <see cref="CustomUrlStringCultureProviderTest"/>.
-        /// </summary>
-        public CustomUrlStringCultureProviderTest()
-        {
-            var languageManipulationService = new LanguageManipulationService();
-            _cultureProvider = new CustomUrlStringCultureProvider(
-                languageManipulationService);
+    }
 
-        }
+    [Theory]
+    [InlineData("En-US", "en-US")]
+    [InlineData("DE-DE", "de-DE")]
+    [InlineData("ru-rU", "ru-RU")]
+    public void CanDetermineCulture(string pathInput, string expectedCulture)
+    {
+        var httpContext = new DefaultHttpContext();
 
-        [Theory]
-        [InlineData("En-US", "en-US")]
-        [InlineData("DE-DE", "de-DE")]
-        [InlineData("ru-rU", "ru-RU")]
-        public void CanDetermineCulture(string pathInput, string expectedCulture)
-        {
-            var httpContext = new DefaultHttpContext();
+        httpContext.Request.Path = $"/{pathInput}/something";
+        var task =_cultureProvider.DetermineProviderCultureResult(httpContext);
 
-            httpContext.Request.Path = $"/{pathInput}/something";
-            var task =_cultureProvider.DetermineProviderCultureResult(httpContext);
-
-            var taskResult = task.Result;
-            Assert.NotNull(taskResult);
-            Assert.Equal(expectedCulture, taskResult!.Cultures[0]);
-        }
+        var taskResult = task.Result;
+        Assert.NotNull(taskResult);
+        Assert.Equal(expectedCulture, taskResult!.Cultures[0]);
     }
 }

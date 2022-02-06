@@ -2,17 +2,16 @@
 using System.Threading.Tasks;
 using WebsiteContent.Models;
 
-namespace WebsiteContent.Repositories
+namespace WebsiteContent.Repositories;
+
+/// <summary>
+/// Internal content repository.
+/// </summary>
+public interface IInternalContentRepository 
 {
     /// <summary>
-    /// Internal content repository.
+    /// Ensure that <paramref name="contentList"/> is available in the repository.
     /// </summary>
-    public interface IInternalContentRepository 
-    {
-        /// <summary>
-        /// Ensure that <paramref name="contentList"/> is available in the repository.
-        /// </summary>
-        /// <param name="contentList">Content list.</param>
-        Task EnsureContentListAvailableAsync(IReadOnlyList<Content> contentList);
-    }
+    /// <param name="contentList">Content list.</param>
+    Task EnsureContentListAvailableAsync(IReadOnlyList<Content> contentList);
 }

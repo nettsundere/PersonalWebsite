@@ -1,20 +1,19 @@
 ﻿using WebsiteContent.Lib;
 
-namespace PersonalWebsite.Services
+namespace PersonalWebsite.Services;
+
+/// <summary>
+/// Page configuration.
+/// </summary>
+public class PageConfiguration : IPageConfiguration
 {
     /// <summary>
-    /// Page configuration.
+    /// Default language.
     /// </summary>
-    public class PageConfiguration : IPageConfiguration
-    {
-        /// <summary>
-        /// Default language.
-        /// </summary>
-        public LanguageDefinition DefaultLanguage { get; } = LanguageDefinition.en_us;
+    public LanguageDefinition DefaultLanguage { get; } = LanguageDefinition.en_us;
 
-        /// <summary>
-        /// Internal caption of a default page.
-        /// </summary>
-        public string DefaultPageInternalCaption { get; } = PredefinedPages.Welcome.ToString();
-    }
+    /// <summary>
+    /// Internal caption of a default page.
+    /// </summary>
+    public string DefaultPageInternalCaption { get; } = PredefinedPages.Welcome.ToString();
 }

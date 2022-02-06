@@ -2,54 +2,53 @@
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Linq;
 
-namespace PersonalWebsite.Helpers
+namespace PersonalWebsite.Helpers;
+
+[HtmlTargetElement("li", Attributes = ListToRun)]
+public class ConditionalCssClassHelper : TagHelper
 {
-    [HtmlTargetElement("li", Attributes = ListToRun)]
-    public class ConditionalCssClassHelper : TagHelper
+    private const string ListToRun = "asp-controller,asp-action,asp-this-context,if-current-css-class";
+
+    private const string ConditionalCssClassAttribute = "if-current-css-class";
+    private const string AspControllerAttribute = "asp-controller";
+    private const string AspActionAttribute = "asp-action";
+
+    private const string AspThisContextAttribute = "asp-this-context";
+
+    [HtmlAttributeName(ConditionalCssClassAttribute)]
+    public string ConditionalCssClass { get; set; } = null!;
+
+    [HtmlAttributeName(AspControllerAttribute)]
+
+    public string AspController { get; set; } = null!;
+
+    [HtmlAttributeName(AspActionAttribute)]
+    public string AspAction { get; set; } = null!;
+
+    [HtmlAttributeName(AspThisContextAttribute)]
+    public ViewContext ThisContext { get; set; } = null!;
+
+    public override void Process(TagHelperContext context, TagHelperOutput output)
     {
-        private const string ListToRun = "asp-controller,asp-action,asp-this-context,if-current-css-class";
+        base.Process(context, output);
 
-        private const string ConditionalCssClassAttribute = "if-current-css-class";
-        private const string AspControllerAttribute = "asp-controller";
-        private const string AspActionAttribute = "asp-action";
+        var routeConstraints = ThisContext.ActionDescriptor.RouteValues;
 
-        private const string AspThisContextAttribute = "asp-this-context";
+        var currentControllerName = routeConstraints.First(x => x.Key == "controller").Value;
+        var currentActionName = routeConstraints.First(x => x.Key == "action").Value;
 
-        [HtmlAttributeName(ConditionalCssClassAttribute)]
-        public string ConditionalCssClass { get; set; } = null!;
-
-        [HtmlAttributeName(AspControllerAttribute)]
-
-        public string AspController { get; set; } = null!;
-
-        [HtmlAttributeName(AspActionAttribute)]
-        public string AspAction { get; set; } = null!;
-
-        [HtmlAttributeName(AspThisContextAttribute)]
-        public ViewContext ThisContext { get; set; } = null!;
-
-        public override void Process(TagHelperContext context, TagHelperOutput output)
+        if (AspController == currentControllerName && AspAction == currentActionName)
         {
-            base.Process(context, output);
-
-            var routeConstraints = ThisContext.ActionDescriptor.RouteValues;
-
-            var currentControllerName = routeConstraints.First(x => x.Key == "controller").Value;
-            var currentActionName = routeConstraints.First(x => x.Key == "action").Value;
-
-            if (AspController == currentControllerName && AspAction == currentActionName)
+            if (output.Attributes.TryGetAttribute("Value", out TagHelperAttribute maybeClass))
             {
-                if (output.Attributes.TryGetAttribute("Value", out TagHelperAttribute maybeClass))
+                if (maybeClass != null)
                 {
-                    if (maybeClass != null)
-                    {
-                        output.Attributes.SetAttribute("class", $"{maybeClass.Value} {ConditionalCssClass}");
-                        return;
-                    }
+                    output.Attributes.SetAttribute("class", $"{maybeClass.Value} {ConditionalCssClass}");
+                    return;
                 }
-
-                output.Attributes.SetAttribute("class", ConditionalCssClass);
             }
+
+            output.Attributes.SetAttribute("class", ConditionalCssClass);
         }
     }
 }

@@ -1,44 +1,43 @@
 ﻿using System.Threading.Tasks;
 using WebsiteContent.Repositories.DTO;
 
-namespace WebsiteContent.Repositories
+namespace WebsiteContent.Repositories;
+
+/// <summary>
+/// Content editor repository.
+/// </summary>
+public interface IContentEditorRepository 
 {
     /// <summary>
-    /// Content editor repository.
+    /// Create a <see cref="ContentPrivateEditData"/> record.
     /// </summary>
-    public interface IContentEditorRepository 
-    {
-        /// <summary>
-        /// Create a <see cref="ContentPrivateEditData"/> record.
-        /// </summary>
-        /// <param name="contentEditViewModel">Content editor private data.</param>
-        /// <returns>Content editor private data.</returns>
-        Task<ContentPrivateEditData> CreateAsync(ContentPrivateEditData contentEditViewModel);
+    /// <param name="contentEditViewModel">Content editor private data.</param>
+    /// <returns>Content editor private data.</returns>
+    Task<ContentPrivateEditData> CreateAsync(ContentPrivateEditData contentEditViewModel);
 
-        /// <summary>
-        /// Read a list of private content editor records.
-        /// </summary>
-        /// <returns>The container containing the list of private editor data.</returns>
-        Task<ContentPrivateEditListData> ReadListAsync();
+    /// <summary>
+    /// Read a list of private content editor records.
+    /// </summary>
+    /// <returns>The container containing the list of private editor data.</returns>
+    Task<ContentPrivateEditListData> ReadListAsync();
 
-        /// <summary>
-        /// Get the <see cref="ContentPrivateEditData"/> record by the <paramref name="contentId"/>.
-        /// </summary>
-        /// <param name="contentId">The unique identifier of a <see cref="ContentPrivateEditData"/> record.</param>
-        /// <returns>Desired <see cref="ContentPrivateEditData"/> record.</returns>
-        Task<ContentPrivateEditData> ReadAsync(int contentId);
+    /// <summary>
+    /// Get the <see cref="ContentPrivateEditData"/> record by the <paramref name="contentId"/>.
+    /// </summary>
+    /// <param name="contentId">The unique identifier of a <see cref="ContentPrivateEditData"/> record.</param>
+    /// <returns>Desired <see cref="ContentPrivateEditData"/> record.</returns>
+    Task<ContentPrivateEditData> ReadAsync(int contentId);
 
-        /// <summary>
-        /// Update <see cref="ContentPrivateEditData"/> record.
-        /// </summary>
-        /// <param name="contentEditViewModel">Updated data.</param>
-        /// <returns>Updated data.</returns>
-        Task<ContentPrivateEditData> UpdateAsync(ContentPrivateEditData contentEditViewModel);
+    /// <summary>
+    /// Update <see cref="ContentPrivateEditData"/> record.
+    /// </summary>
+    /// <param name="contentEditViewModel">Updated data.</param>
+    /// <returns>Updated data.</returns>
+    Task<ContentPrivateEditData> UpdateAsync(ContentPrivateEditData contentEditViewModel);
 
-        /// <summary>
-        /// Delete a content by id.
-        /// </summary>
-        /// <param name="contentId">Id of a content to delete.</param>
-        Task DeleteAsync(int contentId);
-    }
+    /// <summary>
+    /// Delete a content by id.
+    /// </summary>
+    /// <param name="contentId">Id of a content to delete.</param>
+    Task DeleteAsync(int contentId);
 }

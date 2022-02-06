@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace PersonalWebsite.Models
+namespace PersonalWebsite.Models;
+
+public class AuthDbContext : IdentityDbContext<ApplicationUser>
 {
-    public class AuthDbContext : IdentityDbContext<ApplicationUser>
-    {
-        public AuthDbContext(DbContextOptions<AuthDbContext> options)
-            : base(options)
-        { }
-    }
+    public AuthDbContext(DbContextOptions<AuthDbContext> options)
+        : base(options)
+    { }
 }

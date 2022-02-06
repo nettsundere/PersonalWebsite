@@ -2,24 +2,23 @@
 using PersonalWebsite.Areas.Private.Controllers;
 using Xunit;
 
-namespace PersonalWebsite.Tests.Areas.Private.Controllers
+namespace PersonalWebsite.Tests.Areas.Private.Controllers;
+
+/// <summary>
+/// Tests for <see cref="DashboardController"/>.
+/// </summary>
+public class DashboardControllerTests
 {
     /// <summary>
-    /// Tests for <see cref="DashboardController"/>.
+    /// Subject of testing.
     /// </summary>
-    public class DashboardControllerTests
+    private readonly DashboardController _subject = new DashboardController();
+
+    [Fact]
+    public void ReturnsSuccess()
     {
-        /// <summary>
-        /// Subject of testing.
-        /// </summary>
-        private readonly DashboardController _subject = new DashboardController();
+        var actionResult = _subject.Index();
 
-        [Fact]
-        public void ReturnsSuccess()
-        {
-            var actionResult = _subject.Index();
-
-            Assert.IsType<ViewResult>(actionResult);
-        }
+        Assert.IsType<ViewResult>(actionResult);
     }
 }

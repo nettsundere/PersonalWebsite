@@ -1,7 +1,6 @@
-namespace PersonalWebsite.Migrations
+namespace PersonalWebsite.Migrations;
+
+public interface IDatabaseMigrationsRunner
 {
-    public interface IDatabaseMigrationsRunner
-    {
-        void RunMigrations();
-    }
+    void RunMigrations();
 }

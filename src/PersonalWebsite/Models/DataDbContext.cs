@@ -1,45 +1,44 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebsiteContent.Models;
 
-namespace PersonalWebsite.Models
+namespace PersonalWebsite.Models;
+
+public class DataDbContext : DbContext
 {
-    public class DataDbContext : DbContext
+    public DataDbContext(DbContextOptions options) : base(options)
     {
-        public DataDbContext(DbContextOptions options) : base(options)
-        {
-        }
+    }
 
-        public DbSet<Content> Content { get; set; } = null!;
+    public DbSet<Content> Content { get; set; } = null!;
 
-        public DbSet<Translation> Translation { get; set; } = null!;
+    public DbSet<Translation> Translation { get; set; } = null!;
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
 
-            var contentEntity = modelBuilder.Entity<Content>();
-            contentEntity.Property(x => x.InternalCaption).IsRequired().HasMaxLength(255);
-            contentEntity.HasKey(x => x.Id);
-            contentEntity.Property(x => x.Id).ValueGeneratedOnAdd();
+        var contentEntity = modelBuilder.Entity<Content>();
+        contentEntity.Property(x => x.InternalCaption).IsRequired().HasMaxLength(255);
+        contentEntity.HasKey(x => x.Id);
+        contentEntity.Property(x => x.Id).ValueGeneratedOnAdd();
             
-            contentEntity.HasMany(x => x.Translations).WithOne(x => x.Content).OnDelete(DeleteBehavior.Cascade);
+        contentEntity.HasMany(x => x.Translations).WithOne(x => x.Content).OnDelete(DeleteBehavior.Cascade);
 
-            var translationEntity = modelBuilder.Entity<Translation>();
-            translationEntity.HasKey(x => x.Id);
-            translationEntity.Property(x => x.Id).ValueGeneratedOnAdd();
-            translationEntity.HasIndex(x => new { x.Version, x.ContentId }).IsUnique();
-            translationEntity.Property(x => x.ContentId).IsRequired();
-            translationEntity.Property(x => x.State).IsRequired();
-            translationEntity.Property(x => x.Version).IsRequired();
-            translationEntity.Property(x => x.Version).HasMaxLength(10);
+        var translationEntity = modelBuilder.Entity<Translation>();
+        translationEntity.HasKey(x => x.Id);
+        translationEntity.Property(x => x.Id).ValueGeneratedOnAdd();
+        translationEntity.HasIndex(x => new { x.Version, x.ContentId }).IsUnique();
+        translationEntity.Property(x => x.ContentId).IsRequired();
+        translationEntity.Property(x => x.State).IsRequired();
+        translationEntity.Property(x => x.Version).IsRequired();
+        translationEntity.Property(x => x.Version).HasMaxLength(10);
  
-            translationEntity.Property(x => x.UpdatedAt).IsRequired();
-            translationEntity.Property(x => x.Title).IsRequired();
-            translationEntity.Property(x => x.ContentMarkup).IsRequired();
-            translationEntity.Property(x => x.Description).IsRequired();
-            translationEntity.Property(x => x.UrlName).IsRequired();
-            translationEntity.Property(x => x.UrlName).HasMaxLength(200);
-            translationEntity.HasIndex(x => new { x.Version, x.UrlName }).IsUnique();
-        }
+        translationEntity.Property(x => x.UpdatedAt).IsRequired();
+        translationEntity.Property(x => x.Title).IsRequired();
+        translationEntity.Property(x => x.ContentMarkup).IsRequired();
+        translationEntity.Property(x => x.Description).IsRequired();
+        translationEntity.Property(x => x.UrlName).IsRequired();
+        translationEntity.Property(x => x.UrlName).HasMaxLength(200);
+        translationEntity.HasIndex(x => new { x.Version, x.UrlName }).IsUnique();
     }
 }

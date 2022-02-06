@@ -1,37 +1,36 @@
 ﻿using System;
 using WebsiteContent.Lib;
 
-namespace PersonalWebsite.ViewModels.Content
+namespace PersonalWebsite.ViewModels.Content;
+
+/// <summary>
+/// Language definition wrapper.
+/// </summary>
+public struct LanguageUIDefinition
 {
     /// <summary>
-    /// Language definition wrapper.
+    /// Language definition to be presented.
     /// </summary>
-    public struct LanguageUIDefinition
+    public LanguageDefinition Language { get; }
+
+    /// <summary>
+    /// Language UI representation.
+    /// </summary>
+    public string Header { get; }
+
+    /// <summary>
+    /// Create language UI presentation.
+    /// </summary>
+    /// <param name="language">The language to be presented</param>
+    /// <param name="header">The header for a language value</param>
+    public LanguageUIDefinition(LanguageDefinition language, string header)
     {
-        /// <summary>
-        /// Language definition to be presented.
-        /// </summary>
-        public LanguageDefinition Language { get; }
-
-        /// <summary>
-        /// Language UI representation.
-        /// </summary>
-        public string Header { get; }
-
-        /// <summary>
-        /// Create language UI presentation.
-        /// </summary>
-        /// <param name="language">The language to be presented</param>
-        /// <param name="header">The header for a language value</param>
-        public LanguageUIDefinition(LanguageDefinition language, string header)
+        if(string.IsNullOrWhiteSpace(header))
         {
-            if(string.IsNullOrWhiteSpace(header))
-            {
-                throw new ArgumentException("Language header cannot be empty");
-            }
-
-            Language = language;
-            Header = header;
+            throw new ArgumentException("Language header cannot be empty");
         }
+
+        Language = language;
+        Header = header;
     }
 }
