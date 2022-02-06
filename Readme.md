@@ -9,19 +9,18 @@ Hosting: Azure, App Service, West US 2
 https://vladimir-kiselev.me
 
 # Dependencies
-- [Docker](https://www.docker.com)
 - [Node.js](https://nodejs.org/en/)
 - [.NET Core sdk](https://www.microsoft.com/net/download)
 
 # Running it locally
-
 ```sh
-$ docker-compose -f development/docker-compose.yaml up --build
 $ cd src/PersonalWebsite
 $ npm install
-$ npm run serve
+$ npm run build
 $ ASPNETCORE_ENVIRONMENT=Development dotnet run 
 ```
+Then navigate to localhost:8080
+
 ---
 NB: Migrations will run automatically during the startup. 
 

@@ -8,12 +8,15 @@ src/PersonalWebsite/Properties/PublishProfiles/*
 src/PersonalWebsite/wwwroot/css/Build/*
 src/PersonalWebsite/wwwroot/js/Build/*
 src/PersonalWebsite/wwwroot/lib/*
-
 artifacts
 src/PersonalWebsite/bin
 src/PersonalWebsite/obj
 src/WebsiteContent/bin
 src/WebsiteContent/obj
+
+src/PersonalWebsite/Development
+!src/PersonalWebsite/Development/Readme.md
+
 test/PersonalWebsite.tests/bin
 test/PersonalWebsite.tests/obj
 obj

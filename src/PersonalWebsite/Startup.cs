@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -31,10 +32,10 @@ namespace PersonalWebsite
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var sqlContextConfigurator = new DbContextConfigurator(Configuration);
-            services.AddEntityFrameworkSqlServer()
-                .AddDbContextPool<AuthDbContext>(sqlContextConfigurator.Configure)
-                .AddDbContextPool<DataDbContext>(sqlContextConfigurator.Configure);
+            var poolSize = Configuration.GetValue<int>("PoolSize");
+            services.AddDbContextPool<AuthDbContext>(ConfigureContext, poolSize);
+            services.AddDbContextPool<DataDbContext>(ConfigureContext, poolSize);
+
             services.AddTransient<IDatabaseMigrationsRunner, DatabaseMigrationsRunner>();
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -43,9 +44,7 @@ namespace PersonalWebsite
 
             services.ConfigureApplicationCookie(options => options.LoginPath = "/Private/Account/Login");
 
-            services.AddMvc()
-                    .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-                    .AddViewLocalization();
+            services.AddMvc().AddViewLocalization();
 
             services.AddTransient<IContentViewerRepository, ContentViewerRepository>();
             services.AddTransient<IApplicationUserRepository, ApplicationUserRepository>();
@@ -59,6 +58,34 @@ namespace PersonalWebsite
             services.AddSingleton<ILanguageManipulationService, LanguageManipulationService>();
             services.AddSingleton<IPageConfiguration, PageConfiguration>();
             services.AddSingleton<IConfiguration>(Configuration);
+        }
+
+        /// <summary>
+        /// Configure the context depending on a user's choice.
+        /// </summary>
+        /// <param name="services">Service provider</param>
+        /// <param name="builder">SQL context builder</param>
+        private void ConfigureContext(IServiceProvider services, DbContextOptionsBuilder builder)
+        {
+            var connectionString = Configuration.GetValue<string>("ConnectionStrings:Database");
+
+            if (IsSqLiteEnabled())
+            {
+                builder.UseSqlite(connectionString);
+            }
+            else
+            {
+                builder.UseSqlServer(connectionString);
+            }
+        }
+
+        /// <summary>
+        /// Check if the SQLite is enabled. Enabling it overrides the option to use the MSSQL.
+        /// </summary>
+        /// <returns>A <see cref="bool" /> value indicating whether the SQLite is preferred.</returns>
+        private bool IsSqLiteEnabled()
+        {
+            return Configuration["UseSQLite"].Contains("true", StringComparison.OrdinalIgnoreCase);
         }
 
         public void Configure(
@@ -76,7 +103,7 @@ namespace PersonalWebsite
             }
 
             app.UseStaticFiles();
-            
+
             var defaultCulture = languageManipulationService
                                    .LanguageDefinitionToCultureInfo(
                                       pageConfiguration.DefaultLanguage

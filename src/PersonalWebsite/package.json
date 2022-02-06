@@ -8,8 +8,7 @@
     "mini-css-extract-plugin": "1.6.0",
     "style-loader": "2.0.0",
     "webpack": "5.38.1",
-    "webpack-cli": "4.7.0",
-    "webpack-dev-server": "3.11.2"
+    "webpack-cli": "4.9.2"
   },
   "dependencies": {
     "bootstrap": "4.5.3",
@@ -22,7 +21,6 @@
   },
   "scripts": {
     "build": "webpack",
-    "serve": "webpack-cli serve",
     "webpack-debug": "webpack --stats errors-only"
   }
 }

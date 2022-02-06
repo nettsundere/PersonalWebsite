@@ -20,10 +20,13 @@ namespace PersonalWebsite.Models
             var contentEntity = modelBuilder.Entity<Content>();
             contentEntity.Property(x => x.InternalCaption).IsRequired().HasMaxLength(255);
             contentEntity.HasKey(x => x.Id);
+            contentEntity.Property(x => x.Id).ValueGeneratedOnAdd();
+            
             contentEntity.HasMany(x => x.Translations).WithOne(x => x.Content).OnDelete(DeleteBehavior.Cascade);
 
             var translationEntity = modelBuilder.Entity<Translation>();
             translationEntity.HasKey(x => x.Id);
+            translationEntity.Property(x => x.Id).ValueGeneratedOnAdd();
             translationEntity.HasIndex(x => new { x.Version, x.ContentId }).IsUnique();
             translationEntity.Property(x => x.ContentId).IsRequired();
             translationEntity.Property(x => x.State).IsRequired();

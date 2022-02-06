@@ -8,6 +8,8 @@ namespace PersonalWebsite.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            var valueGenerationStrategy = ValueGenerationStrategyHelper.GetAutoIncrementGenerationStrategy(migrationBuilder);
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -50,7 +52,7 @@ namespace PersonalWebsite.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation(valueGenerationStrategy.Key, valueGenerationStrategy.Val),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true),
                     RoleId = table.Column<string>(nullable: true)
@@ -69,7 +71,7 @@ namespace PersonalWebsite.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation(valueGenerationStrategy.Key, valueGenerationStrategy.Val),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: true)

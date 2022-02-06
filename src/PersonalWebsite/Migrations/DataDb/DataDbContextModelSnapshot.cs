@@ -2,34 +2,31 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PersonalWebsite.Models;
+
+#nullable disable
 
 namespace PersonalWebsite.Migrations.DataDb
 {
     [DbContext(typeof(DataDbContext))]
-    [Migration("20190330215614_AddCustomHeaderMarkup")]
-    partial class AddCustomHeaderMarkup
+    partial class DataDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.0-rtm-35687")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.1");
 
             modelBuilder.Entity("WebsiteContent.Models.Content", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("InternalCaption")
                         .IsRequired()
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -40,31 +37,40 @@ namespace PersonalWebsite.Migrations.DataDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("ContentId");
+                    b.Property<int>("ContentId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("ContentMarkup")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("CustomHeaderMarkup");
+                    b.Property<string>("CustomHeaderMarkup")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("State");
+                    b.Property<int>("State")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Title")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("UpdatedAt");
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("UrlName")
                         .IsRequired()
-                        .HasMaxLength(200);
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Version")
-                        .HasMaxLength(10);
+                        .HasMaxLength(10)
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -84,7 +90,15 @@ namespace PersonalWebsite.Migrations.DataDb
                     b.HasOne("WebsiteContent.Models.Content", "Content")
                         .WithMany("Translations")
                         .HasForeignKey("ContentId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Content");
+                });
+
+            modelBuilder.Entity("WebsiteContent.Models.Content", b =>
+                {
+                    b.Navigation("Translations");
                 });
 #pragma warning restore 612, 618
         }

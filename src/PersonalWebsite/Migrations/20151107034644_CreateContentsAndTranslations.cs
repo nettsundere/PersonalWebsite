@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace PersonalWebsite.Migrations
 {
@@ -8,25 +9,28 @@ namespace PersonalWebsite.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            var valueGenerationStrategy = ValueGenerationStrategyHelper.GetAutoIncrementGenerationStrategy(migrationBuilder);
+            
             migrationBuilder.CreateTable(
                 name: "Content",
                 columns: table => new
                 {
-                    ContentGuid = table.Column<Guid>(nullable: false, defaultValueSql: "newsequentialid()"),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation(valueGenerationStrategy.Key, valueGenerationStrategy.Val),
                     InternalCaption = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Content", x => x.ContentGuid);
+                    table.PrimaryKey("PK_Content", x => x.Id);
                 });
             migrationBuilder.CreateTable(
                 name: "Translation",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ContentContentGuid = table.Column<Guid>(nullable: true),
+                        .Annotation(valueGenerationStrategy.Key, valueGenerationStrategy.Val),
                     ContentId = table.Column<int>(nullable: false),
+                    CustomHeaderMarkup = table.Column<string>(nullable: true),
                     ContentMarkup = table.Column<string>(nullable: false),
                     Description = table.Column<string>(nullable: false),
                     State = table.Column<int>(nullable: false),
@@ -39,10 +43,11 @@ namespace PersonalWebsite.Migrations
                 {
                     table.PrimaryKey("PK_Translation", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Translation_Content_ContentContentGuid",
-                        column: x => x.ContentContentGuid,
+                        name: "FK_Translation_Content_ContentId",
+                        column: x => x.Id,
                         principalTable: "Content",
-                        principalColumn: "ContentGuid");
+                        principalColumn: "ContentId",
+                        onDelete: ReferentialAction.Cascade);
                 });
             migrationBuilder.CreateIndex(
                 name: "IX_Translation_Version_ContentId",
