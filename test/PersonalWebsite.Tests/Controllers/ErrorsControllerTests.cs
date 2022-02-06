@@ -18,9 +18,11 @@ namespace PersonalWebsite.Tests.Controllers
         {
             var result = _subject.Show(errorCode).Result;
             Assert.IsType<ViewResult>(result);
-            var viewResult = (ViewResult) result;
+            Assert.NotNull(result);
+            var viewResult = (ViewResult) result!;
+            Assert.NotNull(viewResult.Model);
 
-            Assert.Equal(errorCode, ((ErrorViewModel) viewResult.Model).StatusCode);
+            Assert.Equal(errorCode, ((ErrorViewModel) viewResult.Model!).StatusCode);
         }
     }
 }

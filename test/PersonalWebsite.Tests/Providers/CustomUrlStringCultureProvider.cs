@@ -36,7 +36,8 @@ namespace PersonalWebsite.Tests.Providers
             var task =_cultureProvider.DetermineProviderCultureResult(httpContext);
 
             var taskResult = task.Result;
-            Assert.Equal(expectedCulture, taskResult.Cultures[0]);
+            Assert.NotNull(taskResult);
+            Assert.Equal(expectedCulture, taskResult!.Cultures[0]);
         }
     }
 }
