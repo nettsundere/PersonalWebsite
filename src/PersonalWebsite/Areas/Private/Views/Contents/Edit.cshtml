@@ -1,3 +1,5 @@
+@inherits NonNullableModelView<ContentAndTranslationsEditViewModel>
+
 @model ContentAndTranslationsEditViewModel
 
 @section Title {
@@ -40,65 +42,65 @@
         </div>
         <div class="form-group row">
             <div class="col-12 tab-content" id="langTabContent">
-                @for (var i = 0; i < Model.Translations.Count; i++)
+                @for (var i = 0; i < NNModel.Translations.Count; i++)
                 {
                     var maybeActive = "";
-                    if (Model.Translations[i].Version == LanguageDefinition.en_us)
+                    if (NNModel.Translations[i].Version == LanguageDefinition.en_us)
                     {
                         maybeActive = "active";
                     }
-                    <div role="tabpanel" class="tab-pane @maybeActive" id="@Model.Translations[i].Version-tab">
+                    <div role="tabpanel" class="tab-pane @maybeActive" id="@NNModel.Translations[i].Version-tab">
                         <br/>
 
-                        @if (Model.Translations[i].Id != default)
+                        @if (NNModel.Translations[i].Id != default)
                         {
-                            <input asp-for="@Model.Translations[i].Id" type="hidden"/>
+                            <input asp-for="@NNModel.Translations[i].Id" type="hidden"/>
                         }
 
-                        <input asp-for="@Model.Translations[i].ContentId" type="hidden"/>
-                        <input asp-for="@Model.Translations[i].Version" type="hidden"/>
+                        <input asp-for="@NNModel.Translations[i].ContentId" type="hidden"/>
+                        <input asp-for="@NNModel.Translations[i].Version" type="hidden"/>
 
                         <div class="form-group row">
                             <label class="col-6 col-md-2">Visibility</label>
                             <div class="col-6 col-md-6">
-                                <select asp-for="@Model.Translations[i].State" asp-items="Html.GetEnumSelectList<DataAvailabilityState>()" class="form-control"></select>
+                                <select asp-for="@NNModel.Translations[i].State" asp-items="Html.GetEnumSelectList<DataAvailabilityState>()" class="form-control"></select>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-2">Title</label>
                             <div class="col-md-10">
-                                <input asp-for=@Model.Translations[i].Title class="form-control"/>
-                                <span asp-validation-for=@Model.Translations[i].Title class="text-danger"></span>
+                                <input asp-for=@NNModel.Translations[i].Title class="form-control"/>
+                                <span asp-validation-for=@NNModel.Translations[i].Title class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-2">Url name</label>
                             <div class="col-md-10">
-                                <input asp-for=@Model.Translations[i].UrlName class="form-control"/>
-                                <span asp-validation-for=@Model.Translations[i].UrlName class="text-danger"></span>
+                                <input asp-for=@NNModel.Translations[i].UrlName class="form-control"/>
+                                <span asp-validation-for=@NNModel.Translations[i].UrlName class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-2">Description</label>
                             <div class="col-md-10">
-                                <input asp-for=@Model.Translations[i].Description class="form-control"/>
-                                <span asp-validation-for=@Model.Translations[i].Description class="text-danger"></span>
+                                <input asp-for=@NNModel.Translations[i].Description class="form-control"/>
+                                <span asp-validation-for=@NNModel.Translations[i].Description class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-2">Custom header</label>
                             <div class="col-md-10">
                                 <div data-role="content-editor" class="content-editor"></div>
-                                <input type="hidden" asp-for=@Model.Translations[i].CustomHeaderMarkup />
-                                <span asp-validation-for=@Model.Translations[i].CustomHeaderMarkup class="text-danger"></span>
+                                <input type="hidden" asp-for=@NNModel.Translations[i].CustomHeaderMarkup />
+                                <span asp-validation-for=@NNModel.Translations[i].CustomHeaderMarkup class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-2">Content</label>
                             <div class="col-md-10">
                                 <div data-role="content-editor" class="content-editor"></div>
-                                <input type="hidden" asp-for=@Model.Translations[i].ContentMarkup />
-                                <span asp-validation-for=@Model.Translations[i].ContentMarkup class="text-danger"></span>
+                                <input type="hidden" asp-for=@NNModel.Translations[i].ContentMarkup />
+                                <span asp-validation-for=@NNModel.Translations[i].ContentMarkup class="text-danger"></span>
                             </div>
                         </div>
                     </div>

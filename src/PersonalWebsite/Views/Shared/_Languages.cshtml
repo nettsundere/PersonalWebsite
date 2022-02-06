@@ -1,19 +1,21 @@
-﻿@model PageViewModel
+﻿@inherits NonNullableModelView<PageViewModel>
+
+@model PageViewModel
 @foreach (var item in new[] { new LanguageUIDefinition(LanguageDefinition.en_us, "In English"),
                               new LanguageUIDefinition(LanguageDefinition.de_de, "Auf Deutsch"),
                               new LanguageUIDefinition(LanguageDefinition.ru_ru, "Русская версия") })
 {
-    if (Model.ContentViewModel.UrlNames.ContainsKey(item.Language))
+    if (NNModel.ContentViewModel.UrlNames.ContainsKey(item.Language))
     {
-        if (Model.Language != item.Language)
+        if (NNModel.Language != item.Language)
         {
-            if (Model.IsDefaultPage())
+            if (NNModel.IsDefaultPage())
             {
                 <a href="" prefix-with-language=@item.Language>@item.Header</a>
             }
             else
             {
-                <a href=@Model.ContentViewModel.UrlNames[item.Language] prefix-with-language=@item.Language>@item.Header</a>
+                <a href=@NNModel.ContentViewModel.UrlNames[item.Language] prefix-with-language=@item.Language>@item.Header</a>
             }
         }
         else

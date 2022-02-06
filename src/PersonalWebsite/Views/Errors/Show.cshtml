@@ -1,9 +1,11 @@
+@inherits NonNullableModelView<ErrorViewModel>
+
 @{
     Layout = "_ErrorLayout";
 }
 
 @section Title {
-    Well, @Model.StatusCode
+    Well, @NNModel.StatusCode
 }
 
-<h1>@Model.StatusCode</h1>
+<h1>@NNModel.StatusCode</h1>

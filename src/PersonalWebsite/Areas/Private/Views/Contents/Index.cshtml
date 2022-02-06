@@ -1,3 +1,5 @@
+@inherits NonNullableModelView<ContentIndexViewModel>
+
 @model ContentIndexViewModel
 
 @section Title {
@@ -17,7 +19,7 @@
         <th></th>
     </tr>
     
-@foreach (var item in Model.Contents) {
+@foreach (var item in NNModel.Contents) {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.InternalCaption)

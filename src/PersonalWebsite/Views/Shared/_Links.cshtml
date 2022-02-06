@@ -1,26 +1,28 @@
-﻿@foreach (var predefinedPage in new[] { PredefinedPages.Welcome, PredefinedPages.Contact, PredefinedPages.Resume })
+﻿@inherits NonNullableModelView<PageViewModel>
+
+@foreach (var predefinedPage in new[] { PredefinedPages.Welcome, PredefinedPages.Contact, PredefinedPages.Resume })
 {
     <div class="link">
-        @if (Model.ContentViewModel.InternalCaption == predefinedPage.ToString())
+        @if (NNModel.ContentViewModel.InternalCaption == predefinedPage.ToString())
         {
             <span class="active">
-                @Model.ContentLinksViewModel.CaptionFor(predefinedPage.ToString())
+                @NNModel.ContentLinksViewModel.CaptionFor(predefinedPage.ToString())
             </span>
         }
         else
         {
-            if (@Model.IsDefaultPage(predefinedPage.ToString()))
+            if (NNModel.IsDefaultPage(predefinedPage.ToString()))
             {
-                <a prefix-with-language=@Model.Language
+                <a prefix-with-language=@NNModel.Language
                    href="">
-                    @Model.ContentLinksViewModel.CaptionFor(predefinedPage.ToString())
+                    @NNModel.ContentLinksViewModel.CaptionFor(predefinedPage.ToString())
                 </a>
             }
             else
             {
-                <a prefix-with-language=@Model.Language
-                   href=@Model.ContentLinksViewModel.UrlNameFor(predefinedPage.ToString())>
-                    @Model.ContentLinksViewModel.CaptionFor(predefinedPage.ToString())
+                <a prefix-with-language=@NNModel.Language
+                   href=@NNModel.ContentLinksViewModel.UrlNameFor(predefinedPage.ToString())>
+                    @NNModel.ContentLinksViewModel.CaptionFor(predefinedPage.ToString())
                 </a>
             }
 

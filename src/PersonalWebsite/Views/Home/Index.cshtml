@@ -1,9 +1,11 @@
-﻿@section Title {
-    @Model.ContentViewModel.Title
+﻿@inherits NonNullableModelView<PageViewModel>
+
+@section Title {
+    @NNModel.ContentViewModel.Title
 }
 
 @section CustomHeader {
-    @Html.Raw(@Model.ContentViewModel.CustomHeaderMarkup)
+    @Html.Raw(@NNModel.ContentViewModel.CustomHeaderMarkup)
 }
 
-@Html.Raw(@Model.ContentViewModel.Markup)
+@Html.Raw(@NNModel.ContentViewModel.Markup)
